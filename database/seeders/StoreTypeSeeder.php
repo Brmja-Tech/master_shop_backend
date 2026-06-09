@@ -9,23 +9,29 @@ class StoreTypeSeeder extends Seeder
 {
     public function run(): void
     {
-        StoreType::insert([
+        $storeTypes = [
             [
-                'name_ar' => 'سوبر ماركت',
-                'name_en' => 'Supermarket',
+                'ar' => 'سوبر ماركت',
+                'en' => 'Supermarket',
             ],
             [
-                'name_ar' => 'صيدلية',
-                'name_en' => 'Pharmacy',
+                'ar' => 'صيدلية',
+                'en' => 'Pharmacy',
             ],
             [
-                'name_ar' => 'مطعم',
-                'name_en' => 'Restaurant',
+                'ar' => 'مطعم',
+                'en' => 'Restaurant',
             ],
             [
-                'name_ar' => 'كافيه',
-                'name_en' => 'Cafe',
+                'ar' => 'كافيه',
+                'en' => 'Cafe',
             ],
-        ]);
+        ];
+
+        foreach ($storeTypes as $storeType) {
+            StoreType::query()->create([
+                'name' => $storeType,
+            ]);
+        }
     }
 }

@@ -3,11 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class StoreType extends Model
 {
+    use HasTranslations;
+
     protected $fillable = [
-        'name_ar',
-        'name_en',
+        'name',
+    ];
+
+    public array $translatable = [
+        'name',
     ];
 }

@@ -33,14 +33,16 @@ class StoreTypeRepository
         return $storeType->delete();
     }
     public function lookup()
-{
-    $nameColumn = app()->getLocale() === 'ar'
-        ? 'name_ar'
-        : 'name_en';
+    {
+        $locale = app()->getLocale();
 
-    return StoreType::query()
-        ->selectRaw("id, {$nameColumn} as name")
-        ->orderBy($nameColumn)
-        ->get();
-}
+        return StoreType::query()
+            ->get(['id', 'name'])
+            ->map(fn (StoreType $storeType) => [
+                'id' => $storeType->id,
+                'name' => $storeType->getTranslation('name', $locale),
+            ])
+            ->sortBy('name')
+            ->values();
+    }
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\SetLocale;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,6 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
  ->withMiddleware(function (Middleware $middleware) {
+
+    $middleware->appendToGroup('api', SetLocale::class);
 
     $middleware->redirectGuestsTo(function () {
         if (request()->is('*/dashboard/*')) {
@@ -45,6 +48,7 @@ return Application::configure(basePath: dirname(__DIR__))
         'localeSessionRedirect'   => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
         'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
         'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
+        'setLocale' => SetLocale::class,
 
         // Vendor
         'vendor.auth' => \App\Http\Middleware\VendorAuthMiddleware::class,
