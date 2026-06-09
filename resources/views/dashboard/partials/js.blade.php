@@ -1,0 +1,295 @@
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- BEGIN: Vendor JS-->
+<script src="{{ asset('dashboard') }}/app-assets/vendors/js/vendors.min.js"></script>
+<!-- BEGIN Vendor JS-->
+
+
+<!-- BEGIN: Page Vendor JS-->
+{{-- <script src="{{ asset('dashboard') }}/app-assets/vendors/js/charts/apexcharts.min.js"></script> --}}
+<script src="{{ asset('dashboard') }}/app-assets/vendors/js/extensions/toastr.min.js"></script>
+<script src="{{ asset('dashboard') }}/app-assets/js/scripts/extensions/ext-component-toastr.js"></script>
+
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="{{ asset('dashboard') }}/app-assets/js/core/app-menu.js"></script>
+<script src="{{ asset('dashboard') }}/app-assets/js/core/app.js"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="{{ asset('dashboard') }}/app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
+<!-- END: Page JS-->
+<script src="{{ asset('dashboard') }}/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+<script src="{{ asset('dashboard') }}/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"
+    integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+{{-- file input to upload image and show it --}}
+<script src="{{ asset('vendor/file-input/js/fileinput.min.js') }}"></script>
+<script src="{{ asset('vendor/file-input/themes/fa5/theme.min.js') }}"></script>
+@if (Config::get('app.locale') == 'ar')
+    <script src="{{ asset('vendor/file-input/js/locales/LANG.js') }}"></script>
+    <script src="{{ asset('vendor/file-input/js/locales/ar.js') }}"></script>
+@endif
+<script>
+    var lang = "{{ app()->getLocale() }}";
+    $(function() {
+        $('#singel-image').fileinput({
+            theme: 'fa5',
+            language: lang,
+            allowedFileTypes: ['image'],
+            maxFileCount: 1,
+            enableResumableUpload: false,
+            showUpload: false,
+            browseOnZoneClick: true,
+        });
+    });
+</script>
+<script>
+    var lang = "{{ app()->getLocale() }}";
+    $(function() {
+        $('#multiple-images').fileinput({
+            theme: 'fa5',
+            language: lang,
+            allowedFileTypes: ['image'],
+            maxFileCount: 10,
+            showUpload: false,
+            showRemove: true,
+            showCaption: true,
+            showClose: false,
+            browseOnZoneClick: true,
+            fileActionSettings: {
+                showZoom: true,
+                showDrag: false,
+            },
+            initialPreviewAsData: true,
+            overwriteInitial: false,
+        });
+    });
+</script>
+
+{{-- end file input to upload image and show it --}}
+
+
+@stack('js')
+<script>
+    $(window).on('load', function() {
+        if (feather) {
+            feather.replace({
+                width: 14,
+                height: 14
+            });
+        }
+    })
+</script>
+
+
+{{-- Sweetalert from delete confirmtion --}}
+<script>
+    // sweetalert from basic table and refresh the page
+    document.addEventListener('click', function(event) {
+        if (event.target.id === 'confirm-delete-text' || event.target.closest('#confirm-delete-text')) {
+            const button = event.target.closest('#confirm-delete-text');
+            const formId = button.getAttribute('data-form-id');
+
+            Swal.fire({
+                title: "{{ __('dashboard.are_you_sure') }}",
+                text: "{{ __('dashboard.confirm_delete_message') }}",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "{{ __('dashboard.yes_delete') }}",
+                cancelButtonText: "{{ __('dashboard.cancel') }}"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
+                }
+            });
+        }
+    });
+    // sweetalert from datatable and refresh table only
+    document.addEventListener('click', function(event) {
+        if (event.target.id === 'confirm-text' || event.target.closest('#confirm-text')) {
+            const button = event.target.closest('#confirm-text');
+            const formId = button.getAttribute('data-form-id');
+            const form = document.getElementById(formId);
+            const actionUrl = form.getAttribute('action');
+
+            Swal.fire({
+                title: "{{ __('dashboard.are_you_sure') }}",
+                text: "{{ __('dashboard.confirm_delete_message') }}",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "{{ __('dashboard.yes_delete') }}",
+                cancelButtonText: "{{ __('dashboard.cancel') }}"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(actionUrl, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                _method: 'DELETE'
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    title: "{{ __('dashboard.success') }}",
+                                    text: data.message,
+                                    icon: "success",
+                                    timer: 3000,
+                                    showConfirmButton: true
+                                });
+                                $('#DataTables_Table').DataTable().ajax.reload(null, false);
+                            } else {
+                                Swal.fire("{{ __('dashboard.error') }}", data.message, "error");
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire("{{ __('dashboard.error') }}",
+                                "{{ __('dashboard.error_occurred') }}", "error");
+                        });
+                }
+            });
+        }
+    });
+</script>
+{{-- End sweetalert from delete confirmtion --}}
+
+
+{{-- Ajax change status and message confirmation --}}
+<script>
+    $(document).on('click', '.change-status-btn', function(e) {
+        e.preventDefault();
+        let button = $(this);
+        let url = button.data('url');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response) {
+                if (response.status ==true) {
+                    Swal.fire({
+                        position: 'top-start',
+                        icon: 'success',
+                        title: '{{ __('dashboard.status-change') }}',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false
+                    });
+                    if (response.new_status == 1) {
+                        button
+                            .removeClass('btn-warning')
+                            .addClass('btn-success')
+                            .text('{{ __('dashboard.active') }}');
+                    } else {
+                        button
+                            .removeClass('btn-success')
+                            .addClass('btn-warning')
+                            .text('{{ __('dashboard.inactive') }}');
+                    }
+                } else {
+                    Swal.fire({
+                        position: 'top-start',
+                        icon: 'error',
+                        title: '{{ __('validation.something-valid') }}',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false
+                    });
+                }
+            },
+            error: function(error) {
+                console.error(error);
+                showMessage('An error occurred. Please try again.', 'error');
+            },
+        });
+    });
+</script>
+{{-- End ajax change status and message confirmation --}}
+
+
+{{-- Ajax change approved and message confirmation --}}
+<script>
+    $(document).on('click', '.change-approved-btn', function(e) {
+        e.preventDefault();
+        let button = $(this);
+        let url = button.data('url');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response) {
+                if (response.status) {
+                    Swal.fire({
+                        position: 'top-start',
+                        icon: 'success',
+                        title: '{{ __('dashboard.approved-change') }}',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false
+                    });
+                    if (response.new_approved == 1) {
+                        button
+                            .removeClass('btn-warning')
+                            .addClass('btn-success')
+                            .html('<i class="fa-solid fa-check"></i>');
+                    } else {
+                        button
+                            .removeClass('btn-success')
+                            .addClass('btn-warning')
+                            .html('<i class="fa-solid fa-x"></i>');
+                    }
+
+                } else {
+                    showMessage(response.message, 'error');
+                }
+            },
+            error: function(error) {
+                console.error(error);
+                showMessage('An error occurred. Please try again.', 'error');
+            },
+        });
+    });
+</script>
+{{-- End ajax change approved and message confirmation --}}
+
+
+{{-- Optimize modal in livewire to open and close --}}
+<script>
+    window.addEventListener('createModalToggle', event => {
+        $('#createModal').modal('toggle');
+    })
+
+    window.addEventListener('updateModalToggle', event => {
+        $('#updateModal').modal('toggle');
+    })
+
+    window.addEventListener('deleteModalToggle', event => {
+        $('#deleteModal').modal('toggle');
+    })
+
+    window.addEventListener('showModalToggle', event => {
+        $('#showModal').modal('toggle');
+    })
+
+    // Livewire.on('changeStatus', data => {
+    //     console.log('Received changeStatus event:', data);
+    // });
+</script>
+{{-- End optimize modal in livewire to open and close --}}

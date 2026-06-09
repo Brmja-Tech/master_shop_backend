@@ -1,0 +1,294 @@
+<?php
+
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Validation Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines contain the default error messages used by
+    | the validator class. Some of these rules have multiple versions such
+    | as the size rules. Feel free to tweak each of these messages.
+    |
+    */
+
+    'accepted'             => 'يجب قبول :attribute',
+    'active_url'           => ':attribute لا يُمثّل رابطًا صحيحًا',
+    'after'                => 'يجب على :attribute أن يكون تاريخًا لاحقًا للتاريخ :date.',
+    'after_or_equal'       => ':attribute يجب أن يكون تاريخاً لاحقاً أو مطابقاً للتاريخ :date.',
+    'alpha'                => 'يجب أن لا يحتوي :attribute سوى على حروف',
+    'alpha_dash'           => 'يجب أن لا يحتوي :attribute سوى على حروف، أرقام ومطّات.',
+    'alpha_num'            => 'يجب أن يحتوي :attribute على حروفٍ وأرقامٍ فقط',
+    'array'                => 'يجب أن يكون :attribute ًمصفوفة',
+    'before'               => 'يجب على :attribute أن يكون تاريخًا سابقًا للتاريخ :date.',
+    'before_or_equal'      => ':attribute يجب أن يكون تاريخا سابقا أو مطابقا للتاريخ :date',
+    'between'              => [
+        'numeric' => 'يجب أن تكون قيمة :attribute بين :min و :max.',
+        'file'    => 'يجب أن يكون حجم الملف :attribute بين :min و :max كيلوبايت.',
+        'string'  => 'يجب أن يكون عدد حروف النّص :attribute بين :min و :max',
+        'array'   => 'يجب أن يحتوي :attribute على عدد من العناصر بين :min و :max',
+    ],
+    'boolean'              => 'يجب أن تكون قيمة :attribute إما true أو false ',
+    'confirmed'            => 'حقل التأكيد غير مُطابق للحقل :attribute',
+    'date'                 => ':attribute ليس تاريخًا صحيحًا',
+    'date_format'          => 'لا يتوافق :attribute مع الشكل :format.',
+    'different'            => 'يجب أن يكون الحقلان :attribute و :other مُختلفان',
+    'digits'               => 'يجب أن يحتوي :attribute على :digits رقمًا/أرقام',
+    'digits_between'       => 'يجب أن يحتوي :attribute بين :min و :max رقمًا/أرقام ',
+    'dimensions'           => 'الـ :attribute يحتوي على أبعاد صورة غير صالحة.',
+    'distinct'             => 'للحقل :attribute قيمة مُكرّرة.',
+    'email'                => 'يجب أن يكون :attribute عنوان بريد إلكتروني صحيح البُنية',
+    'exists'               => 'القيمة المحددة :attribute غير موجودة',
+    'file'                 => 'الـ :attribute يجب أن يكون ملفا.',
+    'filled'               => ':attribute إجباري',
+    'gt'                   => [
+        'numeric' => 'يجب أن تكون قيمة :attribute أكبر من :max.',
+        'file'    => 'يجب أن يكون حجم الملف :attribute أكبر من :value كيلوبايت',
+        'string'  => 'يجب أن يكون طول النّص :attribute أكثر من :value حروفٍ/حرفًا',
+        'array'   => 'يجب أن يحتوي :attribute على أكثر من :value عناصر/عنصر.',
+    ],
+    'gte'                  => [
+        'numeric' => 'يجب أن تكون قيمة :attribute مساوية أو أكبر من :min.',
+        'file'    => 'يجب أن يكون حجم الملف :attribute على الأقل :value كيلوبايت',
+        'string'  => 'يجب أن يكون طول النص :attribute على الأقل :value حروفٍ/حرفًا',
+        'array'   => 'يجب أن يحتوي :attribute على الأقل على :value عُنصرًا/عناصر',
+    ],
+    'image'                => 'يجب أن يكون :attribute صورةً',
+    'in'                   => ':attribute غير موجود',
+    'in_array'             => ':attribute غير موجود في :other.',
+    'integer'              => 'يجب أن يكون :attribute عددًا صحيحًا',
+    'ip'                   => 'يجب أن يكون :attribute عنوان IP صحيحًا',
+    'ipv4'                 => 'يجب أن يكون :attribute عنوان IPv4 صحيحًا.',
+    'ipv6'                 => 'يجب أن يكون :attribute عنوان IPv6 صحيحًا.',
+    'json'                 => 'يجب أن يكون :attribute نصآ من نوع JSON.',
+    'lt'                   => [
+        'numeric' => 'يجب أن تكون قيمة :attribute أصغر من :max.',
+        'file'    => 'يجب أن يكون حجم الملف :attribute أصغر من :value كيلوبايت',
+        'string'  => 'يجب أن يكون طول النّص :attribute أقل من :value حروفٍ/حرفًا',
+        'array'   => 'يجب أن يحتوي :attribute على أقل من :value عناصر/عنصر.',
+    ],
+    'lte'                  => [
+        'numeric' => 'يجب أن تكون قيمة :attribute مساوية أو أصغر من :max.',
+        'file'    => 'يجب أن لا يتجاوز حجم الملف :attribute :max كيلوبايت',
+        'string'  => 'يجب أن لا يتجاوز طول النّص :attribute :max حروفٍ/حرفًا',
+        'array'   => 'يجب أن لا يحتوي :attribute على أكثر من :max عناصر/عنصر.',
+    ],
+    'max'                  => [
+        'numeric' => 'يجب أن تكون قيمة :attribute مساوية أو أصغر من :max.',
+        'file'    => 'يجب أن لا يتجاوز حجم الملف :attribute :max كيلوبايت',
+        'string'  => 'يجب أن لا يتجاوز طول النّص :attribute :max حروفٍ/حرفًا',
+        'array'   => 'يجب أن لا يحتوي :attribute على أكثر من :max عناصر/عنصر.',
+    ],
+    'mimes'                => 'يجب أن يكون ملفًا من نوع : :values.',
+    'mimetypes'            => 'يجب أن يكون ملفًا من نوع : :values.',
+    'min'                  => [
+        'numeric' => 'يجب أن تكون قيمة :attribute مساوية أو أكبر من :min.',
+        'file'    => 'يجب أن يكون حجم الملف :attribute على الأقل :min كيلوبايت',
+        'string'  => 'يجب أن يكون طول النص :attribute على الأقل :min حروفٍ/حرفًا',
+        'array'   => 'يجب أن يحتوي :attribute على الأقل على :min عُنصرًا/عناصر',
+    ],
+    'not_in'               => ':attribute موجود',
+    'not_regex'            => 'صيغة :attribute غير صحيحة.',
+    'numeric'              => 'يجب على :attribute أن يكون رقمًا',
+    'present'              => 'يجب تقديم :attribute',
+    'regex'                => 'صيغة :attribute .غير صحيحة',
+    'required'             => ':attribute مطلوب.',
+    'required_if'          => ':attribute مطلوب في حال ما إذا كان :other يساوي :value.',
+    'required_unless'      => ':attribute مطلوب في حال ما لم يكن :other يساوي :values.',
+    'required_with'        => ':attribute مطلوب إذا توفّر :values.',
+    'required_with_all'    => ':attribute مطلوب إذا توفّر :values.',
+    'required_without'     => ':attribute مطلوب إذا لم يتوفّر :values.',
+    'required_without_all' => ':attribute مطلوب إذا لم يتوفّر :values.',
+    'same'                 => 'يجب أن يتطابق :attribute مع :other',
+    'size'                 => [
+        'numeric' => 'يجب أن تكون قيمة :attribute مساوية لـ :size',
+        'file'    => 'يجب أن يكون حجم الملف :attribute :size كيلوبايت',
+        'string'  => 'يجب أن يحتوي النص :attribute على :size حروفٍ/حرفًا بالضبط',
+        'array'   => 'يجب أن يحتوي :attribute على :size عنصرٍ/عناصر بالضبط',
+    ],
+    'string'               => 'يجب أن يكون :attribute نصآ.',
+    'timezone'             => 'يجب أن يكون :attribute نطاقًا زمنيًا صحيحًا',
+    'unique'               => 'قيمة :attribute مُستخدمة من قبل',
+    'uploaded'             => 'فشل في تحميل الـ :attribute',
+    'url'                  => 'صيغة الرابط :attribute غير صحيحة',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify custom validation messages for attributes using the
+    | convention "attribute.rule" to name the lines. This makes it quick to
+    | specify a specific custom language line for a given attribute rule.
+    |
+    */
+
+'custom' => [
+
+    'attribute-name' => [
+        'rule-name' => 'custom-message',
+    ],
+
+    'g-recaptcha-response' => [
+        'required' => 'يجب عليك التحقق من أنك لست روبوت',
+    ],
+
+    'phone' => [
+        'unique' => 'رقم الهاتف مستخدم بالفعل',
+    ],
+
+    'store_type' => [
+        'in' => 'نوع المتجر غير صحيح',
+    ],
+
+],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Attributes
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used to swap attribute place-holders
+    | with something more reader friendly such as E-Mail Address instead
+    | of "email". This simply helps us make messages a little cleaner.
+    |
+    */
+
+    'attributes' => [
+        'name'                  => 'الاسم',
+        'username'              => 'اسم المُستخدم',
+        'email'                 => 'البريد الالكتروني',
+        'first_name'            => 'الاسم الأول',
+        'last_name'             => 'اسم العائلة',
+        'password'              => 'كلمة السر',
+        'password_confirmation' => 'تأكيد كلمة السر',
+        'city'                  => 'المدينة',
+        'country'               => 'الدولة',
+        'address'               => 'عنوان السكن',
+        'phone'                 => 'الهاتف',
+        'mobile'                => 'الجوال',
+        'age'                   => 'العمر',
+        'sex'                   => 'الجنس',
+        'gender'                => 'النوع',
+        'day'                   => 'اليوم',
+        'month'                 => 'الشهر',
+        'year'                  => 'السنة',
+        'hour'                  => 'ساعة',
+        'minute'                => 'دقيقة',
+        'second'                => 'ثانية',
+        'title'                 => 'العنوان',
+        'content'               => 'المُحتوى',
+        'description'           => 'الوصف',
+        'excerpt'               => 'المُلخص',
+        'date'                  => 'التاريخ',
+        'time'                  => 'الوقت',
+        'available'             => 'مُتاح',
+        'size'                  => 'الحجم',
+        'color'                 => 'اللون',
+        'quantity'              =>'الكميه',
+        'descount' =>'الخصم',
+        'price'=>'السعر',
+        'category_id'=>'القسم',
+        'minimum_withdrawal_amount' =>'الحد الادنى  للسحب',
+        'maximum_withdrawal_amount'=>'الحد الاقصى للسحب ',
+        'the_lowest_amount_in_the_account'=>'الحد الادنى للمبلغ المتبقي في الحساب',
+        'method '=>'وسيله الدفع',
+        'governorate_id'=>'المحافظه',
+        'city_id'=>'المدينه',
+        'health_certificate'=>'الشهاده الصحيه',
+        'terms'=>'الموافقه علي الشروط مطلوبه',
+        'otp'=>'رمز التحقق',
+        'method'=>'وسيله السحب',
+        'body'=>'المحتوى',
+        'role.en'=>' اسم الترقيه ب الانجليزي',
+        'role.ar'=>'اسم الترقيه ب العربي   ',
+        'name.en'=>'الاسم  بالانجليزي',
+        'name.ar'=>'الاسم  بالعربي',
+        'permession'=>'الصلاحيات',
+        'code'=>'الكود',
+        'status'=>'الحالة',
+        'limit'=>'مرات الاستخدام',
+        'end_date'=>'تاريخ النهاية',
+        'start_date'=>'تاريخ البداية',
+        'discount_precentage'=>'نسبة الخصم',
+        'logo'=>'الهوية',
+        'favicon'=>'الرمز',
+        'site_name_ar'=>'اسم الموقع بالعربية',
+        'site_name'=>'اسم الموقع بالانجليزيه',
+        'site_address_ar'=>'العنوان بالعربية',
+        'site_address'=>'العنوان بالانجليزية',
+        'site_email'=>'البريد الالكتروني للموقع',
+        'email_support'=>'بريد الدعم للموقع',
+        'site_phone'=>'رقم الوقع',
+        'site_desc_ar'=>'وصف الموقع بالعربية',
+        'site_desc'=>'وصف الموقع بالانجليزية',
+        'facebook'=>'رابط الفيس بوك',
+        'x_url'=>'رابط X',
+        'youtube'=>'رابط يوتيوب',
+        'meta_desc_ar'=>'وصف محركات البحث بالعربية',
+        'meta_desc'=>'وصف محركات البحث بالانجليزية',
+        'site_copyright'=>'حقوق النشر',
+        'promotion_url'=>'رابط الفيديو التقديمي للموقع',
+        'question_ar'=>'السؤال بالعربية',
+        'question_en'=>'السؤال بالانجليزية',
+        'answer_ar'=>'الاجابة بالعربية',
+        'answer_en'=>'الاجابة بالانجليزية',
+        'image'=>'الصورة',
+        'brand_id'=>'العلامة التجارية',
+        'category_id'=>'القسم',
+        'qty'=>'الكمية',
+        'price'=>'السعر',
+        'product_type'=>'النوع',
+        'video_link'=>'رابط الفيديو',
+        'sku'=>'SKU',
+        'description.ar'=>'الوصف بالعربية',
+        'description.en'=>'الوصف بالانجليزية',
+        'long_description.ar'=>'الوصف الطويل بالعربية',
+        'long_description.en'=>'الوصف الطويل بالانجليزية',
+        'offer_price'=>'سعر العرض',
+        'offer_start_date'=>'تاريخ البداية',
+        'offer_end_date'=>'تاريخ النهاية',
+        'seo_title.ar'=>'عنوان Seo بالعربية',
+        'seo_title.en'=>'عنوان Seo بالانجليزية',
+        'seo_description.ar'=>'وصف Seo بالعربية',
+        'seo_description.en'=>'وصف Seo بالانجليزية',
+        'product_id'=>'المنتج',
+        'show_at_home'=>'العرض في الصفحة الرئيسية',
+        'variantItems.*.value_ar'=>'قيمة النوع بالغة العربية',
+        'variantItems.*.value_en'=>'قيمة النوع بالغة الانجليزية',
+        'variantItems'=>'قيمة النوع',
+        'selectedVariant'=>'اختيار النوع',
+        'selectedVariantItem'=>'اختيار قيمة النوع',
+        'name_ar'=>'الاسم بالعربية',
+        'name_en'=>'الاسم بالانجليزيه',
+        'new_password'=>'كلمة المرور الجديده',
+        'current_password'=>'كلمة المرور الحالية',
+        'new_password_confirmation'=>'تاكيد كلمة المرور الجديده',
+        'comment'=>'تققيمك',
+        'title_ar'=>'العوان بالعربية',
+        'title_en'=>'العنوان بالانجليزية',
+        'desc_ar'=>'الوصف بالعربية',
+        'desc_en'=>'الوصف بالانجليزية',
+        'userName'=>'اسم العميل',
+        'userEmail'=>'البريد الالكتروني',
+        'userPhone'=>'رقم الهاتف',
+        'countryId'=>'الدولة',
+        'governorateId'=>'المحافظة',
+        'street'=>'العنوان',
+        'couponCode'=>'رمز الخصم',
+        ''=>'',
+        ''=>'',
+        ''=>'',
+        ''=>'',
+        ''=>'',
+        ''=>'',
+
+    ],
+
+    'something-valid' => 'يوجد خطاء ما !',
+    'successfully' => 'تم حفظ البيانات بنجاح',
+    'Password-Reset-Successfully'=>'تم تغيير الرقم السري بنجاح',
+    'login-success'=>'تم تسجيل الدخول بنجاح مرحبا : ',
+
+
+];
