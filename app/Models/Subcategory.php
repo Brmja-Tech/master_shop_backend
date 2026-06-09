@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class StoreType extends Model
+class Subcategory extends Model
 {
     use HasTranslations;
 
     protected $fillable = [
+        'store_type_id',
         'name',
     ];
 
@@ -17,8 +18,8 @@ class StoreType extends Model
         'name',
     ];
 
-    public function subcategories()
+    public function storeType()
     {
-        return $this->hasMany(Subcategory::class);
+        return $this->belongsTo(StoreType::class);
     }
 }

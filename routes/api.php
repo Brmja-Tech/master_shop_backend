@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\SettingsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Vendor\Auth\VendorAuthController;
 use App\Http\Controllers\Api\Vendor\Auth\ForgotController as VendorForgotController;
+use App\Http\Controllers\Api\Vendor\SubcategoryController;
 use App\Http\Controllers\Dashboard\Settings\StoreTypeController;
 
 
@@ -52,13 +53,17 @@ Route::post('/forgot/reset-password', [ForgotController::class, 'resetPassword']
 ## ------------------ VENDOR AUTH ROUTES ------------------ ##
 
 Route::prefix('vendor')->group(function () {
-Route::post('register', [VendorAuthController::class, 'register']);
-Route::post('forgot-password', [VendorForgotController::class, 'forgotPassword']);
-Route::post('login',    [VendorAuthController::class, 'login']);
-Route::post('verify-otp',      [VendorForgotController::class, 'verifyOtp']);
-Route::post('reset-password',  [VendorForgotController::class, 'resetPassword']);
-Route::post('resend-otp',      [VendorForgotController::class, 'resendOtp']);
+    Route::post('register', [VendorAuthController::class, 'register']);
+    Route::post('forgot-password', [VendorForgotController::class, 'forgotPassword']);
+    Route::post('login',    [VendorAuthController::class, 'login']);
+    Route::post('verify-otp',      [VendorForgotController::class, 'verifyOtp']);
+    Route::post('reset-password',  [VendorForgotController::class, 'resetPassword']);
+    Route::post('resend-otp',      [VendorForgotController::class, 'resendOtp']);
 
+    Route::middleware('vendor.auth')->group(function () {
+        Route::get('subcategories/lookup', [SubcategoryController::class, 'lookup']);
+        Route::apiResource('subcategories', SubcategoryController::class);
+    });
 });
 ## ------------------ VENDOR AUTH ROUTES ------------------ ##
 

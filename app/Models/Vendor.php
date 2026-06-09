@@ -47,4 +47,9 @@ class Vendor extends Authenticatable
     {
         return $this->belongsTo(StoreType::class);
     }
+
+    public function subcategories()
+    {
+        return $this->hasMany(Subcategory::class, 'store_type_id', 'store_type_id');
+    }
 }
