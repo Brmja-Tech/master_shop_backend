@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Vendor\Auth\VendorAuthController;
 use App\Http\Controllers\Api\Vendor\Auth\ForgotController as VendorForgotController;
 use App\Http\Controllers\Api\Vendor\ProductController;
+use App\Http\Controllers\Api\Vendor\ProfileController;
 use App\Http\Controllers\Api\Vendor\SubcategoryController;
 use App\Http\Controllers\Dashboard\Settings\StoreTypeController;
 
@@ -65,6 +66,8 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
     Route::post('resend-otp',      [VendorForgotController::class, 'resendOtp']);
 
     Route::middleware('vendor.auth')->group(function () {
+        Route::get('profile', [ProfileController::class, 'show']);
+        Route::post('profile/update', [ProfileController::class, 'update']);
         Route::get('subcategories/lookup', [SubcategoryController::class, 'lookup']);
         Route::apiResource('subcategories', SubcategoryController::class);
         Route::post('products/{id}', [ProductController::class, 'update']);

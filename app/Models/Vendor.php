@@ -18,6 +18,7 @@ class Vendor extends Authenticatable
         'phone',
         'password',
         'store_name',
+        'description',
         'store_type_id',
         'latitude',
         'longitude',
@@ -26,7 +27,11 @@ class Vendor extends Authenticatable
         'banner',
         'delivery_fee',
         'is_active',
+        'is_store_open',
+        'is_accepting_orders',
         'working_hours',
+        'work_from',
+        'work_to',
         'is_verified',
         'temp_token',
         'fcm_token',
@@ -40,6 +45,8 @@ class Vendor extends Authenticatable
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_store_open' => 'boolean',
+        'is_accepting_orders' => 'boolean',
         'is_verified' => 'boolean',
         'delivery_fee' => 'decimal:2',
     ];
