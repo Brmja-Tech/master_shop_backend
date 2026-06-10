@@ -40,6 +40,7 @@ class AuthController extends Controller
         $data = $request->validate([
             'phone'         => 'required|string|exists:users,phone',
             'code'          => 'required|string',
+            'fcm_token'     => 'nullable|string',
         ]);
 
         $response = $this->authService->verifyOtp($data);

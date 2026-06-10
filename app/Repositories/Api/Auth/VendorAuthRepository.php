@@ -20,4 +20,11 @@ class VendorAuthRepository
     {
         return Vendor::where('temp_token', $token)->first();
     }
+
+    public function updateFcmToken(Vendor $vendor, string $fcmToken): void
+    {
+        $vendor->update([
+            'fcm_token' => $fcmToken,
+        ]);
+    }
 }

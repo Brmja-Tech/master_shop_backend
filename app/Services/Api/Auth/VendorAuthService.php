@@ -23,7 +23,7 @@ class VendorAuthService
 
         return $this->repository->create($data);
     }
-        public function login(array $data): array
+    public function login(array $data): array
     {
         $vendor = $this->repository->findByPhone($data['phone']);
 
@@ -41,6 +41,11 @@ class VendorAuthService
                 'message' => 'vendor.not-verified',
                 'data'    => [],
             ];
+        }
+
+        if (! empty($data['fcm_token'])) {
+            $this->repository->updateFcmToken($vendor, $data['fcm_token']);
+            $vendor->refresh();
         }
 
         $vendor->load('storeType');

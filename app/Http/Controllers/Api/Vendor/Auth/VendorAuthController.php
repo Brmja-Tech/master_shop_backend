@@ -31,8 +31,10 @@ class VendorAuthController extends Controller
 
     public function login(LoginRequest $request)
     {
+        $credentials = $request->only(['phone', 'password', 'fcm_token']);
+
         $response = $this->vendorAuthService->login(
-            $request->validated()
+            $credentials
         );
 
         return ApiResponse::sendResponse(

@@ -22,7 +22,7 @@ class LoginRequest extends FormRequest
         return [
             'phone'     => 'required|string|exists:vendors,phone',
             'password'  => 'required|string|min:8',
-        
+            'fcm_token' => 'nullable|string',
         ];
     }
 }
