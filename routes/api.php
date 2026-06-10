@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\SettingsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Vendor\Auth\VendorAuthController;
 use App\Http\Controllers\Api\Vendor\Auth\ForgotController as VendorForgotController;
+use App\Http\Controllers\Api\Vendor\ProductController;
 use App\Http\Controllers\Api\Vendor\SubcategoryController;
 use App\Http\Controllers\Dashboard\Settings\StoreTypeController;
 
@@ -27,6 +28,8 @@ Route::get('/banners',      [SettingsController::class, 'banners']);
 ## ================== LOOKUPS (Mobile) ================== ##
 Route::get('/countries',                            [LocationController::class, 'countries']);
 Route::get('/countries/{country_id}/governorates',  [LocationController::class, 'governorates']);
+Route::get('/products',                             [ProductController::class, 'publicIndex']);
+Route::get('/products/available',                   [ProductController::class, 'available']);
 ## ================== LOOKUPS (Mobile) ================== ##
 
 
@@ -64,6 +67,8 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
     Route::middleware('vendor.auth')->group(function () {
         Route::get('subcategories/lookup', [SubcategoryController::class, 'lookup']);
         Route::apiResource('subcategories', SubcategoryController::class);
+        Route::post('products/{id}', [ProductController::class, 'update']);
+        Route::apiResource('products', ProductController::class);
     });
 });
 ## ------------------ VENDOR AUTH ROUTES ------------------ ##

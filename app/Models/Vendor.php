@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Vendor extends Authenticatable
 {
@@ -51,5 +52,10 @@ class Vendor extends Authenticatable
     public function subcategories()
     {
         return $this->hasMany(Subcategory::class, 'store_type_id', 'store_type_id');
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 }
