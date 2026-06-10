@@ -16,14 +16,15 @@ class SubcategoryService
         return $this->repository->getAll($vendor->store_type_id);
     }
 
-    public function lookup(Vendor $vendor)
+    public function lookup(Vendor $vendor, ?int $storeTypeId = null)
     {
-        return $this->repository->lookup($vendor->store_type_id);
+        return $this->repository->lookup($storeTypeId ?? $vendor->store_type_id);
     }
 
     public function store(Vendor $vendor, array $data)
     {
         $data['store_type_id'] = $vendor->store_type_id;
+        $data['vendor_id'] = $vendor->id;
 
         return $this->repository->format(
             $this->repository->create($data)

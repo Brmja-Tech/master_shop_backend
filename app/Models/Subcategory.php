@@ -12,6 +12,7 @@ class Subcategory extends Model
 
     protected $fillable = [
         'store_type_id',
+        'vendor_id',
         'name',
     ];
 
@@ -22,6 +23,11 @@ class Subcategory extends Model
     public function storeType()
     {
         return $this->belongsTo(StoreType::class);
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
     }
 
     public function products(): HasMany

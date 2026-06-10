@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Product;
 use App\Models\ProductImage;
-use App\Models\Subcategory;
 use App\Models\StoreType;
+use App\Models\Subcategory;
 use App\Models\Vendor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -40,6 +40,7 @@ class ProductSeeder extends Seeder
             ->first()
             ?? Subcategory::query()->create([
                 'store_type_id' => $vendor->store_type_id,
+                'vendor_id' => null,
                 'name' => [
                     'ar' => 'وجبات',
                     'en' => 'Meals',

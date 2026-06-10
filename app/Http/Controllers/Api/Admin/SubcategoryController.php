@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\Vendor;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Vendor\SubcategoryRequest;
-use App\Services\Api\Vendor\SubcategoryService;
+use App\Http\Requests\Admin\SubcategoryRequest;
+use App\Services\Api\Admin\SubcategoryService;
+use Illuminate\Http\Request;
 
 class SubcategoryController extends Controller
 {
@@ -13,24 +14,21 @@ class SubcategoryController extends Controller
         protected SubcategoryService $service
     ) {}
 
-    public function index()
+    public function index(Request $request)
     {
         return ApiResponse::sendResponse(
             200,
             __('subcategory.list'),
-            $this->service->index(auth('sanctum')->user())
+            $this->service->index($request->integer('store_type_id') ?: null)
         );
     }
 
-    public function lookup()
+    public function lookup(Request $request)
     {
         return ApiResponse::sendResponse(
             200,
             __('subcategory.list'),
-            $this->service->lookup(
-                auth('sanctum')->user(),
-                request()->integer('store_type_id') ?: null
-            )
+            $this->service->lookup($request->integer('store_type_id') ?: null)
         );
     }
 
@@ -39,7 +37,7 @@ class SubcategoryController extends Controller
         return ApiResponse::sendResponse(
             201,
             __('subcategory.created'),
-            $this->service->store(auth('sanctum')->user(), $request->validated())
+            $this->service->store($request->validated())
         );
     }
 
@@ -48,7 +46,7 @@ class SubcategoryController extends Controller
         return ApiResponse::sendResponse(
             200,
             __('subcategory.show'),
-            $this->service->show(auth('sanctum')->user(), $id)
+            $this->service->show($id)
         );
     }
 
@@ -57,13 +55,13 @@ class SubcategoryController extends Controller
         return ApiResponse::sendResponse(
             200,
             __('subcategory.updated'),
-            $this->service->update(auth('sanctum')->user(), $id, $request->validated())
+            $this->service->update($id, $request->validated())
         );
     }
 
     public function destroy(int $id)
     {
-        $this->service->destroy(auth('sanctum')->user(), $id);
+        $this->service->destroy($id);
 
         return ApiResponse::sendResponse(
             200,

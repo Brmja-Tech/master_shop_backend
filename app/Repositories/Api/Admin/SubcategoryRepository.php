@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Repositories\Api\Vendor;
+namespace App\Repositories\Api\Admin;
 
 use App\Models\Subcategory;
+use Illuminate\Database\Eloquent\Builder;
 
 class SubcategoryRepository
 {
@@ -17,20 +18,20 @@ class SubcategoryRepository
         ];
     }
 
-    public function getAll(int $storeTypeId)
+    public function getAll(?int $storeTypeId = null)
     {
         return Subcategory::query()
-            ->where('store_type_id', $storeTypeId)
+            ->when($storeTypeId, fn (Builder $query) => $query->where('store_type_id', $storeTypeId))
             ->get(['id', 'store_type_id', 'vendor_id', 'name'])
             ->map(fn (Subcategory $subcategory) => $this->format($subcategory))
             ->sortBy('name')
             ->values();
     }
 
-    public function lookup(int $storeTypeId)
+    public function lookup(?int $storeTypeId = null)
     {
         return Subcategory::query()
-            ->where('store_type_id', $storeTypeId)
+            ->when($storeTypeId, fn (Builder $query) => $query->where('store_type_id', $storeTypeId))
             ->get(['id', 'name'])
             ->map(fn (Subcategory $subcategory) => [
                 'id' => $subcategory->id,
@@ -45,11 +46,9 @@ class SubcategoryRepository
         return Subcategory::create($data);
     }
 
-    public function findForStoreType(int $id, int $storeTypeId): Subcategory
+    public function find(int $id): Subcategory
     {
-        return Subcategory::query()
-            ->where('store_type_id', $storeTypeId)
-            ->findOrFail($id);
+        return Subcategory::query()->findOrFail($id);
     }
 
     public function update(Subcategory $subcategory, array $data): Subcategory

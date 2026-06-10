@@ -13,6 +13,10 @@ return new class extends Migration
             $table->foreignId('store_type_id')
                 ->constrained('store_types')
                 ->cascadeOnDelete();
+            $table->foreignId('vendor_id')
+                ->nullable()
+                ->constrained('vendors')
+                ->nullOnDelete();
             $table->json('name');
             $table->timestamps();
         });

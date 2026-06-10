@@ -40,7 +40,7 @@ class ProductService
 
     public function store(Vendor $vendor, array $data)
     {
-        $this->repository->findVendorSubcategory($data['subcategory_id'], $vendor->store_type_id);
+        $data['subcategory_id'] = $this->resolveSubcategoryId($vendor, $data);
 
         if ($this->repository->duplicateExists($vendor->id, $data['name'])) {
             throw new HttpResponseException(
@@ -85,14 +85,13 @@ class ProductService
     {
         $product = $this->repository->findVendorProduct($id, $vendor->id);
 
-        $subcategoryId = $data['subcategory_id'] ?? $product->subcategory_id;
+        $subcategoryId = $this->resolveSubcategoryId($vendor, $data, $product->subcategory_id);
         $name = $data['name'] ?? $product->getTranslations('name');
         $currentName = $product->getTranslations('name');
         $subcategoryChanged = $subcategoryId !== $product->subcategory_id;
         $nameChanged = ($name['ar'] ?? null) !== ($currentName['ar'] ?? null)
             || ($name['en'] ?? null) !== ($currentName['en'] ?? null);
-
-        $this->repository->findVendorSubcategory($subcategoryId, $vendor->store_type_id);
+        $data['subcategory_id'] = $subcategoryId;
 
         if (($subcategoryChanged || $nameChanged)
             && $this->repository->duplicateExists($vendor->id, $name, $product->id)) {
@@ -181,5 +180,40 @@ class ProductService
 
         $this->repository->deleteImages($product);
         $this->repository->delete($product);
+    }
+
+    private function resolveSubcategoryId(Vendor $vendor, array &$data, ?int $fallbackId = null): int
+    {
+        if (! empty($data['subcategory_id'])) {
+            $subcategory = $this->repository->findVendorSubcategory(
+                (int) $data['subcategory_id'],
+                $vendor->store_type_id
+            );
+
+            unset($data['subcategory_name']);
+
+            return $subcategory->id;
+        }
+
+        if (! empty($data['subcategory_name'])) {
+            $subcategory = $this->repository->findStoreTypeSubcategoryByName(
+                $vendor->store_type_id,
+                $data['subcategory_name']
+            );
+
+            if (! $subcategory) {
+                $subcategory = $this->repository->createSubcategory([
+                    'store_type_id' => $vendor->store_type_id,
+                    'vendor_id' => $vendor->id,
+                    'name' => $data['subcategory_name'],
+                ]);
+            }
+
+            unset($data['subcategory_name']);
+
+            return $subcategory->id;
+        }
+
+        return $fallbackId ?? 0;
     }
 }

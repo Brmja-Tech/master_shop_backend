@@ -12,6 +12,9 @@ use App\Http\Controllers\Dashboard\Auth\ForgotController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Dashboard\Auth\ResetPasswordController;
 use App\Http\Controllers\Dashboard\Settings\StoreTypeController;
+use App\Http\Controllers\Api\Admin\SubcategoryController as AdminSubcategoryController;
+
+
 
 
 
@@ -91,4 +94,9 @@ Route::group([
     ->group(function () {
         Route::apiResource('store-types', StoreTypeController::class);
     });
+});
+
+Route::prefix('admin')->middleware(['setLocale', 'auth:admin'])->group(function () {
+    Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);
+    Route::apiResource('subcategories', AdminSubcategoryController::class);
 });

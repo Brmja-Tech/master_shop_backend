@@ -63,6 +63,12 @@ class ProductRequest extends FormRequest
             : ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'];
         $requiredOrSometimes = $isUpdate ? ['sometimes'] : ['required'];
         $requiredArrayOrSometimes = $isUpdate ? ['sometimes', 'array'] : ['required', 'array'];
+        $subcategoryIdRule = $isUpdate
+            ? ['sometimes', 'nullable', 'integer', 'exists:subcategories,id']
+            : ['nullable', 'integer', 'exists:subcategories,id', 'required_without:subcategory_name'];
+        $subcategoryNameRule = $isUpdate
+            ? ['sometimes', 'array']
+            : ['nullable', 'array', 'required_without:subcategory_id'];
 
         return [
             'name' => $requiredArrayOrSometimes,
@@ -74,7 +80,10 @@ class ProductRequest extends FormRequest
             'brand' => ['nullable', 'array'],
             'brand.ar' => ['nullable', 'string', 'max:255'],
             'brand.en' => ['nullable', 'string', 'max:255'],
-            'subcategory_id' => array_merge($requiredOrSometimes, ['integer', 'exists:subcategories,id']),
+            'subcategory_id' => $subcategoryIdRule,
+            'subcategory_name' => $subcategoryNameRule,
+            'subcategory_name.ar' => ['required_with:subcategory_name', 'string', 'max:255'],
+            'subcategory_name.en' => ['required_with:subcategory_name', 'string', 'max:255'],
             'quantity' => array_merge($requiredOrSometimes, ['integer', 'min:0']),
             'remaining_quantity' => ['nullable', 'integer', 'min:0'],
             'discount' => ['nullable', 'numeric', 'min:0', 'max:100'],

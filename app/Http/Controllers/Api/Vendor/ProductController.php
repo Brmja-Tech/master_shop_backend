@@ -112,6 +112,10 @@ class ProductController extends Controller
             }
         }
 
+        if ($request->has('subcategory_name') && is_array($request->input('subcategory_name'))) {
+            $data['subcategory_name'] = $request->input('subcategory_name');
+        }
+
         if ($request->hasFile('main_image')) {
             $data['main_image'] = $request->file('main_image');
         }

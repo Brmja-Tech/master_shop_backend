@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Admin\SubcategoryController as AdminSubcategoryController;
 use App\Http\Controllers\Api\Auth\ForgotController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\SettingsController;
@@ -78,6 +79,11 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
 
 
 
+
 Route::prefix('store-types')->group(function () {
     Route::get('lookup', [StoreTypeController::class, 'lookup']);
 });
+Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);
+
+
+

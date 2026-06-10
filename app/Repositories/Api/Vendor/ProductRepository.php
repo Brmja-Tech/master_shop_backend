@@ -102,6 +102,27 @@ class ProductRepository
             ->findOrFail($subcategoryId);
     }
 
+    public function findStoreTypeSubcategoryByName(int $storeTypeId, array $name): ?Subcategory
+    {
+        return Subcategory::query()
+            ->where('store_type_id', $storeTypeId)
+            ->where(function (Builder $query) use ($name) {
+                if (! empty($name['ar'])) {
+                    $query->orWhere('name->ar', $name['ar']);
+                }
+
+                if (! empty($name['en'])) {
+                    $query->orWhere('name->en', $name['en']);
+                }
+            })
+            ->first();
+    }
+
+    public function createSubcategory(array $data): Subcategory
+    {
+        return Subcategory::create($data);
+    }
+
     public function update(Product $product, array $data): Product
     {
         $product->update($data);
