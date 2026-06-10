@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendor\Auth\RegisterRequest;
 use App\Http\Requests\Vendor\Auth\LoginRequest;
 use App\Services\Api\Auth\VendorAuthService;
+use Illuminate\Http\Request;
 
 class VendorAuthController extends Controller
 {
@@ -36,6 +37,17 @@ class VendorAuthController extends Controller
         $response = $this->vendorAuthService->login(
             $credentials
         );
+
+        return ApiResponse::sendResponse(
+            $response['status'],
+            $response['message'],
+            $response['data']
+        );
+    }
+
+    public function logout(Request $request)
+    {
+        $response = $this->vendorAuthService->logout();
 
         return ApiResponse::sendResponse(
             $response['status'],

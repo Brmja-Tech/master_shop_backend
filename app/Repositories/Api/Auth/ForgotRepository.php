@@ -41,7 +41,7 @@ class ForgotRepository
 
         return [
             'status'  => 200,
-            'message' => 'OTP sent successfully',
+            'message' => __('front.otp-sent'),
             'data'    => [
                 'phone'    => $user->phone,
             ]
@@ -68,14 +68,14 @@ class ForgotRepository
         if (!$otp->status) {
             return [
                 'status'  => 422,
-                'message' => 'Invalid OTP',
+                'message' => __('front.invalid-otp'),
                 'data'    => []
             ];
         }
 
         return [
             'status'  => 200,
-            'message' => 'OTP verified successfully',
+            'message' => __('front.otp-verified-successfully'),
             'data'    => []
         ];
     }
@@ -98,7 +98,7 @@ class ForgotRepository
 
         return [
             'status'  => 200,
-            'message' => 'Password reset successfully',
+            'message' => __('front.password-reset-successful'),
             'data'    => []
         ];
     }

@@ -52,10 +52,11 @@ Route::post('/forgot/reset-password', [ForgotController::class, 'resetPassword']
 
 ## ------------------ VENDOR AUTH ROUTES ------------------ ##
 
-Route::prefix('vendor')->group(function () {
+Route::prefix('vendor')->middleware('setLocale')->group(function () {
     Route::post('register', [VendorAuthController::class, 'register']);
     Route::post('forgot-password', [VendorForgotController::class, 'forgotPassword']);
     Route::post('login',    [VendorAuthController::class, 'login']);
+    Route::post('logout',   [VendorAuthController::class, 'logout'])->middleware('vendor.auth');
     Route::post('verify-otp',      [VendorForgotController::class, 'verifyOtp']);
     Route::post('reset-password',  [VendorForgotController::class, 'resetPassword']);
     Route::post('resend-otp',      [VendorForgotController::class, 'resendOtp']);

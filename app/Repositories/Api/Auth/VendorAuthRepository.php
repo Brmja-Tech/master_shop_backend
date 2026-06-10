@@ -3,6 +3,7 @@
 namespace App\Repositories\Api\Auth;
 
 use App\Models\Vendor;
+use Illuminate\Support\Facades\Auth;
 
 class VendorAuthRepository
 {
@@ -26,5 +27,26 @@ class VendorAuthRepository
         $vendor->update([
             'fcm_token' => $fcmToken,
         ]);
+    }
+
+    public function logout(): array
+    {
+        $vendor = Auth::guard('sanctum')->user();
+
+        if ($vendor) {
+            $vendor->currentAccessToken()?->delete();
+
+            return [
+                'status'  => 200,
+                'message' => __('vendor.logout-successfully'),
+                'data'    => [],
+            ];
+        }
+
+        return [
+            'status'  => 422,
+            'message' => __('vendor.logout-failed'),
+            'data'    => [],
+        ];
     }
 }

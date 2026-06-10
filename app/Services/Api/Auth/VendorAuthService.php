@@ -61,4 +61,9 @@ class VendorAuthService
             ],
         ];
     }
+
+    public function logout(): array
+    {
+        return $this->repository->logout();
+    }
 }
