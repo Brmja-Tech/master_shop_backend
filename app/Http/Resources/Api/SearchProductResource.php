@@ -10,7 +10,6 @@ class SearchProductResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $locale = app()->getLocale();
         $image = $this->whenLoaded('images', fn () => optional($this->images->firstWhere('is_main', true) ?? $this->images->first())->image);
 
         if ($image && ! str_starts_with($image, 'http://') && ! str_starts_with($image, 'https://')) {
@@ -22,11 +21,11 @@ class SearchProductResource extends JsonResource
             'vendor_id' => $this->vendor_id,
             'vendor_name' => $this->whenLoaded('vendor', fn () => $this->resolveVendorName()),
             'store_type_id' => $this->whenLoaded('vendor', fn () => $this->vendor?->store_type_id),
-            'store_type_name' => $this->whenLoaded('vendor', fn () => $this->vendor?->storeType?->getTranslation('name', $locale)),
+            'store_type_name' => $this->whenLoaded('vendor', fn () => $this->vendor?->storeType?->name),
             'subcategory_id' => $this->subcategory_id,
-            'subcategory_name' => $this->whenLoaded('subcategory', fn () => $this->subcategory?->getTranslation('name', $locale)),
-            'name' => $this->getTranslation('name', $locale),
-            'description' => $this->getTranslation('description', $locale),
+            'subcategory_name' => $this->whenLoaded('subcategory', fn () => $this->subcategory?->name),
+            'name' => $this->name,
+            'description' => $this->description,
             'price' => (float) $this->price,
             'discount' => (float) $this->discount,
             'price_after_discount' => $this->price_after_discount,
@@ -58,7 +57,6 @@ class SearchProductResource extends JsonResource
         $locale = app()->getLocale();
 
         return $decoded[$locale]
-            ?? $decoded['en']
             ?? $decoded['ar']
             ?? $storeName;
     }

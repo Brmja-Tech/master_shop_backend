@@ -14,9 +14,7 @@ class SubcategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'array'],
-            'name.ar' => ['required', 'string', 'max:255'],
-            'name.en' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
         ];
     }
 }

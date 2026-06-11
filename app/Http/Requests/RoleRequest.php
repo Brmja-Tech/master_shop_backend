@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use CodeZero\UniqueTranslation\UniqueTranslationRule;
-
 class RoleRequest extends FormRequest
 {
     /**
@@ -23,7 +21,7 @@ class RoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role.*' => ['required','string' , 'max:100' , UniqueTranslationRule::for('roles')->ignore($this->id)],
+            'role.ar' => ['required', 'string', 'max:100'],
             'permession'=>['required' , 'array' , 'min:1']
         ];
     }

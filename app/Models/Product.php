@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
 {
-    use HasTranslations, SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = [
         'vendor_id',
@@ -25,11 +24,6 @@ class Product extends Model
         'unit',
         'price',
         'expiry_date',
-    ];
-
-    public array $translatable = [
-        'name',
-        'description',
     ];
 
     protected $casts = [

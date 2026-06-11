@@ -25,8 +25,7 @@ class RoleRepository
     {
         $role = Role::create([
             'role' => [
-                'ar' => $request->role['ar'],
-                'en' => $request->role['en']
+                'ar' => $request->role['ar']
             ],
             'permession' => json_encode($request->permession)
         ]);
@@ -37,8 +36,7 @@ class RoleRepository
     {
         $role = $role->update([
             'role' => [
-                'ar' => $request->role['ar'],
-                'en' => $request->role['en']
+                'ar' => $request->role['ar']
             ],
             'permession' => json_encode($request->permession)
         ]);

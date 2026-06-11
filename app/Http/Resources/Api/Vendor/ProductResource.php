@@ -9,15 +9,13 @@ class ProductResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $locale = app()->getLocale();
-
         return [
             'id' => $this->id,
             'vendor_id' => $this->vendor_id,
             'subcategory_id' => $this->subcategory_id,
-            'subcategory_name' => $this->whenLoaded('subcategory', fn () => $this->subcategory?->getTranslation('name', $locale)),
-            'name' => $this->getTranslation('name', $locale),
-            'description' => $this->getTranslation('description', $locale),
+            'subcategory_name' => $this->whenLoaded('subcategory', fn () => $this->subcategory?->name),
+            'name' => $this->name,
+            'description' => $this->description,
             'quantity' => $this->quantity,
             'remaining_quantity' => $this->remaining_quantity,
             'price' => (float) $this->price,

@@ -19,7 +19,7 @@ class ProductSeeder extends Seeder
                 'owner_name' => 'Ahmed Restaurant Owner',
                 'phone' => '01000000001',
                 'store_name' => 'Burger House',
-                'store_type_en' => 'Restaurant',
+                'store_type_name' => 'مطعم',
                 'latitude' => 30.044420,
                 'longitude' => 31.235712,
                 'address_description' => 'Restaurant demo address',
@@ -30,7 +30,7 @@ class ProductSeeder extends Seeder
                 'owner_name' => 'Mona Cafe Owner',
                 'phone' => '01000000002',
                 'store_name' => 'Mona Cafe',
-                'store_type_en' => 'Cafe',
+                'store_type_name' => 'كافيه',
                 'latitude' => 30.050000,
                 'longitude' => 31.240000,
                 'address_description' => 'Cafe demo address',
@@ -41,7 +41,7 @@ class ProductSeeder extends Seeder
                 'owner_name' => 'Khaled Market Owner',
                 'phone' => '01000000003',
                 'store_name' => 'Fresh Market',
-                'store_type_en' => 'Supermarket',
+                'store_type_name' => 'سوبر ماركت',
                 'latitude' => 30.060000,
                 'longitude' => 31.250000,
                 'address_description' => 'Supermarket demo address',
@@ -52,7 +52,7 @@ class ProductSeeder extends Seeder
                 'owner_name' => 'Sara Pharmacy Owner',
                 'phone' => '01000000004',
                 'store_name' => 'Care Pharmacy',
-                'store_type_en' => 'Pharmacy',
+                'store_type_name' => 'صيدلية',
                 'latitude' => 30.070000,
                 'longitude' => 31.260000,
                 'address_description' => 'Pharmacy demo address',
@@ -63,7 +63,7 @@ class ProductSeeder extends Seeder
 
         foreach ($vendorsData as $vendorData) {
             $storeType = StoreType::query()
-                ->where('name->en', $vendorData['store_type_en'])
+                ->where('name', $vendorData['store_type_name'])
                 ->first();
 
             if (! $storeType) {
@@ -97,13 +97,13 @@ class ProductSeeder extends Seeder
                 continue;
             }
 
-            $products = $this->productsForStoreType($vendorData['store_type_en']);
+            $products = $this->productsForStoreType($vendorData['store_type_name']);
 
             foreach ($products as $item) {
                 $product = Product::query()->firstOrCreate(
                     [
                         'vendor_id' => $vendor->id,
-                        'name->en' => $item['name']['en'],
+                        'name' => $item['name'],
                     ],
                     [
                         'vendor_id' => $vendor->id,
@@ -139,13 +139,13 @@ class ProductSeeder extends Seeder
         }
     }
 
-    private function productsForStoreType(string $storeTypeEn): array
+    private function productsForStoreType(string $storeTypeName): array
     {
-        return match ($storeTypeEn) {
-            'Restaurant' => [
+        return match ($storeTypeName) {
+            'مطعم' => [
                 [
-                    'name' => ['ar' => 'برجر لحم', 'en' => 'Beef Burger'],
-                    'description' => ['ar' => 'برجر لحم مشوي مع الجبن', 'en' => 'Grilled beef burger with cheese'],
+                    'name' => 'برجر لحم',
+                    'description' => 'برجر لحم مشوي مع الجبن',
                     'quantity' => 30,
                     'remaining_quantity' => 24,
                     'discount' => 10,
@@ -160,8 +160,8 @@ class ProductSeeder extends Seeder
                     ],
                 ],
                 [
-                    'name' => ['ar' => 'سلطة سيزر', 'en' => 'Caesar Salad'],
-                    'description' => ['ar' => 'سلطة سيزر بالدجاج', 'en' => 'Caesar salad with chicken'],
+                    'name' => 'سلطة سيزر',
+                    'description' => 'سلطة سيزر بالدجاج',
                     'quantity' => 20,
                     'remaining_quantity' => 0,
                     'discount' => 0,
@@ -176,11 +176,10 @@ class ProductSeeder extends Seeder
                     ],
                 ],
             ],
-
-            'Cafe' => [
+            'كافيه' => [
                 [
-                    'name' => ['ar' => 'عصير مانجو', 'en' => 'Mango Juice'],
-                    'description' => ['ar' => 'عصير مانجو طبيعي طازج', 'en' => 'Fresh natural mango juice'],
+                    'name' => 'عصير مانجو',
+                    'description' => 'عصير مانجو طبيعي طازج',
                     'quantity' => 40,
                     'remaining_quantity' => 18,
                     'discount' => 5,
@@ -194,8 +193,8 @@ class ProductSeeder extends Seeder
                     ],
                 ],
                 [
-                    'name' => ['ar' => 'قهوة تركي', 'en' => 'Turkish Coffee'],
-                    'description' => ['ar' => 'قهوة تركي ساخنة', 'en' => 'Hot Turkish coffee'],
+                    'name' => 'قهوة تركي',
+                    'description' => 'قهوة تركي ساخنة',
                     'quantity' => 50,
                     'remaining_quantity' => 35,
                     'discount' => 0,
@@ -209,11 +208,10 @@ class ProductSeeder extends Seeder
                     ],
                 ],
             ],
-
-            'Supermarket' => [
+            'سوبر ماركت' => [
                 [
-                    'name' => ['ar' => 'عيش بلدي', 'en' => 'Baladi Bread'],
-                    'description' => ['ar' => 'عيش بلدي طازج', 'en' => 'Fresh baladi bread'],
+                    'name' => 'عيش بلدي',
+                    'description' => 'عيش بلدي طازج',
                     'quantity' => 100,
                     'remaining_quantity' => 80,
                     'discount' => 0,
@@ -227,8 +225,8 @@ class ProductSeeder extends Seeder
                     ],
                 ],
                 [
-                    'name' => ['ar' => 'لبن كامل الدسم', 'en' => 'Full Cream Milk'],
-                    'description' => ['ar' => 'لبن كامل الدسم 1 لتر', 'en' => 'Full cream milk 1 liter'],
+                    'name' => 'لبن كامل الدسم',
+                    'description' => 'لبن كامل الدسم 1 لتر',
                     'quantity' => 60,
                     'remaining_quantity' => 42,
                     'discount' => 5,
@@ -242,11 +240,10 @@ class ProductSeeder extends Seeder
                     ],
                 ],
             ],
-
-            'Pharmacy' => [
+            'صيدلية' => [
                 [
-                    'name' => ['ar' => 'كريم مرطب', 'en' => 'Moisturizing Cream'],
-                    'description' => ['ar' => 'كريم مرطب للبشرة', 'en' => 'Skin moisturizing cream'],
+                    'name' => 'كريم مرطب',
+                    'description' => 'كريم مرطب للبشرة',
                     'quantity' => 25,
                     'remaining_quantity' => 20,
                     'discount' => 15,
@@ -260,8 +257,8 @@ class ProductSeeder extends Seeder
                     ],
                 ],
                 [
-                    'name' => ['ar' => 'فيتامين سي', 'en' => 'Vitamin C'],
-                    'description' => ['ar' => 'أقراص فيتامين سي', 'en' => 'Vitamin C tablets'],
+                    'name' => 'فيتامين سي',
+                    'description' => 'أقراص فيتامين سي',
                     'quantity' => 35,
                     'remaining_quantity' => 30,
                     'discount' => 10,
@@ -275,7 +272,6 @@ class ProductSeeder extends Seeder
                     ],
                 ],
             ],
-
             default => [],
         };
     }

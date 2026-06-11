@@ -25,18 +25,15 @@ class ProductRepository
             ->with(['subcategory', 'images', 'vendor.storeType'])
             ->when($search, function (Builder $query) use ($search) {
                 $query->where(function (Builder $query) use ($search) {
-                    $query->where('name->ar', 'like', '%' . $search . '%')
-                        ->orWhere('name->en', 'like', '%' . $search . '%')
+                    $query->where('name', 'like', '%' . $search . '%')
                         ->orWhereHas('vendor', function (Builder $vendorQuery) use ($search) {
                             $vendorQuery->where('store_name', 'like', '%' . $search . '%')
                                 ->orWhereHas('storeType', function (Builder $storeTypeQuery) use ($search) {
-                                    $storeTypeQuery->where('name->ar', 'like', '%' . $search . '%')
-                                        ->orWhere('name->en', 'like', '%' . $search . '%');
+                                    $storeTypeQuery->where('name', 'like', '%' . $search . '%');
                                 });
                         })
                         ->orWhereHas('subcategory', function (Builder $subcategoryQuery) use ($search) {
-                            $subcategoryQuery->where('name->ar', 'like', '%' . $search . '%')
-                                ->orWhere('name->en', 'like', '%' . $search . '%');
+                            $subcategoryQuery->where('name', 'like', '%' . $search . '%');
                         });
                 });
             })
@@ -70,21 +67,13 @@ class ProductRepository
 
     public function duplicateExists(
         int $vendorId,
-        array $name,
+        string $name,
         ?int $ignoreId = null
     ): bool {
         return Product::query()
             ->where('vendor_id', $vendorId)
             ->when($ignoreId, fn (Builder $query) => $query->where('id', '!=', $ignoreId))
-            ->where(function (Builder $query) use ($name) {
-                if (! empty($name['ar'])) {
-                    $query->orWhere('name->ar', $name['ar']);
-                }
-
-                if (! empty($name['en'])) {
-                    $query->orWhere('name->en', $name['en']);
-                }
-            })
+            ->where('name', $name)
             ->exists();
     }
 
@@ -121,19 +110,11 @@ class ProductRepository
             ->findOrFail($subcategoryId);
     }
 
-    public function findStoreTypeSubcategoryByName(int $storeTypeId, array $name): ?Subcategory
+    public function findStoreTypeSubcategoryByName(int $storeTypeId, string $name): ?Subcategory
     {
         return Subcategory::query()
             ->where('store_type_id', $storeTypeId)
-            ->where(function (Builder $query) use ($name) {
-                if (! empty($name['ar'])) {
-                    $query->orWhere('name->ar', $name['ar']);
-                }
-
-                if (! empty($name['en'])) {
-                    $query->orWhere('name->en', $name['en']);
-                }
-            })
+            ->where('name', $name)
             ->first();
     }
 

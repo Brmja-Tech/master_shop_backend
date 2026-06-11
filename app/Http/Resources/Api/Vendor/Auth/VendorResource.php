@@ -16,7 +16,7 @@ class VendorResource extends JsonResource
             'store_name' => $this->store_name,
             'description' => $this->description,
             'store_type_id' => $this->store_type_id,
-            'store_type_name' => $this->whenLoaded('storeType', fn () => $this->storeType?->getTranslation('name', app()->getLocale())),
+            'store_type_name' => $this->whenLoaded('storeType', fn () => $this->storeType?->name),
             'logo' => $this->logo ? url($this->logo) : null,
             'banner' => $this->banner ? url($this->banner) : null,
             'delivery_fee' => (float) $this->delivery_fee,

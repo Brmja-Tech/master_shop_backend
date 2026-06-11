@@ -11,31 +11,31 @@ class SubcategorySeeder extends Seeder
     public function run(): void
     {
         $subcategoriesByStoreType = [
-            'Supermarket' => [
-                ['ar' => 'مخبوزات', 'en' => 'Bakery'],
-                ['ar' => 'ألبان', 'en' => 'Dairy'],
-                ['ar' => 'خضروات وفاكهة', 'en' => 'Fruits & Vegetables'],
+            'سوبر ماركت' => [
+                'مخبوزات',
+                'ألبان',
+                'خضروات وفاكهة',
             ],
-            'Pharmacy' => [
-                ['ar' => 'مسكنات', 'en' => 'Pain Relief'],
-                ['ar' => 'عناية بالبشرة', 'en' => 'Skin Care'],
-                ['ar' => 'فيتامينات', 'en' => 'Vitamins'],
+            'صيدلية' => [
+                'مسكنات',
+                'عناية بالبشرة',
+                'فيتامينات',
             ],
-            'Restaurant' => [
-                ['ar' => 'وجبات', 'en' => 'Meals'],
-                ['ar' => 'مقبلات', 'en' => 'Appetizers'],
-                ['ar' => 'مشروبات', 'en' => 'Drinks'],
+            'مطعم' => [
+                'وجبات',
+                'مقبلات',
+                'مشروبات',
             ],
-            'Cafe' => [
-                ['ar' => 'قهوة', 'en' => 'Coffee'],
-                ['ar' => 'حلويات', 'en' => 'Desserts'],
-                ['ar' => 'عصائر', 'en' => 'Juices'],
+            'كافيه' => [
+                'قهوة',
+                'حلويات',
+                'عصائر',
             ],
         ];
 
-        foreach ($subcategoriesByStoreType as $storeTypeEn => $subcategories) {
+        foreach ($subcategoriesByStoreType as $storeTypeName => $subcategories) {
             $storeType = StoreType::query()
-                ->where('name->en', $storeTypeEn)
+                ->where('name', $storeTypeName)
                 ->first();
 
             if (! $storeType) {
@@ -46,7 +46,7 @@ class SubcategorySeeder extends Seeder
                 Subcategory::query()->firstOrCreate(
                     [
                         'store_type_id' => $storeType->id,
-                        'name->en' => $subcategoryName['en'],
+                        'name' => $subcategoryName,
                     ],
                     [
                         'store_type_id' => $storeType->id,

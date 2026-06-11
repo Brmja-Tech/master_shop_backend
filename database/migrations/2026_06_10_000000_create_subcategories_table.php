@@ -17,7 +17,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('vendors')
                 ->nullOnDelete();
-            $table->json('name');
+            $table->string('name');
             $table->timestamps();
         });
     }

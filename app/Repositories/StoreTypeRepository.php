@@ -34,14 +34,12 @@ class StoreTypeRepository
     }
     public function lookup()
     {
-        $locale = app()->getLocale();
-
         return StoreType::query()
             ->whereHas('vendors')
             ->get(['id', 'name', 'image'])
             ->map(fn (StoreType $storeType) => [
                 'id' => $storeType->id,
-                'name' => $storeType->getTranslation('name', $locale),
+                'name' => $storeType->name,
                 'image' => $storeType->image ? url($storeType->image) : null,
             ])
             ->sortBy('name')

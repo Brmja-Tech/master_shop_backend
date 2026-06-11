@@ -47,7 +47,6 @@ class VendorListResource extends JsonResource
         $locale = app()->getLocale();
 
         return $decoded[$locale]
-            ?? $decoded['en']
             ?? $decoded['ar']
             ?? $this->store_name;
     }

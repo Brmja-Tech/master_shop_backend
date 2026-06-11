@@ -13,38 +13,26 @@ class StoreTypeSeeder extends Seeder
 
         $storeTypes = [
             [
-                'name' => [
-                    'ar' => 'سوبر ماركت',
-                    'en' => 'Supermarket',
-                ],
+                'name' => 'سوبر ماركت',
                 'image' => $defaultImage,
             ],
             [
-                'name' => [
-                    'ar' => 'صيدلية',
-                    'en' => 'Pharmacy',
-                ],
+                'name' => 'صيدلية',
                 'image' => $defaultImage,
             ],
             [
-                'name' => [
-                    'ar' => 'مطعم',
-                    'en' => 'Restaurant',
-                ],
+                'name' => 'مطعم',
                 'image' => $defaultImage,
             ],
             [
-                'name' => [
-                    'ar' => 'كافيه',
-                    'en' => 'Cafe',
-                ],
+                'name' => 'كافيه',
                 'image' => $defaultImage,
             ],
         ];
 
         foreach ($storeTypes as $storeType) {
             StoreType::query()->updateOrCreate(
-                ['name->en' => $storeType['name']['en']],
+                ['name' => $storeType['name']],
                 [
                     'name' => $storeType['name'],
                     'image' => $storeType['image'],

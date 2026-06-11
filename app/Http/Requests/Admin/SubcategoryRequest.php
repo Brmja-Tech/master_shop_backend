@@ -24,9 +24,7 @@ class SubcategoryRequest extends FormRequest
 
         return [
             'store_type_id' => $storeTypeRule,
-            'name' => ['required', 'array'],
-            'name.ar' => ['required', 'string', 'max:255'],
-            'name.en' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
         ];
     }
 }

@@ -41,6 +41,18 @@ class ProductRequest extends FormRequest
             $data['expiry_date'] = $value === '' ? null : $value;
         }
 
+        foreach (['name', 'description'] as $field) {
+            if ($this->has($field)) {
+                $value = trim((string) $this->input($field));
+                $data[$field] = $value === '' ? null : $value;
+            }
+        }
+
+        if ($this->has('subcategory_name') && is_string($this->input('subcategory_name'))) {
+            $value = trim((string) $this->input('subcategory_name'));
+            $data['subcategory_name'] = $value === '' ? null : $value;
+        }
+
         if ($this->has('is_available')) {
             $data['is_available'] = filter_var($this->input('is_available'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         }
@@ -62,25 +74,19 @@ class ProductRequest extends FormRequest
             ? ['sometimes', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120']
             : ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'];
         $requiredOrSometimes = $isUpdate ? ['sometimes'] : ['required'];
-        $requiredArrayOrSometimes = $isUpdate ? ['sometimes', 'array'] : ['required', 'array'];
+        $requiredStringOrSometimes = $isUpdate ? ['sometimes', 'string'] : ['required', 'string'];
         $subcategoryIdRule = $isUpdate
             ? ['sometimes', 'nullable', 'integer', 'exists:subcategories,id']
             : ['nullable', 'integer', 'exists:subcategories,id', 'required_without:subcategory_name'];
         $subcategoryNameRule = $isUpdate
-            ? ['sometimes', 'array']
-            : ['nullable', 'array', 'required_without:subcategory_id'];
+            ? ['sometimes', 'string', 'max:255']
+            : ['nullable', 'string', 'max:255', 'required_without:subcategory_id'];
 
         return [
-            'name' => $requiredArrayOrSometimes,
-            'name.ar' => array_merge($requiredOrSometimes, ['string', 'max:255']),
-            'name.en' => array_merge($requiredOrSometimes, ['string', 'max:255']),
-            'description' => $requiredArrayOrSometimes,
-            'description.ar' => array_merge($requiredOrSometimes, ['string']),
-            'description.en' => array_merge($requiredOrSometimes, ['string']),
+            'name' => array_merge($requiredStringOrSometimes, ['max:255']),
+            'description' => $requiredStringOrSometimes,
             'subcategory_id' => $subcategoryIdRule,
             'subcategory_name' => $subcategoryNameRule,
-            'subcategory_name.ar' => ['required_with:subcategory_name', 'string', 'max:255'],
-            'subcategory_name.en' => ['required_with:subcategory_name', 'string', 'max:255'],
             'quantity' => array_merge($requiredOrSometimes, ['integer', 'min:0']),
             'remaining_quantity' => ['nullable', 'integer', 'min:0'],
             'discount' => ['nullable', 'numeric', 'min:0', 'max:100'],

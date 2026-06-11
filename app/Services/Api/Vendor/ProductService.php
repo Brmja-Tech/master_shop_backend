@@ -40,6 +40,7 @@ class ProductService
 
     public function store(Vendor $vendor, array $data)
     {
+        $data = $this->normalizeArabicPayload($data);
         $data['subcategory_id'] = $this->resolveSubcategoryId($vendor, $data);
 
         if ($this->repository->duplicateExists($vendor->id, $data['name'])) {
@@ -84,13 +85,13 @@ class ProductService
     public function update(Vendor $vendor, int $id, array $data)
     {
         $product = $this->repository->findVendorProduct($id, $vendor->id);
+        $data = $this->normalizeArabicPayload($data);
 
         $subcategoryId = $this->resolveSubcategoryId($vendor, $data, $product->subcategory_id);
-        $name = $data['name'] ?? $product->getTranslations('name');
-        $currentName = $product->getTranslations('name');
+        $name = $data['name'] ?? $product->name;
+        $currentName = $product->name;
         $subcategoryChanged = $subcategoryId !== $product->subcategory_id;
-        $nameChanged = ($name['ar'] ?? null) !== ($currentName['ar'] ?? null)
-            || ($name['en'] ?? null) !== ($currentName['en'] ?? null);
+        $nameChanged = $name !== $currentName;
         $data['subcategory_id'] = $subcategoryId;
 
         if (($subcategoryChanged || $nameChanged)
@@ -215,5 +216,22 @@ class ProductService
         }
 
         return $fallbackId ?? 0;
+    }
+
+    private function normalizeArabicPayload(array $data): array
+    {
+        foreach (['name', 'description', 'subcategory_name'] as $field) {
+            if (! array_key_exists($field, $data) || $data[$field] === null) {
+                continue;
+            }
+
+            if (is_array($data[$field])) {
+                $data[$field] = trim((string) ($data[$field]['ar'] ?? $data[$field]['name'] ?? ''));
+            } elseif (is_string($data[$field])) {
+                $data[$field] = trim($data[$field]);
+            }
+        }
+
+        return $data;
     }
 }

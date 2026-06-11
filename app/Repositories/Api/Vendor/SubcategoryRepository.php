@@ -13,7 +13,7 @@ class SubcategoryRepository
             'store_type_id' => $subcategory->store_type_id,
             'vendor_id' => $subcategory->vendor_id,
             'is_vendor_created' => $subcategory->vendor_id !== null,
-            'name' => $subcategory->getTranslation('name', app()->getLocale()),
+            'name' => $subcategory->name,
         ];
     }
 
@@ -34,7 +34,7 @@ class SubcategoryRepository
             ->get(['id', 'name'])
             ->map(fn (Subcategory $subcategory) => [
                 'id' => $subcategory->id,
-                'name' => $subcategory->getTranslation('name', app()->getLocale()),
+                'name' => $subcategory->name,
             ])
             ->sortBy('name')
             ->values();
