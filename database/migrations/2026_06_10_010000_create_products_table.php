@@ -20,7 +20,6 @@ return new class extends Migration
                 ->restrictOnDelete();
             $table->json('name');
             $table->json('description');
-            $table->json('brand')->nullable();
             $table->unsignedInteger('quantity')->default(0);
             $table->unsignedInteger('remaining_quantity')->default(0);
             $table->decimal('discount', 10, 2)->default(0);

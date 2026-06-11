@@ -52,7 +52,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Vendor
         'vendor.auth' => \App\Http\Middleware\VendorAuthMiddleware::class,
-           'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'user.auth' => \App\Http\Middleware\UserAuthMiddleware::class,
+        'user.guest' => \App\Http\Middleware\UserGuestMiddleware::class,
 
     ]);
 })

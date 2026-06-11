@@ -20,6 +20,7 @@ class VendorResource extends JsonResource
             'logo' => $this->logo ? url($this->logo) : null,
             'banner' => $this->banner ? url($this->banner) : null,
             'delivery_fee' => (float) $this->delivery_fee,
+            'rate' => (float) $this->rate,
             'is_active' => $this->is_active,
             'work_from' => $this->work_from,
             'work_to' => $this->work_to,

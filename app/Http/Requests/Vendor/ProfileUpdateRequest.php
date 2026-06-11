@@ -21,7 +21,7 @@ class ProfileUpdateRequest extends FormRequest
             }
         }
 
-        foreach (['delivery_fee', 'store_type_id'] as $field) {
+        foreach (['delivery_fee', 'rate', 'store_type_id'] as $field) {
             if ($this->has($field)) {
                 $value = trim((string) $this->input($field));
                 $data[$field] = $value === '' ? null : $value;
@@ -48,6 +48,7 @@ class ProfileUpdateRequest extends FormRequest
             'description' => ['sometimes', 'nullable', 'string'],
             'store_type_id' => ['sometimes', 'integer', 'exists:store_types,id'],
             'delivery_fee' => ['sometimes', 'numeric', 'min:0'],
+            'rate' => ['sometimes', 'numeric', 'min:0', 'max:5'],
             'logo' => ['sometimes', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'banner' => ['sometimes', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'work_from' => ['sometimes', 'nullable', 'date_format:H:i'],

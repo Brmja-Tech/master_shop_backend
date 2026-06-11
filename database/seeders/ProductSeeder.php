@@ -31,6 +31,7 @@ class ProductSeeder extends Seeder
             'longitude' => 31.235712,
             'address_description' => 'Demo vendor address',
             'delivery_fee' => 20,
+            'rate' => 4.5,
             'is_active' => true,
             'is_verified' => true,
         ]);
@@ -51,7 +52,6 @@ class ProductSeeder extends Seeder
             [
                 'name' => ['ar' => 'برجر لحم', 'en' => 'Beef Burger'],
                 'description' => ['ar' => 'برجر لحم مشوي مع الجبن', 'en' => 'Grilled beef burger with cheese'],
-                'brand' => ['ar' => 'مطعم البيت', 'en' => 'Home Restaurant'],
                 'quantity' => 30,
                 'remaining_quantity' => 24,
                 'discount' => 10,
@@ -68,7 +68,6 @@ class ProductSeeder extends Seeder
             [
                 'name' => ['ar' => 'عصير مانجو', 'en' => 'Mango Juice'],
                 'description' => ['ar' => 'عصير مانجو طبيعي طازج', 'en' => 'Fresh natural mango juice'],
-                'brand' => ['ar' => 'فريش', 'en' => 'Fresh'],
                 'quantity' => 40,
                 'remaining_quantity' => 18,
                 'discount' => 5,
@@ -84,7 +83,6 @@ class ProductSeeder extends Seeder
             [
                 'name' => ['ar' => 'سلطة سيزر', 'en' => 'Caesar Salad'],
                 'description' => ['ar' => 'سلطة سيزر بالدجاج', 'en' => 'Caesar salad with chicken'],
-                'brand' => ['ar' => 'جرين', 'en' => 'Green'],
                 'quantity' => 20,
                 'remaining_quantity' => 0,
                 'discount' => 0,
@@ -111,7 +109,6 @@ class ProductSeeder extends Seeder
                     'subcategory_id' => $subcategory->id,
                     'name' => $item['name'],
                     'description' => $item['description'],
-                    'brand' => $item['brand'],
                     'quantity' => $item['quantity'],
                     'remaining_quantity' => $item['remaining_quantity'],
                     'discount' => $item['discount'],

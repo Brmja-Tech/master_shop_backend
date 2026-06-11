@@ -26,6 +26,7 @@ class Vendor extends Authenticatable
         'logo',
         'banner',
         'delivery_fee',
+        'rate',
         'is_active',
         'is_store_open',
         'is_accepting_orders',
@@ -49,6 +50,7 @@ class Vendor extends Authenticatable
         'is_accepting_orders' => 'boolean',
         'is_verified' => 'boolean',
         'delivery_fee' => 'decimal:2',
+        'rate' => 'decimal:2',
     ];
 
     public function storeType()

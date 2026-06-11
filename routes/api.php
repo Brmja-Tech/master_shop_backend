@@ -80,10 +80,7 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
 
 
 
-Route::prefix('store-types')->group(function () {
-    Route::get('lookup', [StoreTypeController::class, 'lookup']);
+Route::prefix('user')->middleware('user.auth')->group(function () {
+    Route::get('store-types/lookup', [StoreTypeController::class, 'lookup']);
 });
 Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);
-
-
-

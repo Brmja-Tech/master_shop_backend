@@ -37,10 +37,12 @@ class StoreTypeRepository
         $locale = app()->getLocale();
 
         return StoreType::query()
-            ->get(['id', 'name'])
+            ->whereHas('vendors')
+            ->get(['id', 'name', 'image'])
             ->map(fn (StoreType $storeType) => [
                 'id' => $storeType->id,
                 'name' => $storeType->getTranslation('name', $locale),
+                'image' => $storeType->image ? url($storeType->image) : null,
             ])
             ->sortBy('name')
             ->values();

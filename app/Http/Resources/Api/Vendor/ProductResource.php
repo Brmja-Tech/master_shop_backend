@@ -18,7 +18,6 @@ class ProductResource extends JsonResource
             'subcategory_name' => $this->whenLoaded('subcategory', fn () => $this->subcategory?->getTranslation('name', $locale)),
             'name' => $this->getTranslation('name', $locale),
             'description' => $this->getTranslation('description', $locale),
-            'brand' => $this->brand ? $this->getTranslation('brand', $locale) : null,
             'quantity' => $this->quantity,
             'remaining_quantity' => $this->remaining_quantity,
             'price' => (float) $this->price,

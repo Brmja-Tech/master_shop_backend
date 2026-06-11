@@ -3,15 +3,14 @@
 namespace App\Services\Dashboard;
 
 use App\Repositories\StoreTypeRepository;
+use App\Utils\ImageManger;
 
 class StoreTypeService
 {
-    protected StoreTypeRepository $repository;
-
-    public function __construct(StoreTypeRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(
+        protected StoreTypeRepository $repository,
+        protected ImageManger $imageManger
+    ) {}
 
     public function index()
     {
@@ -20,6 +19,10 @@ class StoreTypeService
 
     public function store(array $data)
     {
+        if (isset($data['image'])) {
+            $data['image'] = $this->imageManger->uploadImage('/uploads/store-types', $data['image']);
+        }
+
         return $this->repository->create($data);
     }
 
@@ -32,6 +35,14 @@ class StoreTypeService
     {
         $storeType = $this->repository->find($id);
 
+        if (isset($data['image'])) {
+            if (! empty($storeType->image)) {
+                $this->imageManger->deleteImage($storeType->image);
+            }
+
+            $data['image'] = $this->imageManger->uploadImage('/uploads/store-types', $data['image']);
+        }
+
         return $this->repository->update($storeType, $data);
     }
 
@@ -39,10 +50,15 @@ class StoreTypeService
     {
         $storeType = $this->repository->find($id);
 
+        if (! empty($storeType->image)) {
+            $this->imageManger->deleteImage($storeType->image);
+        }
+
         return $this->repository->delete($storeType);
     }
+
     public function lookup()
-{
-    return $this->repository->lookup();
-}
+    {
+        return $this->repository->lookup();
+    }
 }

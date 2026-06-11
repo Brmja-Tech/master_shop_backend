@@ -9,29 +9,47 @@ class StoreTypeSeeder extends Seeder
 {
     public function run(): void
     {
+        $defaultImage = 'uploads/images/logo.png';
+
         $storeTypes = [
             [
-                'ar' => 'سوبر ماركت',
-                'en' => 'Supermarket',
+                'name' => [
+                    'ar' => 'سوبر ماركت',
+                    'en' => 'Supermarket',
+                ],
+                'image' => $defaultImage,
             ],
             [
-                'ar' => 'صيدلية',
-                'en' => 'Pharmacy',
+                'name' => [
+                    'ar' => 'صيدلية',
+                    'en' => 'Pharmacy',
+                ],
+                'image' => $defaultImage,
             ],
             [
-                'ar' => 'مطعم',
-                'en' => 'Restaurant',
+                'name' => [
+                    'ar' => 'مطعم',
+                    'en' => 'Restaurant',
+                ],
+                'image' => $defaultImage,
             ],
             [
-                'ar' => 'كافيه',
-                'en' => 'Cafe',
+                'name' => [
+                    'ar' => 'كافيه',
+                    'en' => 'Cafe',
+                ],
+                'image' => $defaultImage,
             ],
         ];
 
         foreach ($storeTypes as $storeType) {
-            StoreType::query()->create([
-                'name' => $storeType,
-            ]);
+            StoreType::query()->updateOrCreate(
+                ['name->en' => $storeType['name']['en']],
+                [
+                    'name' => $storeType['name'],
+                    'image' => $storeType['image'],
+                ]
+            );
         }
     }
 }

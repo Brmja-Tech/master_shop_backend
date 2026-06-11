@@ -18,7 +18,6 @@ class Product extends Model
         'subcategory_id',
         'name',
         'description',
-        'brand',
         'quantity',
         'remaining_quantity',
         'discount',
@@ -31,7 +30,6 @@ class Product extends Model
     public array $translatable = [
         'name',
         'description',
-        'brand',
     ];
 
     protected $casts = [

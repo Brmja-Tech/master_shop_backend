@@ -22,7 +22,6 @@ class AvailableProductResource extends JsonResource
             'subcategory_name' => $this->whenLoaded('subcategory', fn () => $this->subcategory?->getTranslation('name', $locale)),
             'name' => $this->getTranslation('name', $locale),
             'description' => $this->getTranslation('description', $locale),
-            'brand' => $this->brand ? $this->getTranslation('brand', $locale) : null,
             'price' => (float) $this->price,
             'discount' => (float) $this->discount,
             'price_after_discount' => $this->price_after_discount,

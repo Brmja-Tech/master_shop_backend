@@ -106,7 +106,7 @@ class ProductController extends Controller
             $data['delete_image_ids'] = $request->input('delete_image_ids');
         }
 
-        foreach (['name', 'description', 'brand'] as $field) {
+        foreach (['name', 'description'] as $field) {
             if ($request->has($field) && is_array($request->input($field))) {
                 $data[$field] = $request->input($field);
             }
