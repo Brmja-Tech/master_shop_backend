@@ -209,6 +209,7 @@ return [
     'user-registered-successfully'                  => 'User registered successfully',
     'something-filed'                               => 'Something failed',
     'otp-not-verified'                              => 'OTP not verified',
+    'location-updated-successfully'                 => 'Location updated successfully',
     '' => '',
     '' => '',
     '' => '',

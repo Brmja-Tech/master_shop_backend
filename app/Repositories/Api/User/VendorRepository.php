@@ -4,6 +4,7 @@ namespace App\Repositories\Api\User;
 
 use App\Models\Vendor;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 
 class VendorRepository
 {
@@ -15,6 +16,53 @@ class VendorRepository
             ->orderByDesc('rate')
             ->orderByDesc('id')
             ->paginate($perPage, ['id', 'store_name', 'logo', 'rate', 'is_active', 'is_verified'])
+            ->appends(request()->query());
+    }
+
+    public function getNearbyPaginated(
+        float $latitude,
+        float $longitude,
+        int $perPage,
+        string $sortDirection = 'asc'
+    ): LengthAwarePaginator {
+        $distanceExpression = '(6371000 * ACOS(
+            COS(RADIANS(?)) *
+            COS(RADIANS(latitude)) *
+            COS(RADIANS(longitude) - RADIANS(?)) +
+            SIN(RADIANS(?)) *
+            SIN(RADIANS(latitude))
+        ))';
+
+        $sortDirection = strtolower($sortDirection) === 'desc' ? 'desc' : 'asc';
+
+        return Vendor::query()
+            ->where('is_active', true)
+            ->where('is_verified', true)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->withMax([
+                'products as max_discount' => function (Builder $query) {
+                    $query->where('is_available', true)
+                        ->where('remaining_quantity', '>', 0);
+                },
+            ], 'discount')
+            ->select([
+                'id',
+                'store_name',
+                'logo',
+                'rate',
+                'delivery_fee',
+                'latitude',
+                'longitude',
+            ])
+            ->selectRaw(
+                $distanceExpression . ' as distance_in_meters',
+                [$latitude, $longitude, $latitude]
+            )
+            ->orderBy('distance_in_meters', $sortDirection)
+            ->orderByDesc('rate')
+            ->orderByDesc('id')
+            ->paginate($perPage)
             ->appends(request()->query());
     }
 }

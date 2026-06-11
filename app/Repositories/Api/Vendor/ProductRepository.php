@@ -11,14 +11,33 @@ class ProductRepository
 {
     private array $relations = ['subcategory', 'images'];
 
-    public function getPublic(?string $search = null)
+    public function getPublic()
     {
         return Product::query()
             ->with($this->relations)
+            ->latest()
+            ->get();
+    }
+
+    public function search(?string $search)
+    {
+        return Product::query()
+            ->with(['subcategory', 'images', 'vendor.storeType'])
             ->when($search, function (Builder $query) use ($search) {
                 $query->where(function (Builder $query) use ($search) {
                     $query->where('name->ar', 'like', '%' . $search . '%')
-                        ->orWhere('name->en', 'like', '%' . $search . '%');
+                        ->orWhere('name->en', 'like', '%' . $search . '%')
+                        ->orWhereHas('vendor', function (Builder $vendorQuery) use ($search) {
+                            $vendorQuery->where('store_name', 'like', '%' . $search . '%')
+                                ->orWhereHas('storeType', function (Builder $storeTypeQuery) use ($search) {
+                                    $storeTypeQuery->where('name->ar', 'like', '%' . $search . '%')
+                                        ->orWhere('name->en', 'like', '%' . $search . '%');
+                                });
+                        })
+                        ->orWhereHas('subcategory', function (Builder $subcategoryQuery) use ($search) {
+                            $subcategoryQuery->where('name->ar', 'like', '%' . $search . '%')
+                                ->orWhere('name->en', 'like', '%' . $search . '%');
+                        });
                 });
             })
             ->latest()

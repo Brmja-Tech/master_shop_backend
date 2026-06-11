@@ -213,4 +213,20 @@ class AuthRepository
             'data'    => []
         ];
     } // End logout Method
+
+    public function updateLocation(User $user, array $data): array
+    {
+        $user->update([
+            'latitude' => (float) $data['latitude'],
+            'longitude' => (float) $data['longitude'],
+        ]);
+
+        return [
+            'status' => 200,
+            'message' => __('front.location-updated-successfully'),
+            'data' => [
+                'user' => UserResource::make($user->fresh()),
+            ],
+        ];
+    } // End updateLocation Method
 }

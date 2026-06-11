@@ -66,4 +66,9 @@ class AuthService
     {
         return $this->authRepository->logout($guard);
     } //End logout Method
+
+    public function updateLocation(User $user, array $data)
+    {
+        return $this->authRepository->updateLocation($user, $data);
+    } //End updateLocation Method
 }

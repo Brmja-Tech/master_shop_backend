@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\SubcategoryController as AdminSubcategoryController;
 use App\Http\Controllers\Api\Auth\ForgotController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\SettingsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Vendor\Auth\VendorAuthController;
@@ -33,6 +34,7 @@ Route::get('/countries',                            [LocationController::class, 
 Route::get('/countries/{country_id}/governorates',  [LocationController::class, 'governorates']);
 Route::get('/products',                             [ProductController::class, 'publicIndex']);
 Route::get('/products/available',                   [ProductController::class, 'available']);
+Route::get('/search',                               [SearchController::class, 'index']);
 ## ================== LOOKUPS (Mobile) ================== ##
 
 
@@ -83,6 +85,8 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
 
 Route::prefix('user')->middleware('user.auth')->group(function () {
     Route::get('store-types/lookup', [StoreTypeController::class, 'lookup']);
+    Route::post('location', [AuthController::class, 'updateLocation']);
+    Route::get('vendors', [UserVendorController::class, 'index']);
     Route::get('vendors/top-rated', [UserVendorController::class, 'topRated']);
 });
 Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);

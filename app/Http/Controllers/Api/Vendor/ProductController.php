@@ -27,7 +27,7 @@ class ProductController extends Controller
         return ApiResponse::sendResponse(
             200,
             __('product.public_list'),
-            $this->service->publicIndex(request('search'))
+            $this->service->publicIndex()
         );
     }
 

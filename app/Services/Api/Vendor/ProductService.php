@@ -24,10 +24,10 @@ class ProductService
         );
     }
 
-    public function publicIndex(?string $search = null)
+    public function publicIndex()
     {
         return AvailableProductResource::collection(
-            $this->repository->getPublic($search)
+            $this->repository->getPublic()
         );
     }
 

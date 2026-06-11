@@ -6,6 +6,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\FirebaseLoginRequest;
 use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\User\UpdateLocationRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Services\Api\Auth\AuthService;
 use App\Services\Api\Auth\FirebaseAuthService;
@@ -86,5 +87,15 @@ class AuthController extends Controller
             $request->input('device_name'),
             $request->input('fcm_token')
         );
+    }
+
+    public function updateLocation(UpdateLocationRequest $request)
+    {
+        $response = $this->authService->updateLocation(
+            auth('sanctum')->user(),
+            $request->validated()
+        );
+
+        return ApiResponse::sendResponse($response['status'], $response['message'], $response['data']);
     }
 }

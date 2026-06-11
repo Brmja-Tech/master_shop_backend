@@ -2,7 +2,11 @@
 
 namespace App\Services\Api\User;
 
+use App\Helpers\ApiResponse;
+use App\Models\User;
 use App\Repositories\Api\User\VendorRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class VendorService
 {
@@ -14,6 +18,37 @@ class VendorService
     {
         $vendors = $this->repository->getTopRatedPaginated($perPage);
 
+        return $this->formatPaginatedResponse($vendors);
+    }
+
+    public function nearby(
+        User $user,
+        int $perPage,
+        mixed $latitude = null,
+        mixed $longitude = null,
+        string $sortDirection = 'asc'
+    ): array {
+        $resolvedLatitude = $latitude !== null ? (float) $latitude : $user->latitude;
+        $resolvedLongitude = $longitude !== null ? (float) $longitude : $user->longitude;
+
+        if ($resolvedLatitude === null || $resolvedLongitude === null) {
+            throw new HttpResponseException(
+                ApiResponse::sendResponse(422, __('vendor.user_location_required'), [])
+            );
+        }
+
+        $vendors = $this->repository->getNearbyPaginated(
+            latitude: (float) $resolvedLatitude,
+            longitude: (float) $resolvedLongitude,
+            perPage: $perPage,
+            sortDirection: $sortDirection
+        );
+
+        return $this->formatPaginatedResponse($vendors);
+    }
+
+    private function formatPaginatedResponse(LengthAwarePaginator $vendors): array
+    {
         return [
             'vendors' => $vendors,
             'pagination' => [

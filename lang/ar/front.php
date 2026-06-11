@@ -217,4 +217,5 @@ return [
     '' => '',
     '' => '',
 
+    'location-updated-successfully'             => 'تم تحديث الموقع بنجاح',
 ];
