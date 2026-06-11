@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\Vendor\Auth\ForgotController as VendorForgotControl
 use App\Http\Controllers\Api\Vendor\ProductController;
 use App\Http\Controllers\Api\Vendor\ProfileController;
 use App\Http\Controllers\Api\Vendor\SubcategoryController;
+use App\Http\Controllers\Api\User\VendorController as UserVendorController;
 use App\Http\Controllers\Dashboard\Settings\StoreTypeController;
 
 
@@ -82,5 +83,6 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
 
 Route::prefix('user')->middleware('user.auth')->group(function () {
     Route::get('store-types/lookup', [StoreTypeController::class, 'lookup']);
+    Route::get('vendors/top-rated', [UserVendorController::class, 'topRated']);
 });
 Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);

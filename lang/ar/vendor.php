@@ -7,6 +7,7 @@ return [
     'logout-failed' => 'فشل تسجيل الخروج',
     'profile_retrieved' => 'تم جلب بيانات المتجر بنجاح',
     'profile_updated' => 'تم تحديث بيانات المتجر بنجاح',
+    'top_rated_retrieved' => 'تم جلب أعلى المتاجر تقييماً بنجاح',
     'otp-sent' => 'تم إرسال رمز التحقق بنجاح',
     'invalid-otp' => 'رمز التحقق غير صالح',
     'otp-verified-successfully' => 'تم التحقق من رمز التحقق بنجاح',

@@ -7,6 +7,7 @@ return [
     'logout-failed' => 'Logout failed',
     'profile_retrieved' => 'Vendor profile retrieved successfully',
     'profile_updated' => 'Vendor profile updated successfully',
+    'top_rated_retrieved' => 'Top rated vendors retrieved successfully',
     'otp-sent' => 'OTP sent successfully',
     'invalid-otp' => 'Invalid OTP',
     'otp-verified-successfully' => 'OTP verified successfully',
