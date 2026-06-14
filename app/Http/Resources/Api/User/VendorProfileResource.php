@@ -34,6 +34,7 @@ class VendorProfileResource extends JsonResource
                     'price' => (float) $product->price,
                     'discount' => (float) $product->discount,
                     'price_after_discount' => (float) $product->price_after_discount,
+                    'is_favorite' => (bool) ($product->is_favorite ?? false),
                     'main_image' => $mainImage ? asset($mainImage->image) : null,
                 ];
             }),

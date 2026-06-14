@@ -27,6 +27,7 @@ class ProductDetailsResource extends JsonResource
             'quantity' => $this->quantity,
             'remaining_quantity' => $this->remaining_quantity,
             'is_available' => $this->is_available,
+            'is_favorite' => (bool) ($this->is_favorite ?? false),
             'unit' => $this->unit,
             'expiry_date' => optional($this->expiry_date)->format('Y-m-d'),
             'images' => $this->whenLoaded('images', function () {

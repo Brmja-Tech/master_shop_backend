@@ -41,14 +41,20 @@ class ProductService
     public function vendorProducts(int $vendorId)
     {
         $subcategoryId = request()->input('subcategory_id');
+        $user = auth('sanctum')->user();
 
         $vendor = Vendor::with([
-            'products' => function ($query) use ($subcategoryId) {
+            'products' => function ($query) use ($subcategoryId, $user) {
                 $query->with('images')
                       ->where('is_available', true)
                       ->where('remaining_quantity', '>', 0)
                       ->when($subcategoryId, function ($q) use ($subcategoryId) {
                           $q->where('subcategory_id', $subcategoryId);
+                      })
+                      ->when($user, function ($q) use ($user) {
+                          $q->withExists([
+                              'favoritedByUsers as is_favorite' => fn ($favoriteQuery) => $favoriteQuery->whereKey($user->id),
+                          ]);
                       });
             }
         ])->findOrFail($vendorId);
@@ -60,7 +66,6 @@ class ProductService
             })
             ->get(['id', 'name']);
 
-        $user = auth('sanctum')->user();
         $distance = \App\Helpers\LocationHelper::calculateDistanceInMeters(
             $user?->latitude,
             $user?->longitude,
@@ -75,7 +80,7 @@ class ProductService
     public function publicShow(int $id)
     {
         return new \App\Http\Resources\Api\User\ProductDetailsResource(
-            $this->repository->findPublicProduct($id)
+            $this->repository->findPublicProductForUser($id, auth('sanctum')->user())
         );
     }
 

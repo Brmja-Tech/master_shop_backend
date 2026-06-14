@@ -4,8 +4,11 @@ namespace App\Repositories\Api\Vendor;
 
 use App\Models\Product;
 use App\Models\Subcategory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductRepository
 {
@@ -69,6 +72,52 @@ class ProductRepository
             ->where('is_available', true)
             ->where('remaining_quantity', '>', 0)
             ->findOrFail($id);
+    }
+
+    public function getAvailableForUser(?User $user = null): Collection
+    {
+        return $this->applyFavoriteState(
+            Product::query()
+                ->with($this->relations)
+                ->where('is_available', true)
+                ->where('remaining_quantity', '>', 0)
+                ->latest(),
+            $user
+        )->get();
+    }
+
+    public function getPublicForUser(?User $user = null): Collection
+    {
+        return $this->applyFavoriteState(
+            Product::query()
+                ->with($this->relations)
+                ->latest(),
+            $user
+        )->get();
+    }
+
+    public function findPublicProductForUser(int $id, ?User $user = null): Product
+    {
+        return $this->applyFavoriteState(
+            Product::query()
+                ->with($this->relations)
+                ->where('is_available', true)
+                ->where('remaining_quantity', '>', 0)
+                ->whereKey($id),
+            $user
+        )->firstOrFail();
+    }
+
+    public function getFavoriteProductsPaginated(User $user, int $perPage): LengthAwarePaginator
+    {
+        return $this->applyFavoriteState(
+            $user->favoriteProducts()
+                ->with($this->relations)
+                ->where('is_available', true)
+                ->where('remaining_quantity', '>', 0)
+                ->latest('favorite_products.created_at'),
+            $user
+        )->paginate($perPage);
     }
 
     public function getAllForVendor(int $vendorId): Collection
@@ -176,5 +225,16 @@ class ProductRepository
     public function delete(Product $product): bool
     {
         return $product->delete();
+    }
+
+    private function applyFavoriteState(Builder|BelongsToMany $query, ?User $user): Builder|BelongsToMany
+    {
+        if (! $user) {
+            return $query;
+        }
+
+        return $query->withExists([
+            'favoritedByUsers as is_favorite' => fn (Builder $favoriteQuery) => $favoriteQuery->whereKey($user->id),
+        ]);
     }
 }

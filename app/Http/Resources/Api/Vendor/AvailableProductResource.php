@@ -26,6 +26,7 @@ class AvailableProductResource extends JsonResource
             'price_after_discount' => $this->price_after_discount,
             'remaining_quantity' => $this->remaining_quantity,
             'is_available' => $this->is_available,
+            'is_favorite' => (bool) ($this->is_favorite ?? false),
             'expiry_date' => optional($this->expiry_date)->format('Y-m-d'),
             'image' => $image,
         ];
