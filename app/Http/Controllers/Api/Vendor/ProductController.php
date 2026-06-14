@@ -40,6 +40,15 @@ class ProductController extends Controller
         );
     }
 
+    public function vendorProducts(int $id)
+    {
+        return ApiResponse::sendResponse(
+            200,
+            __('product.available_list'),
+            $this->service->vendorProducts($id)
+        );
+    }
+
     public function store(ProductRequest $request)
     {
         $data = $this->payload($request);
@@ -107,12 +116,12 @@ class ProductController extends Controller
         }
 
         foreach (['name', 'description'] as $field) {
-            if ($request->has($field) && is_array($request->input($field))) {
+            if ($request->has($field)) {
                 $data[$field] = $request->input($field);
             }
         }
 
-        if ($request->has('subcategory_name') && is_array($request->input('subcategory_name'))) {
+        if ($request->has('subcategory_name')) {
             $data['subcategory_name'] = $request->input('subcategory_name');
         }
 

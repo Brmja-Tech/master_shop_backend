@@ -89,18 +89,16 @@ class ProductSeeder extends Seeder
                 ]
             );
 
-            $subcategory = Subcategory::query()
-                ->where('store_type_id', $vendor->store_type_id)
-                ->first();
-
-            if (! $subcategory) {
-                continue;
-            }
-
             $products = $this->productsForStoreType($vendorData['store_type_name']);
 
             foreach ($products as $item) {
-                $product = Product::query()->firstOrCreate(
+                $subcategory = $this->resolveSubcategory($vendor->store_type_id, $item['subcategory_name'] ?? null);
+
+                if (! $subcategory) {
+                    continue;
+                }
+
+                $product = Product::query()->updateOrCreate(
                     [
                         'vendor_id' => $vendor->id,
                         'name' => $item['name'],
@@ -137,6 +135,20 @@ class ProductSeeder extends Seeder
                 }
             }
         }
+    }
+
+    private function resolveSubcategory(int $storeTypeId, ?string $subcategoryName): ?Subcategory
+    {
+        $query = Subcategory::query()->where('store_type_id', $storeTypeId);
+
+        if ($subcategoryName) {
+            $query->where('name', $subcategoryName);
+        }
+
+        return $query->first()
+            ?? Subcategory::query()
+                ->where('store_type_id', $storeTypeId)
+                ->first();
     }
 
     private function productsForStoreType(string $storeTypeName): array
@@ -179,6 +191,7 @@ class ProductSeeder extends Seeder
             'كافيه' => [
                 [
                     'name' => 'عصير مانجو',
+                    'subcategory_name' => 'عصائر',
                     'description' => 'عصير مانجو طبيعي طازج',
                     'quantity' => 40,
                     'remaining_quantity' => 18,
@@ -194,6 +207,7 @@ class ProductSeeder extends Seeder
                 ],
                 [
                     'name' => 'قهوة تركي',
+                    'subcategory_name' => 'قهوة',
                     'description' => 'قهوة تركي ساخنة',
                     'quantity' => 50,
                     'remaining_quantity' => 35,

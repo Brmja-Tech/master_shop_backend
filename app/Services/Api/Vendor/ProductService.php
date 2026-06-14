@@ -38,6 +38,31 @@ class ProductService
         );
     }
 
+    public function vendorProducts(int $vendorId)
+    {
+        $subcategoryId = request()->input('subcategory_id');
+
+        $vendor = Vendor::with([
+            'products' => function ($query) use ($subcategoryId) {
+                $query->with('images')
+                      ->where('is_available', true)
+                      ->where('remaining_quantity', '>', 0)
+                      ->when($subcategoryId, function ($q) use ($subcategoryId) {
+                          $q->where('subcategory_id', $subcategoryId);
+                      });
+            }
+        ])->findOrFail($vendorId);
+
+        $vendor->profile_subcategories = \App\Models\Subcategory::where('store_type_id', $vendor->store_type_id)
+            ->where(function ($q) use ($vendor) {
+                $q->whereNull('vendor_id')
+                  ->orWhere('vendor_id', $vendor->id);
+            })
+            ->get(['id', 'name']);
+
+        return new \App\Http\Resources\Api\User\VendorProfileResource($vendor);
+    }
+
     public function store(Vendor $vendor, array $data)
     {
         $data = $this->normalizeArabicPayload($data);

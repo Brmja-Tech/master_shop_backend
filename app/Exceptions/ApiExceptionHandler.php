@@ -33,6 +33,15 @@ class ApiExceptionHandler
             );
         }
 
+        if ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+            $modelName = class_basename($e->getModel());
+            return ApiResponse::sendResponse(
+                404,
+                "Resource not found: {$modelName}",
+                config('app.debug') ? ['error' => $e->getMessage()] : []
+            );
+        }
+
         if ($e instanceof NotFoundHttpException) {
             return ApiResponse::sendResponse(
                 404,
@@ -52,7 +61,11 @@ class ApiExceptionHandler
         return ApiResponse::sendResponse(
             500,
             __('validation.server-error'),
-            config('app.debug') ? ['error' => $e->getMessage()] : []
+            config('app.debug') ? [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ] : []
         );
     }
 }

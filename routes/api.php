@@ -88,5 +88,6 @@ Route::prefix('user')->middleware('user.auth')->group(function () {
     Route::post('location', [AuthController::class, 'updateLocation']);
     Route::get('vendors', [UserVendorController::class, 'index']);
     Route::get('vendors/top-rated', [UserVendorController::class, 'topRated']);
+    Route::get('vendors/{id}/products', [ProductController::class, 'vendorProducts']);
 });
 Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);

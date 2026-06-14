@@ -51,6 +51,17 @@ class ProductRepository
             ->get();
     }
 
+    public function getAvailableForVendor(int $vendorId): Collection
+    {
+        return Product::query()
+            ->with($this->relations)
+            ->where('vendor_id', $vendorId)
+            ->where('is_available', true)
+            ->where('remaining_quantity', '>', 0)
+            ->latest()
+            ->get();
+    }
+
     public function getAllForVendor(int $vendorId): Collection
     {
         return Product::query()
