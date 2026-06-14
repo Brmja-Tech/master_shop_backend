@@ -95,6 +95,7 @@ return [
     'cart' => 'Cart',
     'product-add-to-cart' => 'Product Add To Cart Successfully',
     'product-removed-from-cart' => 'Product Removed From Cart Successfully',
+    'insufficient-product-quantity' => 'Requested quantity is not available',
     'shopping-cart' => 'Shopping Cart',
     'view-cart' => 'View Cart',
     'no-blogs' => 'No Blogs Available',

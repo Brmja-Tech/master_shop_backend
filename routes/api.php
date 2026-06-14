@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\Vendor\Auth\ForgotController as VendorForgotControl
 use App\Http\Controllers\Api\Vendor\ProductController;
 use App\Http\Controllers\Api\Vendor\ProfileController;
 use App\Http\Controllers\Api\Vendor\SubcategoryController;
+use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\FavoriteProductController;
 use App\Http\Controllers\Api\User\VendorController as UserVendorController;
 use App\Http\Controllers\Dashboard\Settings\StoreTypeController;
@@ -91,6 +92,11 @@ Route::prefix('user')->middleware('user.auth')->group(function () {
     Route::get('vendors/top-rated', [UserVendorController::class, 'topRated']);
     Route::get('vendors/{id}/products', [ProductController::class, 'vendorProducts']);
     Route::get('products/{id}', [ProductController::class, 'publicShow']);
+    Route::get('cart', [CartController::class, 'index']);
+    Route::post('cart/items', [CartController::class, 'store']);
+    Route::put('cart/items/{id}', [CartController::class, 'update']);
+    Route::delete('cart/items/{id}', [CartController::class, 'destroy']);
+    Route::delete('cart/clear', [CartController::class, 'clear']);
     Route::get('favorites', [FavoriteProductController::class, 'index']);
     Route::post('products/{id}/favorite', [FavoriteProductController::class, 'store']);
     Route::delete('products/{id}/favorite', [FavoriteProductController::class, 'destroy']);
