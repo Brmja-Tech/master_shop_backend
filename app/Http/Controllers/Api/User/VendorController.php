@@ -23,6 +23,7 @@ class VendorController extends Controller
             perPage: $request->integer('per_page')
                 ?: $request->integer('limit')
                 ?: 10,
+            search: $request->input('search'),
             latitude: $request->input('latitude'),
             longitude: $request->input('longitude'),
             storeTypeId: $request->integer('store_type_id') ?: null,
@@ -44,6 +45,7 @@ class VendorController extends Controller
             perPage: $request->integer('per_page')
                 ?: $request->integer('limit')
                 ?: 10,
+            search: $request->input('search'),
             latitude: $request->input('latitude'),
             longitude: $request->input('longitude'),
             storeTypeId: $id,

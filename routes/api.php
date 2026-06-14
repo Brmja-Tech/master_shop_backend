@@ -37,6 +37,7 @@ Route::get('/countries/{country_id}/governorates',  [LocationController::class, 
 Route::get('/products',                             [ProductController::class, 'publicIndex']);
 Route::get('/products/available',                   [ProductController::class, 'available']);
 Route::get('/search',                               [SearchController::class, 'index']);
+Route::get('/search/vendors',                       [SearchController::class, 'vendors']);
 ## ================== LOOKUPS (Mobile) ================== ##
 
 

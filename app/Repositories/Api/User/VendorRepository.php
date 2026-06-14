@@ -8,6 +8,39 @@ use Illuminate\Database\Eloquent\Builder;
 
 class VendorRepository
 {
+    public function searchByName(string $search)
+    {
+        return Vendor::query()
+            ->where('is_active', true)
+            ->where('is_verified', true)
+            ->with('storeType:id,name')
+            ->select([
+                'id',
+                'store_name',
+                'logo',
+                'rate',
+                'delivery_fee',
+                'latitude',
+                'longitude',
+                'store_type_id',
+            ])
+            ->where(function (Builder $query) use ($search) {
+                $like = '%' . $search . '%';
+
+                $query->where('store_name', 'like', $like)
+                    ->orWhereRaw("JSON_VALID(store_name) AND JSON_UNQUOTE(JSON_EXTRACT(store_name, '$.ar')) LIKE ?", [$like])
+                    ->orWhereRaw("JSON_VALID(store_name) AND JSON_UNQUOTE(JSON_EXTRACT(store_name, '$.en')) LIKE ?", [$like])
+                    ->orWhereHas('storeType', function (Builder $storeTypeQuery) use ($like) {
+                        $storeTypeQuery->where('name', 'like', $like)
+                            ->orWhereRaw("JSON_VALID(name) AND JSON_UNQUOTE(JSON_EXTRACT(name, '$.ar')) LIKE ?", [$like])
+                            ->orWhereRaw("JSON_VALID(name) AND JSON_UNQUOTE(JSON_EXTRACT(name, '$.en')) LIKE ?", [$like]);
+                    });
+            })
+            ->orderByDesc('rate')
+            ->orderByDesc('id')
+            ->get();
+    }
+
     public function getTopRatedPaginated(int $perPage): LengthAwarePaginator
     {
         return Vendor::query()
@@ -23,6 +56,7 @@ class VendorRepository
         float $latitude,
         float $longitude,
         int $perPage,
+        ?string $search = null,
         ?int $storeTypeId = null,
         string $sortDirection = 'asc'
     ): LengthAwarePaginator {
@@ -40,6 +74,20 @@ class VendorRepository
             ->where('is_active', true)
             ->where('is_verified', true)
             ->when($storeTypeId, fn (Builder $query) => $query->where('store_type_id', $storeTypeId))
+            ->when($search, function (Builder $query) use ($search) {
+                $like = '%' . $search . '%';
+
+                $query->where(function (Builder $query) use ($like) {
+                    $query->where('store_name', 'like', $like)
+                        ->orWhereRaw("JSON_VALID(store_name) AND JSON_UNQUOTE(JSON_EXTRACT(store_name, '$.ar')) LIKE ?", [$like])
+                        ->orWhereRaw("JSON_VALID(store_name) AND JSON_UNQUOTE(JSON_EXTRACT(store_name, '$.en')) LIKE ?", [$like])
+                        ->orWhereHas('storeType', function (Builder $storeTypeQuery) use ($like) {
+                            $storeTypeQuery->where('name', 'like', $like)
+                                ->orWhereRaw("JSON_VALID(name) AND JSON_UNQUOTE(JSON_EXTRACT(name, '$.ar')) LIKE ?", [$like])
+                                ->orWhereRaw("JSON_VALID(name) AND JSON_UNQUOTE(JSON_EXTRACT(name, '$.en')) LIKE ?", [$like]);
+                        });
+                });
+            })
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
             ->with('storeType:id,name')

@@ -24,6 +24,7 @@ class VendorService
     public function nearby(
         User $user,
         int $perPage,
+        ?string $search = null,
         mixed $latitude = null,
         mixed $longitude = null,
         ?int $storeTypeId = null,
@@ -42,6 +43,7 @@ class VendorService
             latitude: (float) $resolvedLatitude,
             longitude: (float) $resolvedLongitude,
             perPage: $perPage,
+            search: $search,
             storeTypeId: $storeTypeId,
             sortDirection: $sortDirection
         );

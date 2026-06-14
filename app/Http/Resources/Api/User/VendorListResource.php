@@ -22,7 +22,6 @@ class VendorListResource extends JsonResource
             'logo' => $this->logo ? url($this->logo) : null,
             'rate' => (float) $this->rate,
             'delivery_fee' => (float) $this->delivery_fee,
-            'discount_percentage' => $this->max_discount !== null ? (float) $this->max_discount : null,
             'distance_in_meters' => $distanceInMeters,
             'distance_in_kilometers' => $distanceInMeters !== null ? round($distanceInMeters / 1000, 2) : null,
             'vendor_latitude' => $this->latitude !== null ? (float) $this->latitude : null,
