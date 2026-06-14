@@ -25,7 +25,7 @@ class VendorProfileResource extends JsonResource
             'distance_in_km' => $this->distance_in_km,
             'is_store_open' => $this->is_store_open,
             'subcategories' => $this->profile_subcategories,
-            'products' => $this->products->map(function ($product) {
+            'products' => collect($this->profile_products ?? $this->products ?? [])->map(function ($product) {
                 $mainImage = $product->images->where('is_main', true)->first();
                 return [
                     'id' => $product->id,

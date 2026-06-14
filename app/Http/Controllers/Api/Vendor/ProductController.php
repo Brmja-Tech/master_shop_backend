@@ -42,10 +42,18 @@ class ProductController extends Controller
 
     public function vendorProducts(int $id)
     {
+        $result = $this->service->vendorProducts(
+            $id,
+            request()->integer('per_page')
+                ?: request()->integer('limit')
+                ?: 10
+        );
+
         return ApiResponse::sendResponse(
             200,
             __('product.available_list'),
-            $this->service->vendorProducts($id)
+            $result['data'],
+            $result['pagination']
         );
     }
 

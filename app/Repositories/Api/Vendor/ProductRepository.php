@@ -120,6 +120,24 @@ class ProductRepository
         )->paginate($perPage);
     }
 
+    public function getVendorProductsPaginated(
+        int $vendorId,
+        int $perPage,
+        ?int $subcategoryId = null,
+        ?User $user = null
+    ): LengthAwarePaginator {
+        return $this->applyFavoriteState(
+            Product::query()
+                ->with('images')
+                ->where('vendor_id', $vendorId)
+                ->where('is_available', true)
+                ->where('remaining_quantity', '>', 0)
+                ->when($subcategoryId, fn (Builder $query) => $query->where('subcategory_id', $subcategoryId))
+                ->latest(),
+            $user
+        )->paginate($perPage);
+    }
+
     public function getAllForVendor(int $vendorId): Collection
     {
         return Product::query()

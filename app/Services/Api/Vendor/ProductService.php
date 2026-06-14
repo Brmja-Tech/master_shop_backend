@@ -8,6 +8,7 @@ use App\Http\Resources\Api\Vendor\ProductResource;
 use App\Models\Vendor;
 use App\Repositories\Api\Vendor\ProductRepository;
 use App\Utils\ImageManger;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProductService
@@ -38,26 +39,13 @@ class ProductService
         );
     }
 
-    public function vendorProducts(int $vendorId)
+    public function vendorProducts(int $vendorId, int $perPage): array
     {
-        $subcategoryId = request()->input('subcategory_id');
+        $subcategoryId = request()->integer('subcategory_id') ?: null;
         $user = auth('sanctum')->user();
 
-        $vendor = Vendor::with([
-            'products' => function ($query) use ($subcategoryId, $user) {
-                $query->with('images')
-                      ->where('is_available', true)
-                      ->where('remaining_quantity', '>', 0)
-                      ->when($subcategoryId, function ($q) use ($subcategoryId) {
-                          $q->where('subcategory_id', $subcategoryId);
-                      })
-                      ->when($user, function ($q) use ($user) {
-                          $q->withExists([
-                              'favoritedByUsers as is_favorite' => fn ($favoriteQuery) => $favoriteQuery->whereKey($user->id),
-                          ]);
-                      });
-            }
-        ])->findOrFail($vendorId);
+        $vendor = Vendor::findOrFail($vendorId);
+        $products = $this->repository->getVendorProductsPaginated($vendorId, $perPage, $subcategoryId, $user);
 
         $vendor->profile_subcategories = \App\Models\Subcategory::where('store_type_id', $vendor->store_type_id)
             ->where(function ($q) use ($vendor) {
@@ -65,6 +53,7 @@ class ProductService
                   ->orWhere('vendor_id', $vendor->id);
             })
             ->get(['id', 'name']);
+        $vendor->profile_products = $products->getCollection();
 
         $distance = \App\Helpers\LocationHelper::calculateDistanceInMeters(
             $user?->latitude,
@@ -74,7 +63,10 @@ class ProductService
         );
         $vendor->distance_in_km = $distance ? round($distance / 1000, 2) : null;
 
-        return new \App\Http\Resources\Api\User\VendorProfileResource($vendor);
+        return [
+            'data' => new \App\Http\Resources\Api\User\VendorProfileResource($vendor),
+            'pagination' => $this->formatPaginatedResponse($products),
+        ];
     }
 
     public function publicShow(int $id)
@@ -279,5 +271,15 @@ class ProductService
         }
 
         return $data;
+    }
+
+    private function formatPaginatedResponse(LengthAwarePaginator $products): array
+    {
+        return [
+            'total' => $products->total(),
+            'current_page' => $products->currentPage(),
+            'last_page' => $products->lastPage(),
+            'per_page' => $products->perPage(),
+        ];
     }
 }
