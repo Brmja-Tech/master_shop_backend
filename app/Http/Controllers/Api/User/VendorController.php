@@ -25,6 +25,28 @@ class VendorController extends Controller
                 ?: 10,
             latitude: $request->input('latitude'),
             longitude: $request->input('longitude'),
+            storeTypeId: $request->integer('store_type_id') ?: null,
+            sortDirection: $request->input('sort_direction', 'asc')
+        );
+
+        return ApiResponse::sendResponse(
+            200,
+            __('vendor.list_retrieved'),
+            VendorListResource::collection($result['vendors']),
+            $result['pagination']
+        );
+    }
+
+    public function byStoreType(int $id, VendorListingRequest $request)
+    {
+        $result = $this->service->nearby(
+            user: auth('sanctum')->user(),
+            perPage: $request->integer('per_page')
+                ?: $request->integer('limit')
+                ?: 10,
+            latitude: $request->input('latitude'),
+            longitude: $request->input('longitude'),
+            storeTypeId: $id,
             sortDirection: $request->input('sort_direction', 'asc')
         );
 

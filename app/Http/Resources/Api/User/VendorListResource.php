@@ -17,6 +17,8 @@ class VendorListResource extends JsonResource
         return [
             'id' => $this->id,
             'store_name' => $this->resolveStoreName(),
+            'store_type_id' => $this->store_type_id,
+            'store_type_name' => $this->whenLoaded('storeType', fn () => $this->storeType?->name),
             'logo' => $this->logo ? url($this->logo) : null,
             'rate' => (float) $this->rate,
             'delivery_fee' => (float) $this->delivery_fee,

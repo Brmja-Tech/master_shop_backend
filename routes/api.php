@@ -86,6 +86,7 @@ Route::prefix('user')->middleware('user.auth')->group(function () {
 
     Route::prefix('store-types')->group(function () {
         Route::get('lookup', [StoreTypeController::class, 'lookup']);
+        Route::get('{id}/vendors', [UserVendorController::class, 'byStoreType']);
     });
     Route::post('location', [AuthController::class, 'updateLocation']);
     Route::prefix('vendors')->group(function () {

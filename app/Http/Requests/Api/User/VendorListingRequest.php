@@ -17,6 +17,7 @@ class VendorListingRequest extends FormRequest
             'page' => ['nullable', 'integer', 'min:1'],
             'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
             'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'store_type_id' => ['nullable', 'integer', 'exists:store_types,id'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'sort_direction' => ['nullable', 'in:asc,desc'],

@@ -23,6 +23,7 @@ class VendorRepository
         float $latitude,
         float $longitude,
         int $perPage,
+        ?int $storeTypeId = null,
         string $sortDirection = 'asc'
     ): LengthAwarePaginator {
         $distanceExpression = '(6371000 * ACOS(
@@ -38,8 +39,10 @@ class VendorRepository
         return Vendor::query()
             ->where('is_active', true)
             ->where('is_verified', true)
+            ->when($storeTypeId, fn (Builder $query) => $query->where('store_type_id', $storeTypeId))
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
+            ->with('storeType:id,name')
             ->withMax([
                 'products as max_discount' => function (Builder $query) {
                     $query->where('is_available', true)
@@ -54,6 +57,7 @@ class VendorRepository
                 'delivery_fee',
                 'latitude',
                 'longitude',
+                'store_type_id',
             ])
             ->selectRaw(
                 $distanceExpression . ' as distance_in_meters',

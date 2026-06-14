@@ -26,6 +26,7 @@ class VendorService
         int $perPage,
         mixed $latitude = null,
         mixed $longitude = null,
+        ?int $storeTypeId = null,
         string $sortDirection = 'asc'
     ): array {
         $resolvedLatitude = $latitude !== null ? (float) $latitude : $user->latitude;
@@ -41,6 +42,7 @@ class VendorService
             latitude: (float) $resolvedLatitude,
             longitude: (float) $resolvedLongitude,
             perPage: $perPage,
+            storeTypeId: $storeTypeId,
             sortDirection: $sortDirection
         );
 
