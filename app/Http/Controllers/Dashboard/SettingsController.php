@@ -28,6 +28,16 @@ class SettingsController extends Controller
         return view('dashboard.settings.faqs.index');
     } //End faqs method
 
+    public function storeTypes()
+    {
+        return view('dashboard.settings.store-types.index');
+    }
+
+    public function subcategories()
+    {
+        return view('dashboard.settings.subcategories.index');
+    }
+
 
 
     public function privacy()

@@ -134,6 +134,21 @@
                 </li>
             @endcan
 
+            @can('settings')
+                <li class="nav-item @yield('store-types-active')">
+                    <a class="d-flex align-items-center" href="{{ route('dashboard.store-types.setting') }}">
+                        <i data-feather="grid"></i><span class="menu-title text-truncate">
+                            {{ __('dashboard.store-types') }}</span>
+                    </a>
+                </li>
+                <li class="nav-item @yield('subcategories-active')">
+                    <a class="d-flex align-items-center" href="{{ route('dashboard.subcategories.setting') }}">
+                        <i data-feather="layers"></i><span class="menu-title text-truncate">
+                            {{ __('dashboard.subcategories') }}</span>
+                    </a>
+                </li>
+            @endcan
+
         </ul>
     </div>
 </div>

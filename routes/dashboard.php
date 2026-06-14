@@ -87,6 +87,9 @@ Route::group([
         Route::get('terms',               [SettingsController::class, 'terms'])->middleware('can:settings')->name('terms.setting');
         ############################### End settings Routes ############################################
 
+        Route::get('store-types',         [SettingsController::class, 'storeTypes'])->middleware('can:settings')->name('store-types.setting');
+        Route::get('subcategories',       [SettingsController::class, 'subcategories'])->middleware('can:settings')->name('subcategories.setting');
+
     });
 
     Route::prefix('admin')
