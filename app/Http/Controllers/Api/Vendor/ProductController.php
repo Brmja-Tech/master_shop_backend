@@ -49,6 +49,15 @@ class ProductController extends Controller
         );
     }
 
+    public function publicShow(int $id)
+    {
+        return ApiResponse::sendResponse(
+            200,
+            __('product.retrieved'),
+            $this->service->publicShow($id)
+        );
+    }
+
     public function store(ProductRequest $request)
     {
         $data = $this->payload($request);

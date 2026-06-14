@@ -89,5 +89,6 @@ Route::prefix('user')->middleware('user.auth')->group(function () {
     Route::get('vendors', [UserVendorController::class, 'index']);
     Route::get('vendors/top-rated', [UserVendorController::class, 'topRated']);
     Route::get('vendors/{id}/products', [ProductController::class, 'vendorProducts']);
+    Route::get('products/{id}', [ProductController::class, 'publicShow']);
 });
 Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);

@@ -72,6 +72,13 @@ class ProductService
         return new \App\Http\Resources\Api\User\VendorProfileResource($vendor);
     }
 
+    public function publicShow(int $id)
+    {
+        return new \App\Http\Resources\Api\User\ProductDetailsResource(
+            $this->repository->findPublicProduct($id)
+        );
+    }
+
     public function store(Vendor $vendor, array $data)
     {
         $data = $this->normalizeArabicPayload($data);

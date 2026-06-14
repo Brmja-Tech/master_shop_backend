@@ -62,6 +62,15 @@ class ProductRepository
             ->get();
     }
 
+    public function findPublicProduct(int $id): Product
+    {
+        return Product::query()
+            ->with($this->relations)
+            ->where('is_available', true)
+            ->where('remaining_quantity', '>', 0)
+            ->findOrFail($id);
+    }
+
     public function getAllForVendor(int $vendorId): Collection
     {
         return Product::query()
