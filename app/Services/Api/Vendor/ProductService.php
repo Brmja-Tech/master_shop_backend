@@ -60,6 +60,15 @@ class ProductService
             })
             ->get(['id', 'name']);
 
+        $user = auth('sanctum')->user();
+        $distance = \App\Helpers\LocationHelper::calculateDistanceInMeters(
+            $user?->latitude,
+            $user?->longitude,
+            $vendor->latitude,
+            $vendor->longitude
+        );
+        $vendor->distance_in_km = $distance ? round($distance / 1000, 2) : null;
+
         return new \App\Http\Resources\Api\User\VendorProfileResource($vendor);
     }
 
