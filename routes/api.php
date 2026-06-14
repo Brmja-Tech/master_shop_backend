@@ -82,23 +82,29 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
 });
 ## ------------------ VENDOR AUTH ROUTES ------------------ ##
 
-
-
-
 Route::prefix('user')->middleware('user.auth')->group(function () {
-    Route::get('store-types/lookup', [StoreTypeController::class, 'lookup']);
+
+    Route::prefix('store-types')->group(function () {
+        Route::get('lookup', [StoreTypeController::class, 'lookup']);
+    });
     Route::post('location', [AuthController::class, 'updateLocation']);
-    Route::get('vendors', [UserVendorController::class, 'index']);
-    Route::get('vendors/top-rated', [UserVendorController::class, 'topRated']);
-    Route::get('vendors/{id}/products', [ProductController::class, 'vendorProducts']);
-    Route::get('products/{id}', [ProductController::class, 'publicShow']);
-    Route::get('cart', [CartController::class, 'index']);
-    Route::post('cart/items', [CartController::class, 'store']);
-    Route::put('cart/items/{id}', [CartController::class, 'update']);
-    Route::delete('cart/items/{id}', [CartController::class, 'destroy']);
-    Route::delete('cart/clear', [CartController::class, 'clear']);
+    Route::prefix('vendors')->group(function () {
+        Route::get('', [UserVendorController::class, 'index']);
+        Route::get('top-rated', [UserVendorController::class, 'topRated']);
+        Route::get('{id}/products', [ProductController::class, 'vendorProducts']);
+    });
+    Route::prefix('products')->group(function () {
+        Route::get('{id}', [ProductController::class, 'publicShow']);
+        Route::post('{id}/favorite', [FavoriteProductController::class, 'store']);
+        Route::delete('{id}/favorite', [FavoriteProductController::class, 'destroy']);
+    });
+    Route::prefix('cart')->group(function () {
+        Route::get('', [CartController::class, 'index']);
+        Route::post('items', [CartController::class, 'store']);
+        Route::put('items/{id}', [CartController::class, 'update']);
+        Route::delete('items/{id}', [CartController::class, 'destroy']);
+        Route::delete('clear', [CartController::class, 'clear']);
+    });
     Route::get('favorites', [FavoriteProductController::class, 'index']);
-    Route::post('products/{id}/favorite', [FavoriteProductController::class, 'store']);
-    Route::delete('products/{id}/favorite', [FavoriteProductController::class, 'destroy']);
 });
 Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);
