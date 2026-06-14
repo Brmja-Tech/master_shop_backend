@@ -33,23 +33,23 @@ class SettingsSeeder extends Seeder
             ],
             'site_title' => [
                 'en' => 'FIX Store — Multi Vendor Marketplace',
-                'ar' => 'FIX Store — منصة متعددة التجار',
+                'ar' => 'FIX Store — منصة تسوق متعددة التجار',
             ],
             'site_desc' => [
-                'en' => 'FIX Store is a multi-vendor marketplace where customers can shop from trusted stores and vendors in one place.',
-                'ar' => 'FIX Store هي منصة متعددة التجار تتيح للعملاء التسوق من متاجر وبائعين موثوقين في مكان واحد.',
+                'en' => 'FIX Store is a multi-vendor marketplace that brings customers, stores, and trusted vendors together in one simple shopping platform.',
+                'ar' => 'FIX Store هي منصة تسوق متعددة التجار تجمع العملاء والمتاجر والبائعين الموثوقين في مكان واحد لتجربة شراء سهلة.',
             ],
             'site_address' => [
                 'en' => 'Cairo, Egypt',
                 'ar' => 'القاهرة، مصر',
             ],
             'meta_key' => [
-                'en' => 'multi vendor, marketplace, vendors, merchants, stores, online shopping, ecommerce, products',
-                'ar' => 'متعدد التجار, ماركت بليس, بائعين, تجار, متاجر, تسوق اونلاين, تجارة إلكترونية, منتجات',
+                'en' => 'multi vendor marketplace, online shopping, ecommerce, vendors, stores, merchants, products, delivery, offers',
+                'ar' => 'منصة متعددة التجار, تسوق أونلاين, تجارة إلكترونية, بائعين, متاجر, تجار, منتجات, توصيل, عروض',
             ],
             'meta_desc' => [
-                'en' => 'FIX Store connects customers with multiple trusted vendors and stores, offering a smooth shopping experience, clear pricing, and reliable support.',
-                'ar' => 'FIX Store يربط العملاء بعدة تجار ومتاجر موثوقة مع تجربة تسوق سهلة وأسعار واضحة ودعم موثوق.',
+                'en' => 'FIX Store connects customers with multiple vendors and stores, making it easy to browse products, compare options, place orders, and shop with confidence.',
+                'ar' => 'FIX Store يربط العملاء بعدة تجار ومتاجر، لتصفح المنتجات ومقارنة الاختيارات وإتمام الطلبات بسهولة وثقة.',
             ],
 
             // Non-translatable
@@ -87,8 +87,6 @@ class SettingsSeeder extends Seeder
         |--------------------------------------------------------------------------
         | Banners
         |--------------------------------------------------------------------------
-        | جدول banners عندك فيه:
-        | id, banner, status, created_at, updated_at
         */
 
         $banners = [
@@ -127,8 +125,8 @@ class SettingsSeeder extends Seeder
                     'ar' => 'عن FIX Store',
                 ],
                 'desc' => [
-                    'en' => 'FIX Store is a multi-vendor marketplace built to connect customers with trusted vendors and stores. We help vendors showcase their products, manage their online presence, and reach more customers while giving shoppers a simple and reliable buying experience.',
-                    'ar' => 'FIX Store هي منصة متعددة التجار هدفها ربط العملاء بتجار ومتاجر موثوقين. نساعد التجار على عرض منتجاتهم وإدارة وجودهم أونلاين والوصول لعملاء أكثر، مع توفير تجربة شراء سهلة وموثوقة للعملاء.',
+                    'en' => 'FIX Store is a multi-vendor marketplace designed to connect customers with trusted stores and sellers. Our platform allows vendors to showcase their products, manage their store, and reach more customers, while giving shoppers a smooth, secure, and reliable shopping experience from different vendors in one place.',
+                    'ar' => 'FIX Store هي منصة تسوق متعددة التجار مصممة لربط العملاء بمتاجر وبائعين موثوقين. تتيح المنصة للتجار عرض منتجاتهم وإدارة متاجرهم والوصول لعملاء أكثر، وفي نفس الوقت توفر للعملاء تجربة تسوق سهلة وآمنة وموثوقة من أكثر من تاجر في مكان واحد.',
                 ],
                 'banner' => $defaultImage,
                 'image'  => $defaultImage,
@@ -149,8 +147,8 @@ class SettingsSeeder extends Seeder
                     'ar' => 'سياسة الخصوصية',
                 ],
                 'desc' => [
-                    'en' => 'We respect your privacy. Customer and vendor data is used to manage accounts, process orders, provide support, improve services, and operate the marketplace. We do not sell personal information.',
-                    'ar' => 'نحترم خصوصيتك. تُستخدم بيانات العملاء والتجار لإدارة الحسابات ومعالجة الطلبات وتقديم الدعم وتحسين الخدمات وتشغيل المنصة. لا نقوم ببيع البيانات الشخصية.',
+                    'en' => 'At FIX Store, we respect the privacy of customers and vendors. We collect and use data only to manage accounts, operate stores, process orders, provide delivery updates, improve the marketplace experience, and offer customer support. We do not sell personal information to third parties.',
+                    'ar' => 'في FIX Store نحترم خصوصية العملاء والتجار. نقوم بجمع واستخدام البيانات فقط لإدارة الحسابات وتشغيل المتاجر ومعالجة الطلبات وتحديثات التوصيل وتحسين تجربة المنصة وتقديم الدعم. لا نقوم ببيع البيانات الشخصية لأي طرف ثالث.',
                 ],
                 'banner' => $defaultImage,
                 'image'  => $defaultImage,
@@ -171,8 +169,8 @@ class SettingsSeeder extends Seeder
                     'ar' => 'الشروط والأحكام',
                 ],
                 'desc' => [
-                    'en' => 'By using FIX Store, customers and vendors agree to our terms regarding accounts, products, orders, payments, delivery, returns, commissions, and marketplace policies.',
-                    'ar' => 'باستخدام FIX Store، يوافق العملاء والتجار على الشروط الخاصة بالحسابات والمنتجات والطلبات والدفع والتوصيل والاسترجاع والعمولات وسياسات المنصة.',
+                    'en' => 'By using FIX Store, customers and vendors agree to the marketplace terms related to accounts, store management, product listings, orders, payments, delivery, returns, commissions, and platform policies. Vendors are responsible for the accuracy of their products, prices, and availability.',
+                    'ar' => 'باستخدام FIX Store، يوافق العملاء والتجار على شروط المنصة المتعلقة بالحسابات وإدارة المتاجر وعرض المنتجات والطلبات والدفع والتوصيل والاسترجاع والعمولات وسياسات المنصة. يتحمل التجار مسؤولية دقة بيانات المنتجات والأسعار وتوفر المنتجات.',
                 ],
                 'banner' => $defaultImage,
                 'image'  => $defaultImage,
@@ -188,12 +186,23 @@ class SettingsSeeder extends Seeder
         $faqs = [
             [
                 'question' => [
-                    'en' => 'How can I order from FIX Store?',
-                    'ar' => 'إزاي أطلب من FIX Store؟',
+                    'en' => 'What is FIX Store?',
+                    'ar' => 'ما هو FIX Store؟',
                 ],
                 'answer' => [
-                    'en' => 'Browse stores or products, add items to your cart, then proceed to checkout and confirm your order.',
-                    'ar' => 'تصفح المتاجر أو المنتجات، ضيف المنتجات للسلة، وبعد كده كمل خطوة الدفع وأكد الطلب.',
+                    'en' => 'FIX Store is a multi-vendor marketplace where customers can browse and buy products from different trusted vendors and stores in one platform.',
+                    'ar' => 'FIX Store هي منصة تسوق متعددة التجار تتيح للعملاء تصفح وشراء المنتجات من أكثر من تاجر ومتجر موثوق في مكان واحد.',
+                ],
+                'status' => 1,
+            ],
+            [
+                'question' => [
+                    'en' => 'How can I place an order?',
+                    'ar' => 'إزاي أعمل طلب؟',
+                ],
+                'answer' => [
+                    'en' => 'You can browse products or stores, add items to your cart, then complete checkout and confirm your order.',
+                    'ar' => 'تقدر تتصفح المنتجات أو المتاجر، تضيف المنتجات للسلة، وبعد كده تكمل خطوات الطلب وتأكد الأوردر.',
                 ],
                 'status' => 1,
             ],
@@ -203,8 +212,8 @@ class SettingsSeeder extends Seeder
                     'ar' => 'هل التجار يقدروا يبيعوا على FIX Store؟',
                 ],
                 'answer' => [
-                    'en' => 'Yes. Vendors can register, add their store details, list products, and manage their sales through the platform.',
-                    'ar' => 'أيوه. التجار يقدروا يسجلوا ويضيفوا بيانات المتجر ويعرضوا المنتجات ويديروا المبيعات من خلال المنصة.',
+                    'en' => 'Yes. Vendors can create their store, add products, manage prices and availability, and receive orders through the platform.',
+                    'ar' => 'أيوه. التجار يقدروا ينشئوا متجرهم ويضيفوا المنتجات ويديروا الأسعار والتوفر ويستقبلوا الطلبات من خلال المنصة.',
                 ],
                 'status' => 1,
             ],
@@ -214,8 +223,8 @@ class SettingsSeeder extends Seeder
                     'ar' => 'المنتجات بتتباع من FIX Store ولا من التجار؟',
                 ],
                 'answer' => [
-                    'en' => 'FIX Store is a marketplace. Products may be listed by different vendors, and each product page shows the related store or vendor details when available.',
-                    'ar' => 'FIX Store هي منصة ماركت بليس. المنتجات ممكن تكون معروضة من تجار مختلفين، وصفحة المنتج بتوضح بيانات المتجر أو التاجر إن وُجدت.',
+                    'en' => 'FIX Store is a marketplace. Products are listed by different vendors, and each product may be linked to its related store or seller.',
+                    'ar' => 'FIX Store هي منصة ماركت بليس. المنتجات بيتم عرضها من تجار مختلفين، وكل منتج بيكون مرتبط بالمتجر أو البائع الخاص به.',
                 ],
                 'status' => 1,
             ],
@@ -225,19 +234,19 @@ class SettingsSeeder extends Seeder
                     'ar' => 'التوصيل بياخد قد إيه؟',
                 ],
                 'answer' => [
-                    'en' => 'Delivery time depends on your location, vendor, and product availability. Most orders are processed as quickly as possible.',
-                    'ar' => 'مدة التوصيل بتختلف حسب مكانك والتاجر وتوفر المنتج. أغلب الطلبات بيتم تجهيزها في أسرع وقت ممكن.',
+                    'en' => 'Delivery time depends on your location, the vendor, product availability, and order processing time.',
+                    'ar' => 'مدة التوصيل بتختلف حسب مكانك والتاجر وتوفر المنتج ووقت تجهيز الطلب.',
                 ],
                 'status' => 1,
             ],
             [
                 'question' => [
-                    'en' => 'What is your return policy?',
-                    'ar' => 'إيه سياسة الاسترجاع؟',
+                    'en' => 'What is the return policy?',
+                    'ar' => 'ما هي سياسة الاسترجاع؟',
                 ],
                 'answer' => [
-                    'en' => 'Returns depend on the product condition, category, and vendor policy. Please contact support with your order number for assistance.',
-                    'ar' => 'الاسترجاع بيختلف حسب حالة المنتج ونوعه وسياسة التاجر. تواصل مع الدعم برقم الطلب للمساعدة.',
+                    'en' => 'Returns depend on the product condition, category, and vendor policy. Please contact support with your order details for assistance.',
+                    'ar' => 'الاسترجاع بيختلف حسب حالة المنتج ونوعه وسياسة التاجر. تقدر تتواصل مع الدعم ببيانات الطلب للمساعدة.',
                 ],
                 'status' => 1,
             ],
@@ -247,8 +256,8 @@ class SettingsSeeder extends Seeder
                     'ar' => 'إزاي أتواصل مع الدعم؟',
                 ],
                 'answer' => [
-                    'en' => 'You can contact our support team through email, phone, WhatsApp, or the contact options available on the website.',
-                    'ar' => 'تقدر تتواصل مع فريق الدعم من خلال الإيميل أو الهاتف أو واتساب أو وسائل التواصل المتاحة على الموقع.',
+                    'en' => 'You can contact support through email, phone, WhatsApp, or the contact form available on the platform.',
+                    'ar' => 'تقدر تتواصل مع الدعم من خلال الإيميل أو الهاتف أو واتساب أو نموذج التواصل المتاح على المنصة.',
                 ],
                 'status' => 1,
             ],
