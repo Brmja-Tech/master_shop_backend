@@ -21,7 +21,6 @@
                 <th>#</th>
                 <th>{{ __('dashboard.name') }}</th>
                 <th>{{ __('dashboard.store-type') }}</th>
-                <th>{{ __('dashboard.vendor') }}</th>
                 <th>{{ __('dashboard.actions') }}</th>
             </tr>
         </thead>
@@ -31,7 +30,6 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->storeType?->name ?? '--' }}</td>
-                    <td>{{ $item->vendor?->name ?? __('dashboard.admin-created') }}</td>
                     <td>
                         <div class="d-flex align-items-center">
                             <a class="btn btn-primary waves-effect waves-float waves-light me-1" href="#"
@@ -49,7 +47,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5">
+                    <td colspan="4">
                         <div class="text-danger text-center">{{ __('dashboard.no-data') }}</div>
                     </td>
                 </tr>
