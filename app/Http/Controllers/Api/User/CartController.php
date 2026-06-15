@@ -36,11 +36,28 @@ class CartController extends Controller
 
     public function store(CartItemStoreRequest $request)
     {
+        $user = auth('sanctum')->user();
+        $product = \App\Models\Product::findOrFail($request->integer('product_id'));
+
+        $incomingVendorId = $product->vendor_id;
+
+        $existingVendorId = $user
+            ->cartItems()
+            ->join('products', 'cart_items.product_id', '=', 'products.id')
+            ->value('products.vendor_id');
+
+        if ($existingVendorId && $existingVendorId !== $incomingVendorId) {
+            return response()->json([
+                'message' => 'Your cart contains items from another vendor. Please clear your cart first.',
+                'current_vendor_id' => $existingVendorId,
+            ], 422);
+        }
+
         return ApiResponse::sendResponse(
             200,
             'Product added to cart successfully',
             $this->service->store(
-                auth('sanctum')->user(),
+                $user,
                 $request->integer('product_id'),
                 $request->integer('quantity') ?: 1
             )
