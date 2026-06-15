@@ -178,6 +178,9 @@ return [
     'governorate' => 'المحافظة',
     'user-address-update-successfully' => 'تم تعديل عنوان المستخدم بنجاح',
     'user-address-add-successfully' => 'تم اضافة عنوان جديد للمستخدم',
+    'user-address-delete-successfully' => 'تم حذف عنوان المستخدم بنجاح',
+    'addresses-retrieved-successfully' => 'تم جلب عناوين المستخدم بنجاح',
+    'address-retrieved-successfully' => 'تم جلب عنوان المستخدم بنجاح',
 
 
     ##################### API #####################

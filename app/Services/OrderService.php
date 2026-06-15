@@ -56,6 +56,19 @@ class OrderService
 
             $deliveryFee = (float) $vendor->delivery_fee;
             $total = $subtotal + $deliveryFee;
+            $selectedAddress = null;
+
+            if (! empty($data['address_id'])) {
+                $selectedAddress = $user->addresses()->find($data['address_id']);
+
+                if (! $selectedAddress) {
+                    throw new \Exception('Selected address was not found');
+                }
+            }
+
+            $deliveryAddress = $selectedAddress?->address ?? $data['delivery_address'];
+            $deliveryLatitude = $selectedAddress?->latitude ?? ($data['delivery_latitude'] ?? null);
+            $deliveryLongitude = $selectedAddress?->longitude ?? ($data['delivery_longitude'] ?? null);
 
             $order = Order::create([
                 'user_id' => $user->id,
@@ -66,9 +79,9 @@ class OrderService
                 'status' => OrderStatus::Pending,
                 'payment_method' => PaymentMethod::from($data['payment_method']),
                 'payment_status' => PaymentStatus::Pending,
-                'delivery_address' => $data['delivery_address'],
-                'delivery_latitude' => $data['delivery_latitude'] ?? null,
-                'delivery_longitude' => $data['delivery_longitude'] ?? null,
+                'delivery_address' => $deliveryAddress,
+                'delivery_latitude' => $deliveryLatitude,
+                'delivery_longitude' => $deliveryLongitude,
                 'subtotal' => $subtotal,
                 'discount_amount' => $discountAmount,
                 'delivery_fee' => $deliveryFee,
@@ -101,9 +114,9 @@ class OrderService
                 'pickup_address' => $vendor->address_description,
                 'pickup_latitude' => $vendor->latitude,
                 'pickup_longitude' => $vendor->longitude,
-                'dropoff_address' => $data['delivery_address'],
-                'dropoff_latitude' => $data['delivery_latitude'] ?? null,
-                'dropoff_longitude' => $data['delivery_longitude'] ?? null,
+                'dropoff_address' => $deliveryAddress,
+                'dropoff_latitude' => $deliveryLatitude,
+                'dropoff_longitude' => $deliveryLongitude,
             ]);
 
             if ($order->payment_method === PaymentMethod::Paymob) {

@@ -179,6 +179,9 @@ return [
     'governorate' => 'Governorate',
     'user-address-update-successfully' => 'User Address Update Successfully',
     'user-address-add-successfully' => 'User Address Add Successfully',
+    'user-address-delete-successfully' => 'User Address Deleted Successfully',
+    'addresses-retrieved-successfully' => 'User addresses retrieved successfully',
+    'address-retrieved-successfully' => 'User address retrieved successfully',
 
 
     ##################### API #####################

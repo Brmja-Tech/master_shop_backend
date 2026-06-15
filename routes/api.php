@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Vendor\ProfileController;
 use App\Http\Controllers\Api\Vendor\SubcategoryController;
 use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\FavoriteProductController;
+use App\Http\Controllers\Api\User\UserAddressController;
 use App\Http\Controllers\Api\User\VendorController as UserVendorController;
 use App\Http\Controllers\Dashboard\Settings\StoreTypeController;
 
@@ -88,6 +89,7 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
 
 Route::prefix('user')->middleware('user.auth')->group(function () {
     Route::get('profile', [AuthController::class, 'profile']);
+    Route::apiResource('addresses', UserAddressController::class);
 
     Route::prefix('store-types')->group(function () {
         Route::get('lookup', [StoreTypeController::class, 'lookup']);
