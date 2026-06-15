@@ -23,7 +23,7 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $credentials = $request->only(['name', 'email', 'phone', 'password', 'fcm_token']);
+        $credentials = $request->validated();
         $response = $this->authService->register($credentials);
 
         if (!$response) {

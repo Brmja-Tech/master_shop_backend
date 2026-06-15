@@ -4,7 +4,6 @@ namespace App\Repositories\Api\Auth;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Notifications\SendOtpNotify;
 use Fisal\Otp\Otp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -38,9 +37,6 @@ class AuthRepository
         if (!empty($credentials['fcm_token'])) {
             $user->update(['fcm_token' => $credentials['fcm_token']]);
         }
-
-        // Generate OTP code
-        $otp = $this->otp->generate($user->phone, 'numeric', 5, 20);
 
         return [
             'status'  => 201,

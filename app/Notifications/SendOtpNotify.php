@@ -16,10 +16,12 @@ class SendOtpNotify extends Notification
      * Create a new notification instance.
      */
     public $otp;
+    public string $code;
 
-    public function __construct()
+    public function __construct(?string $code = null)
     {
         $this->otp = new Otp();
+        $this->code = $code ?? '';
     }
 
     /**
@@ -38,11 +40,16 @@ class SendOtpNotify extends Notification
      */
     public function toBeon(object $notifiable): array
     {
-        $otp = $this->otp->generate($notifiable->phone, 'numeric', 5, 20);
+        $code = $this->code;
+
+        if ($code === '') {
+            $otp = $this->otp->generate($notifiable->phone, 'numeric', 5, 20);
+            $code = $otp->token;
+        }
 
         return [
             'phone' => $notifiable->phone,
-            'code'  => $otp->token,
+            'code'  => $code,
             'name'  => $notifiable->name ?? 'User',
             'type'  => 'sms',
             'lang'  => 'ar',

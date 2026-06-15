@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Utils\ImageManger;
 use App\Notifications\SendOtpNotify;
 use App\Repositories\Api\Auth\AuthRepository;
+use Fisal\Otp\Otp;
 
 class AuthService
 {
@@ -30,10 +31,11 @@ class AuthService
             return false;
         }
 
-        // Send OTP notification after registration
-        $user = User::where('phone', $credentials['phone'])->first();
+        // Generate and send the OTP only after registration succeeds بالكامل.
+        $user = User::find($response['data']['user']->id ?? null);
         if ($user) {
-            $user->notify(new SendOtpNotify());
+            $otp = (new Otp())->generate($user->phone, 'numeric', 5, 20);
+            $user->notify(new SendOtpNotify($otp->token));
         }
 
         return $response;
