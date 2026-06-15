@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class PaymobService
 {
-    public function createOrder(Order $order): array
+    public function createOrder(Order $order, array $billingData = []): array
     {
         Log::info('Paymob auth request started', [
             'order_id' => $order->id,
@@ -73,10 +73,10 @@ class PaymobService
             'expiration' => 3600,
             'order_id' => $paymobOrderId,
             'billing_data' => [
-                'first_name' => $order->user->name,
-                'last_name' => '.',
+                'first_name' => $billingData['first_name'] ?? $order->user->name,
+                'last_name' => $billingData['last_name'] ?? '.',
                 'email' => $order->user->email ?? 'NA',
-                'phone_number' => $order->user->phone,
+                'phone_number' => $billingData['phone'] ?? $order->user->phone,
                 'apartment' => 'NA',
                 'floor' => 'NA',
                 'street' => 'NA',

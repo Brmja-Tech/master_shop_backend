@@ -104,7 +104,7 @@ class OrderService
             ]);
 
             if ($order->payment_method === PaymentMethod::Paymob) {
-                $paymentData = $this->paymobService->createOrder($order->load('user'));
+                $paymentData = $this->paymobService->createOrder($order->load('user'), $data);
 
                 $order->update([
                     'paymob_order_id' => (string) $paymentData['paymob_order_id'],
@@ -115,7 +115,7 @@ class OrderService
 
             $user->cartItems()->delete();
 
-            return $order->load(['items.product.mainImage', 'delivery', 'vendor']);
+            return $order->load(['items.product.mainImage', 'vendor']);
         });
     }
 }

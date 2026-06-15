@@ -14,6 +14,9 @@ class PlaceOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'first_name' => ['required', 'string', 'max:100'],
+            'last_name' => ['required', 'string', 'max:100'],
+            'phone' => ['required', 'string', 'max:30'],
             'payment_method' => ['required', 'in:cash,paymob'],
             'delivery_address' => ['required', 'string', 'max:500'],
             'delivery_latitude' => ['nullable', 'numeric', 'between:-90,90'],
