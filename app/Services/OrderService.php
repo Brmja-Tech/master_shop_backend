@@ -60,6 +60,9 @@ class OrderService
             $order = Order::create([
                 'user_id' => $user->id,
                 'vendor_id' => $vendor->id,
+                'customer_first_name' => $data['first_name'],
+                'customer_last_name' => $data['last_name'],
+                'customer_phone' => $data['phone'],
                 'status' => OrderStatus::Pending,
                 'payment_method' => PaymentMethod::from($data['payment_method']),
                 'payment_status' => PaymentStatus::Pending,
