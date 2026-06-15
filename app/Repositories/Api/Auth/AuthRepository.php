@@ -225,4 +225,15 @@ class AuthRepository
             ],
         ];
     } // End updateLocation Method
+
+    public function profile(User $user): array
+    {
+        return [
+            'status' => 200,
+            'message' => __('front.profile-retrieved-successfully'),
+            'data' => [
+                'user' => UserResource::make($user->fresh()),
+            ],
+        ];
+    } // End profile Method
 }

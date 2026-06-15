@@ -73,4 +73,9 @@ class AuthService
     {
         return $this->authRepository->updateLocation($user, $data);
     } //End updateLocation Method
+
+    public function profile(User $user)
+    {
+        return $this->authRepository->profile($user);
+    } //End profile Method
 }

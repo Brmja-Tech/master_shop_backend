@@ -207,6 +207,7 @@ return [
     'invalid-otp'                               => 'رمز التحقق غير صالح',
     'user-registration-failed'                  => 'فشل تسجيل المستخدم',
     'user-registered-successfully'              => 'تم تسجيل المستخدم بنجاح',
+    'profile-retrieved-successfully'            => 'تم جلب بيانات المستخدم بنجاح',
     'something-filed'                           => 'حدث فشل ما',
     'otp-not-verified'                          => 'لم يتم التحقق من رمز التحقق',
     '' => '',

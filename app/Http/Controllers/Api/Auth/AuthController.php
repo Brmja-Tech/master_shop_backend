@@ -98,4 +98,11 @@ class AuthController extends Controller
 
         return ApiResponse::sendResponse($response['status'], $response['message'], $response['data']);
     }
+
+    public function profile()
+    {
+        $response = $this->authService->profile(auth('sanctum')->user());
+
+        return ApiResponse::sendResponse($response['status'], $response['message'], $response['data']);
+    }
 }

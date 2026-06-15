@@ -87,6 +87,7 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
 ## ------------------ VENDOR AUTH ROUTES ------------------ ##
 
 Route::prefix('user')->middleware('user.auth')->group(function () {
+    Route::get('profile', [AuthController::class, 'profile']);
 
     Route::prefix('store-types')->group(function () {
         Route::get('lookup', [StoreTypeController::class, 'lookup']);

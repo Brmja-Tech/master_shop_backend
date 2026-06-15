@@ -208,6 +208,7 @@ return [
     'invalid-otp'                                   => 'Invalid OTP',
     'user-registration-failed'                      => 'User registration failed',
     'user-registered-successfully'                  => 'User registered successfully',
+    'profile-retrieved-successfully'                => 'User profile retrieved successfully',
     'something-filed'                               => 'Something failed',
     'otp-not-verified'                              => 'OTP not verified',
     'location-updated-successfully'                 => 'Location updated successfully',
