@@ -4,6 +4,9 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\SubcategoryController as AdminSubcategoryController;
 use App\Http\Controllers\Api\Auth\ForgotController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PaymobController;
+use App\Http\Controllers\Api\PaymobWebhookController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -107,6 +110,15 @@ Route::prefix('user')->middleware('user.auth')->group(function () {
         Route::delete('items/{id}', [CartController::class, 'destroy']);
         Route::delete('clear', [CartController::class, 'clear']);
     });
+    Route::prefix('orders')->group(function () {
+        Route::post('', [OrderController::class, 'store']);
+        Route::get('', [OrderController::class, 'index']);
+        Route::get('{order}', [OrderController::class, 'show']);
+        Route::post('{order}/cancel', [OrderController::class, 'cancel']);
+    });
     Route::get('favorites', [FavoriteProductController::class, 'index']);
 });
 Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);
+Route::post('paymob/callback', [PaymobController::class, 'callback']);
+Route::match(['get', 'post'], 'paymob/response', [PaymobController::class, 'response']);
+Route::post('paymob/webhook', PaymobWebhookController::class);
