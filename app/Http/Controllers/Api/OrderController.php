@@ -76,9 +76,7 @@ class OrderController extends Controller
         abort_if($order->user_id !== auth('sanctum')->id(), 403);
 
         $order->load([
-            'vendor',
-            'items.product.mainImage',
-            'delivery.driver:id,name,phone',
+            'vendor:id,store_name,logo',
         ]);
 
         return ApiResponse::sendResponse(
@@ -109,7 +107,9 @@ class OrderController extends Controller
         }
 
         $order->update($updates);
-        $order->load(['vendor', 'items.product.mainImage', 'delivery.driver:id,name,phone']);
+        $order->load([
+            'vendor:id,store_name,logo',
+        ]);
 
         return ApiResponse::sendResponse(
             200,
