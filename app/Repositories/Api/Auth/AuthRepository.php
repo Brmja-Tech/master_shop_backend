@@ -236,4 +236,21 @@ class AuthRepository
             ],
         ];
     } // End profile Method
+
+    public function updateProfile(User $user, array $data): array
+    {
+        $user->update([
+            'name' => $data['name'],
+            'phone' => $data['phone'],
+            'image' => $data['image'] ?? $user->image,
+        ]);
+
+        return [
+            'status' => 200,
+            'message' => __('front.profile-updated-successfully'),
+            'data' => [
+                'user' => UserResource::make($user->fresh()),
+            ],
+        ];
+    } // End updateProfile Method
 }

@@ -78,4 +78,17 @@ class AuthService
     {
         return $this->authRepository->profile($user);
     } //End profile Method
+
+    public function updateProfile(User $user, array $data)
+    {
+        if (isset($data['image'])) {
+            if ($user->image && $user->image !== 'uploads/images/image.png') {
+                $this->imageManager->deleteImage($user->image);
+            }
+
+            $data['image'] = $this->imageManager->uploadImage('/uploads/users', $data['image']);
+        }
+
+        return $this->authRepository->updateProfile($user, $data);
+    } //End updateProfile Method
 }

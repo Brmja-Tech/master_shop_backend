@@ -155,6 +155,7 @@ return [
     'current-password-wrong' => 'خطء في الرقم السري الحالي  ',
     'password-updated-successfully' => 'تم تحديث الرقم السري بنجاح',
     'profile-updated-successfully' => 'تم تحديث البيانات الشخصيه بنجاح',
+    'user-profile-updated-successfully' => 'تم تحديث بيانات المستخدم بنجاح',
     'profile' => 'البيانات الشخصيه',
     'basic-information' => 'المعلومات الخاصه',
     'update' => 'تعديل',

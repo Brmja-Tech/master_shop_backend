@@ -6,6 +6,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\FirebaseLoginRequest;
 use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\User\UpdateProfileRequest;
 use App\Http\Requests\Api\User\UpdateLocationRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Services\Api\Auth\AuthService;
@@ -102,6 +103,16 @@ class AuthController extends Controller
     public function profile()
     {
         $response = $this->authService->profile(auth('sanctum')->user());
+
+        return ApiResponse::sendResponse($response['status'], $response['message'], $response['data']);
+    }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $response = $this->authService->updateProfile(
+            auth('sanctum')->user(),
+            $request->validated()
+        );
 
         return ApiResponse::sendResponse($response['status'], $response['message'], $response['data']);
     }

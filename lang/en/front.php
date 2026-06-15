@@ -156,6 +156,7 @@ return [
     'current-password-wrong' => 'Current Password Worng',
     'password-updated-successfully' => 'Password Updated Successfully',
     'profile-updated-successfully' => 'Profile Updated Successfully',
+    'user-profile-updated-successfully' => 'User profile updated successfully',
     'profile' => 'Profile',
     'basic-information' => 'Basic Information',
     'update' => 'Update',

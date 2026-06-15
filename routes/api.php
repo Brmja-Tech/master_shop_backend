@@ -89,6 +89,7 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
 
 Route::prefix('user')->middleware('user.auth')->group(function () {
     Route::get('profile', [AuthController::class, 'profile']);
+    Route::post('profile/update', [AuthController::class, 'updateProfile']);
     Route::apiResource('addresses', UserAddressController::class);
 
     Route::prefix('store-types')->group(function () {
