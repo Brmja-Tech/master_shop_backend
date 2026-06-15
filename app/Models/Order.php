@@ -95,7 +95,7 @@ class Order extends Model
 
     public function isCancellable(): bool
     {
-        return $this->status->canBeCancelledByUser();
+        return $this->status?->canBeCancelledByUser() ?? false;
     }
 
     public function isPaid(): bool

@@ -7,6 +7,7 @@ use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\CancelOrderRequest;
 use App\Http\Requests\Api\PlaceOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
@@ -53,7 +54,6 @@ class OrderController extends Controller
             ->latest()
             ->with([
                 'vendor:id,store_name,logo',
-                'delivery:id,order_id,status',
             ])
             ->withCount('items')
             ->paginate(10);
@@ -77,6 +77,7 @@ class OrderController extends Controller
 
         $order->load([
             'vendor:id,store_name,logo',
+            'items.product.images',
         ]);
 
         return ApiResponse::sendResponse(
@@ -86,17 +87,18 @@ class OrderController extends Controller
         );
     }
 
-    public function cancel(Order $order)
+    public function cancel(CancelOrderRequest $request, Order $order)
     {
         abort_if($order->user_id !== auth('sanctum')->id(), 403);
 
-        if (! $order->isCancellable()) {
+        if (! $order->status || ! $order->isCancellable()) {
             return ApiResponse::sendResponse(422, 'Order cannot be cancelled at this stage');
         }
 
         $updates = [
             'status' => OrderStatus::Cancelled,
             'cancelled_by' => 'user',
+            'cancellation_reason' => $request->validated('cancellation_reason'),
         ];
 
         if (

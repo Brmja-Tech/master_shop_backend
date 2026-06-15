@@ -23,6 +23,16 @@ class OrderResource extends JsonResource
             'total' => $this->total,
             'delivery_address' => $this->delivery_address,
             'notes' => $this->notes,
+            'vendor' => $this->whenLoaded('vendor', function () {
+                return [
+                    'id' => $this->vendor?->id,
+                    'store_name' => $this->vendor?->store_name,
+                    'logo' => $this->vendor?->logo ? asset($this->vendor->logo) : null,
+                ];
+            }),
+            'items' => $this->whenLoaded('items', function () {
+                return OrderItemResource::collection($this->items);
+            }),
         ];
     }
 }
