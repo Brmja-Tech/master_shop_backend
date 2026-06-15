@@ -14,6 +14,7 @@ class UserAddressUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => ['sometimes', 'nullable', 'string', 'max:100'],
             'address' => ['sometimes', 'required', 'string', 'max:500'],
             'area' => ['sometimes', 'nullable', 'string', 'max:255'],
             'is_default' => ['sometimes', 'boolean'],

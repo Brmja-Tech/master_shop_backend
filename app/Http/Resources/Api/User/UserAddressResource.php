@@ -11,6 +11,7 @@ class UserAddressResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'title' => $this->title,
             'address' => $this->address,
             'area' => $this->area,
             'is_default' => (bool) $this->is_default,

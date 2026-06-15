@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class UserAddress extends Model
 {
     protected $fillable = [
+        'title',
         'address',
         'area',
         'is_default',
