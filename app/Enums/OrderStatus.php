@@ -8,7 +8,6 @@ enum OrderStatus: string
     case Accepted = 'accepted';
     case Preparing = 'preparing';
     case Ready = 'ready';
-    case PickedUp = 'picked_up';
     case OnTheWay = 'on_the_way';
     case Delivered = 'delivered';
     case Cancelled = 'cancelled';
@@ -20,7 +19,6 @@ enum OrderStatus: string
             self::Accepted => 'تم القبول',
             self::Preparing => 'قيد التحضير',
             self::Ready => 'جاهز للاستلام',
-            self::PickedUp => 'تم الاستلام من السائق',
             self::OnTheWay => 'في الطريق',
             self::Delivered => 'تم التسليم',
             self::Cancelled => 'تم الإلغاء',

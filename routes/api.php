@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Vendor\Auth\ForgotController as VendorForgotControl
 use App\Http\Controllers\Api\Vendor\ProductController;
 use App\Http\Controllers\Api\Vendor\ProfileController;
 use App\Http\Controllers\Api\Vendor\SubcategoryController;
+use App\Http\Controllers\Api\Vendor\OrderController as VendorOrderController;
 use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\FavoriteProductController;
 use App\Http\Controllers\Api\User\UserAddressController;
@@ -83,6 +84,7 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
         Route::apiResource('subcategories', SubcategoryController::class);
         Route::post('products/{id}', [ProductController::class, 'update']);
         Route::apiResource('products', ProductController::class);
+        Route::post('orders/{order}/status', [VendorOrderController::class, 'updateStatus']);
     });
 });
 ## ------------------ VENDOR AUTH ROUTES ------------------ ##

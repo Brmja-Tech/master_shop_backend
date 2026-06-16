@@ -14,5 +14,6 @@ return [
     'invalid-otp' => 'رمز التحقق غير صالح',
     'otp-verified-successfully' => 'تم التحقق من رمز التحقق بنجاح',
     'password-reset-successful' => 'تمت إعادة تعيين كلمة المرور بنجاح',
+    'order_status_updated' => 'تم تحديث حالة الطلب بنجاح',
 
 ];

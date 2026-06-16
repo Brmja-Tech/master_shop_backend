@@ -17,3 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Firebase Credentials
+/storage/app/firebase/firebase_credentials.json

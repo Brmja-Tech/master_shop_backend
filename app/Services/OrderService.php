@@ -13,12 +13,13 @@ use Illuminate\Support\Facades\DB;
 class OrderService
 {
     public function __construct(
-        protected PaymobService $paymobService
+        protected PaymobService $paymobService,
+        protected FcmService $fcmService
     ) {}
 
     public function placeOrder(User $user, array $data): Order
     {
-        return DB::transaction(function () use ($user, $data) {
+        $order = DB::transaction(function () use ($user, $data) {
             $cartItems = $user->cartItems()->with('product.vendor')->get();
 
             if ($cartItems->isEmpty()) {
@@ -133,5 +134,56 @@ class OrderService
 
             return $order->load(['items.product.mainImage', 'vendor']);
         });
+
+        try {
+            $order->loadMissing('vendor');
+            $vendor = $order->vendor;
+
+            if ($order && $vendor) {
+                $vendorFcmToken = trim((string) ($vendor->fcm_token ?? ''));
+
+                \Illuminate\Support\Facades\Log::info("Vendor FCM token check before notification for order #{$order->id} and vendor ID {$vendor->id}. " . ($vendorFcmToken === '' ? 'No FCM token found for this vendor.' : "FCM token is present: {$vendorFcmToken}"), [
+                    'order_id' => $order->id,
+                    'vendor_id' => $vendor->id,
+                    'has_fcm_token' => $vendorFcmToken !== '',
+                    'raw_fcm_token' => $vendor->fcm_token,
+                ]);
+
+                if ($vendorFcmToken !== '') {
+                    \Illuminate\Support\Facades\Log::info("FCM token found for vendor ID {$vendor->id}: {$vendorFcmToken}");
+
+                    $customerName = trim(($order->customer_first_name ?? '') . ' ' . ($order->customer_last_name ?? ''));
+                    if (empty($customerName)) {
+                        $customerName = $user->name ?? 'User';
+                    }
+
+                    $locale = app()->getLocale();
+                    $title = ($locale === 'ar') ? 'طلب جديد' : 'New Order Received';
+                    $body = ($locale === 'ar')
+                        ? "لقد تلقيت طلباً جديداً رقم #{$order->id} من {$customerName}"
+                        : "You have received a new order #{$order->id} from {$customerName}";
+
+                    $sent = $this->fcmService->sendNotification($vendorFcmToken, $title, $body, [
+                        'order_id' => (string) $order->id,
+                        'customer_name' => $customerName,
+                        'type' => 'new_order'
+                    ]);
+
+                    if ($sent) {
+                        \Illuminate\Support\Facades\Log::info("FCM push notification sent successfully to vendor ID {$vendor->id} for order #{$order->id}");
+                    } else {
+                        \Illuminate\Support\Facades\Log::error("Failed to send FCM push notification to vendor ID {$vendor->id} for order #{$order->id}");
+                    }
+                } else {
+                    \Illuminate\Support\Facades\Log::warning("Vendor ID {$vendor->id} does not have an FCM token. Notification was skipped for order #{$order->id}");
+                }
+            } else {
+                \Illuminate\Support\Facades\Log::warning("Vendor not found for order #{$order->id}");
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('FCM Notification dispatch failed for order #' . ($order->id ?? 'unknown') . ': ' . $e->getMessage());
+        }
+
+        return $order;
     }
 }

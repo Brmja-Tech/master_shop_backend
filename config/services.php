@@ -31,4 +31,12 @@ return [
         ],
     ],
 
+    'firebase' => [
+        'credentials' => env('FIREBASE_CREDENTIALS')
+            ? ((str_starts_with(env('FIREBASE_CREDENTIALS'), '/') || str_starts_with(env('FIREBASE_CREDENTIALS'), '\\') || (strlen(env('FIREBASE_CREDENTIALS')) > 1 && env('FIREBASE_CREDENTIALS')[1] === ':'))
+                ? env('FIREBASE_CREDENTIALS')
+                : base_path(env('FIREBASE_CREDENTIALS')))
+            : storage_path('app/firebase/firebase_credentials.json'),
+    ],
+
 ];

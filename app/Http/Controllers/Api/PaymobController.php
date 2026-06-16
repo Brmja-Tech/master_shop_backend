@@ -7,16 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Services\PaymobService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class PaymobController extends Controller
 {
     public function callback(Request $request, PaymobService $paymobService)
     {
-        Log::info('Paymob callback received', [
-            'payload' => $request->all(),
-        ]);
-
         if (! $paymobService->verifyWebhook($request->all())) {
             return response('unauthorized', 401);
         }
@@ -35,10 +30,6 @@ class PaymobController extends Controller
 
     public function response(Request $request)
     {
-        Log::info('Paymob response received', [
-            'payload' => $request->all(),
-        ]);
-
         $success = filter_var($request->input('success'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         $pending = filter_var($request->input('pending'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         $transactionId = $request->input('id') ?? $request->input('txn_response_code');

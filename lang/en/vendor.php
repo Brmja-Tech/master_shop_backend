@@ -14,5 +14,6 @@ return [
     'invalid-otp' => 'Invalid OTP',
     'otp-verified-successfully' => 'OTP verified successfully',
     'password-reset-successful' => 'Password reset successfully',
+    'order_status_updated' => 'Order status updated successfully',
 
 ];
