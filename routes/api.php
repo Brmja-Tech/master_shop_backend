@@ -87,6 +87,7 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
         Route::get('orders', [VendorOrderController::class, 'index']);
         Route::get('orders/{order}', [VendorOrderController::class, 'show']);
         Route::post('orders/{order}/status', [VendorOrderController::class, 'updateStatus']);
+        Route::get('stats', [VendorOrderController::class, 'stats']);
     });
 });
 ## ------------------ VENDOR AUTH ROUTES ------------------ ##

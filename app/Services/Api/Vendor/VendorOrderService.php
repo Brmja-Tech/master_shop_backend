@@ -106,4 +106,9 @@ class VendorOrderService
 
         return $order->load(['vendor', 'items.product.images']);
     }
+
+    public function getTodayStats(Vendor $vendor): array
+    {
+        return $this->repository->getTodayStatsForVendor($vendor->id);
+    }
 }

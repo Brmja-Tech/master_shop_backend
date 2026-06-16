@@ -17,5 +17,6 @@ return [
     'order_status_updated' => 'تم تحديث حالة الطلب بنجاح',
     'orders_retrieved' => 'تم جلب الطلبات بنجاح',
     'order_retrieved' => 'تم جلب تفاصيل الطلب بنجاح',
+    'stats_retrieved' => 'تم جلب إحصائيات المتجر بنجاح',
 
 ];

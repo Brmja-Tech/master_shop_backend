@@ -25,6 +25,7 @@ class VendorOrderResource extends JsonResource
             'total' => $this->total,
             'delivery_address' => $this->delivery_address,
             'notes' => $this->when($isDetailed, $this->notes),
+            'cancellation_reason' => $this->when($isDetailed, $this->cancellation_reason),
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
             'items_count' => $this->whenCounted('items'),

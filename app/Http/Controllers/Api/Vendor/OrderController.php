@@ -68,4 +68,17 @@ class OrderController extends Controller
             new VendorOrderResource($order)
         );
     }
+
+    public function stats()
+    {
+        $vendor = auth('sanctum')->user();
+
+        $stats = $this->service->getTodayStats($vendor);
+
+        return ApiResponse::sendResponse(
+            200,
+            __('vendor.stats_retrieved'),
+            $stats
+        );
+    }
 }

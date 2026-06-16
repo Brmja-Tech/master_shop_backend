@@ -17,5 +17,6 @@ return [
     'order_status_updated' => 'Order status updated successfully',
     'orders_retrieved' => 'Orders retrieved successfully',
     'order_retrieved' => 'Order retrieved successfully',
+    'stats_retrieved' => 'Vendor stats retrieved successfully',
 
 ];
