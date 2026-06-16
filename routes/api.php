@@ -90,6 +90,7 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
         Route::get('orders/{order}', [VendorOrderController::class, 'show']);
         Route::post('orders/{order}/status', [VendorOrderController::class, 'updateStatus']);
         Route::get('stats', [VendorOrderController::class, 'stats']);
+        Route::get('wallet/orders-with-withdraw-status', [VendorWalletController::class, 'ordersWithWithdrawStatus']);
         Route::get('wallet/withdrawable-order', [VendorWalletController::class, 'withdrawableOrders']);
         Route::get('wallet/withdraw-requests', [VendorWalletController::class, 'withdrawalRequests']);
         Route::post('wallet/withdraw-requests', [VendorWalletController::class, 'storeWithdrawalRequest']);

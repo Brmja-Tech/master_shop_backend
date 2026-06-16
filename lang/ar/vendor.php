@@ -18,6 +18,7 @@ return [
     'orders_retrieved' => 'تم جلب الطلبات بنجاح',
     'order_retrieved' => 'تم جلب تفاصيل الطلب بنجاح',
     'stats_retrieved' => 'تم جلب إحصائيات المتجر بنجاح',
+    'orders_with_withdraw_status_retrieved' => 'تم جلب الأوردرات',
     'withdrawable_orders_retrieved' => 'تم جلب الأوردرات المتاحة للسحب بنجاح',
     'withdraw_requests_retrieved' => 'تم جلب طلبات السحب بنجاح',
     'withdraw_request_created' => 'تم إنشاء طلب السحب بنجاح وهو بانتظار موافقة الإدارة',

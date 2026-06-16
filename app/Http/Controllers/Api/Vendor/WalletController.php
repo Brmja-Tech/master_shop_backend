@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Vendor;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\Vendor\VendorOrderWithdrawStatusResource;
 use App\Http\Resources\Api\Vendor\VendorWithdrawableOrderResource;
 use App\Http\Resources\Api\Vendor\VendorWithdrawalRequestResource;
 use App\Services\VendorWalletService;
@@ -24,6 +25,32 @@ class WalletController extends Controller
             200,
             __('vendor.withdrawable_orders_retrieved'),
             VendorWithdrawableOrderResource::collection($orders->items()),
+            [
+                'current_page' => $orders->currentPage(),
+                'last_page' => $orders->lastPage(),
+                'per_page' => $orders->perPage(),
+                'total' => $orders->total(),
+            ]
+        );
+    }
+
+    public function ordersWithWithdrawStatus(Request $request)
+    {
+        $vendor = auth('sanctum')->user();
+        $request->validate([
+            'withdraw_status' => ['nullable', 'in:available,pending,approved,rejected'],
+        ]);
+
+        $orders = $this->walletService->getOrdersWithWithdrawStatus(
+            $vendor,
+            $request->integer('per_page', 15),
+            $request->input('withdraw_status')
+        );
+
+        return ApiResponse::sendResponse(
+            200,
+            __('vendor.orders_with_withdraw_status_retrieved'),
+            VendorOrderWithdrawStatusResource::collection($orders->items()),
             [
                 'current_page' => $orders->currentPage(),
                 'last_page' => $orders->lastPage(),

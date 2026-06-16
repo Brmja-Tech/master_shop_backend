@@ -18,6 +18,7 @@ return [
     'orders_retrieved' => 'Orders retrieved successfully',
     'order_retrieved' => 'Order retrieved successfully',
     'stats_retrieved' => 'Vendor stats retrieved successfully',
+    'orders_with_withdraw_status_retrieved' => 'Orders retrieved',
     'withdrawable_orders_retrieved' => 'Withdrawable orders retrieved successfully',
     'withdraw_requests_retrieved' => 'Withdrawal requests retrieved successfully',
     'withdraw_request_created' => 'Withdrawal request created successfully and is awaiting admin approval',

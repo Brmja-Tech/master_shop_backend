@@ -15,6 +15,43 @@ use Illuminate\Support\Facades\DB;
 
 class VendorWalletService
 {
+    public function getOrdersWithWithdrawStatus(Vendor $vendor, int $perPage = 15, ?string $withdrawStatus = null): LengthAwarePaginator
+    {
+        $orders = Order::query()
+            ->where('vendor_id', $vendor->id)
+            ->where('payment_method', PaymentMethod::Paymob->value)
+            ->whereNotNull('paymob_transaction_id')
+            ->with([
+                'withdrawalAllocations' => function ($query) {
+                    $query->with('withdrawalRequest')->latest();
+                },
+            ])
+            ->orderByDesc('id')
+            ->get();
+
+        $filteredOrders = $orders->filter(function (Order $order) use ($withdrawStatus) {
+            $latestAllocation = $order->withdrawalAllocations->sortByDesc('id')->first();
+            $status = $latestAllocation?->withdrawalRequest?->status?->value ?? 'available';
+
+            if ($withdrawStatus === null || $withdrawStatus === '') {
+                return true;
+            }
+
+            return $status === $withdrawStatus;
+        })->values();
+
+        $currentPage = request()->integer('page', 1);
+        $items = $filteredOrders->forPage($currentPage, $perPage)->values();
+
+        return new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $filteredOrders->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+    }
+
     public function getWithdrawableOrders(Vendor $vendor, int $perPage = 15): LengthAwarePaginator
     {
         return Order::query()
