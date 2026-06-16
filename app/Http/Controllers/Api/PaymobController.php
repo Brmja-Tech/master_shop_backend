@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Services\PaymobService;
@@ -20,7 +19,7 @@ class PaymobController extends Controller
 
         if ($order && $request->input('obj.success') === true) {
             $order->update([
-                'payment_status' => PaymentStatus::Paid,
+                'payment_status' => \App\Enums\PaymentStatus::Paid,
                 'paymob_transaction_id' => (string) $request->input('obj.id'),
             ]);
         }

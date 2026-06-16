@@ -67,4 +67,14 @@ class Vendor extends Authenticatable
     {
         return $this->hasMany(Product::class);
     }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function withdrawalRequests(): HasMany
+    {
+        return $this->hasMany(VendorWithdrawalRequest::class);
+    }
 }

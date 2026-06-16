@@ -14,6 +14,8 @@ class VendorOrderResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'paymob_order_id' => $this->paymob_order_id,
+            'paymob_transaction_id' => $this->paymob_transaction_id,
             'customer_first_name' => $this->customer_first_name,
             'customer_last_name' => $this->customer_last_name,
             'customer_phone' => $this->customer_phone,

@@ -55,6 +55,11 @@ class SettingsController extends Controller
         return view('dashboard.settings.banners.index');
     }
 
+    public function withdrawRequests()
+    {
+        return view('dashboard.withdraw-requests.index');
+    }
+
     public function contacts()
     {
         return view('dashboard.contacts.index');

@@ -11,6 +11,8 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'paymob_order_id' => $this->paymob_order_id,
+            'paymob_transaction_id' => $this->paymob_transaction_id,
             'first_name' => $this->customer_first_name,
             'last_name' => $this->customer_last_name,
             'phone' => $this->customer_phone,

@@ -89,6 +89,7 @@ Route::group([
 
         Route::get('store-types',         [SettingsController::class, 'storeTypes'])->middleware('can:settings')->name('store-types.setting');
         Route::get('subcategories',       [SettingsController::class, 'subcategories'])->middleware('can:settings')->name('subcategories.setting');
+        Route::get('withdraw-requests',   [SettingsController::class, 'withdrawRequests'])->middleware('can:settings')->name('withdraw-requests.index');
 
     });
 

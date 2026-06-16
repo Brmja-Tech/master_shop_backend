@@ -18,5 +18,18 @@ return [
     'orders_retrieved' => 'تم جلب الطلبات بنجاح',
     'order_retrieved' => 'تم جلب تفاصيل الطلب بنجاح',
     'stats_retrieved' => 'تم جلب إحصائيات المتجر بنجاح',
+    'withdrawable_orders_retrieved' => 'تم جلب الأوردرات المتاحة للسحب بنجاح',
+    'withdraw_requests_retrieved' => 'تم جلب طلبات السحب بنجاح',
+    'withdraw_request_created' => 'تم إنشاء طلب السحب بنجاح وهو بانتظار موافقة الإدارة',
+    'withdraw_request_approved' => 'تمت الموافقة على طلب السحب بنجاح',
+    'withdraw_request_rejected' => 'تم رفض طلب السحب بنجاح',
+    'admin_withdraw_requests_retrieved' => 'تم جلب طلبات السحب للإدارة بنجاح',
+    'invalid_withdraw_amount' => 'مبلغ السحب غير صالح',
+    'insufficient_withdrawable_orders_balance' => 'المبلغ المطلوب أكبر من إجمالي الأوردرات المتاحة للسحب',
+    'withdraw_amount_must_match_full_orders' => 'لا يمكن السحب من جزء من أوردر. يجب أن يساوي المبلغ مجموع أوردرات كاملة متاحة',
+    'withdraw_request_already_processed' => 'تمت معالجة طلب السحب من قبل بالفعل',
+    'withdraw_method_instapay' => 'انستا باي',
+    'withdraw_method_vodafone_cash' => 'فودافون كاش',
+    'withdraw_method_bank_account' => 'حساب بنكي',
 
 ];

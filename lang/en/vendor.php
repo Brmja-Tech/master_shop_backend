@@ -18,5 +18,18 @@ return [
     'orders_retrieved' => 'Orders retrieved successfully',
     'order_retrieved' => 'Order retrieved successfully',
     'stats_retrieved' => 'Vendor stats retrieved successfully',
+    'withdrawable_orders_retrieved' => 'Withdrawable orders retrieved successfully',
+    'withdraw_requests_retrieved' => 'Withdrawal requests retrieved successfully',
+    'withdraw_request_created' => 'Withdrawal request created successfully and is awaiting admin approval',
+    'withdraw_request_approved' => 'Withdrawal request approved successfully',
+    'withdraw_request_rejected' => 'Withdrawal request rejected successfully',
+    'admin_withdraw_requests_retrieved' => 'Withdrawal requests retrieved successfully for admin',
+    'invalid_withdraw_amount' => 'Invalid withdrawal amount',
+    'insufficient_withdrawable_orders_balance' => 'Requested amount exceeds available withdrawable orders balance',
+    'withdraw_amount_must_match_full_orders' => 'Withdraw amount must match the total of full available orders only',
+    'withdraw_request_already_processed' => 'This withdrawal request has already been processed',
+    'withdraw_method_instapay' => 'InstaPay',
+    'withdraw_method_vodafone_cash' => 'Vodafone Cash',
+    'withdraw_method_bank_account' => 'Bank Account',
 
 ];

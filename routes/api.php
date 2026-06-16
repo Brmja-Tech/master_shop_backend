@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\SubcategoryController as AdminSubcategoryController;
+use App\Http\Controllers\Api\Admin\VendorWithdrawalRequestController as AdminVendorWithdrawalRequestController;
 use App\Http\Controllers\Api\Auth\ForgotController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\OrderController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Api\Vendor\ProductController;
 use App\Http\Controllers\Api\Vendor\ProfileController;
 use App\Http\Controllers\Api\Vendor\SubcategoryController;
 use App\Http\Controllers\Api\Vendor\OrderController as VendorOrderController;
+use App\Http\Controllers\Api\Vendor\WalletController as VendorWalletController;
 use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\FavoriteProductController;
 use App\Http\Controllers\Api\User\UserAddressController;
@@ -88,6 +90,9 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
         Route::get('orders/{order}', [VendorOrderController::class, 'show']);
         Route::post('orders/{order}/status', [VendorOrderController::class, 'updateStatus']);
         Route::get('stats', [VendorOrderController::class, 'stats']);
+        Route::get('wallet/withdrawable-orders', [VendorWalletController::class, 'withdrawableOrders']);
+        Route::get('wallet/withdraw-requests', [VendorWalletController::class, 'withdrawalRequests']);
+        Route::post('wallet/withdraw-requests', [VendorWalletController::class, 'storeWithdrawalRequest']);
     });
 });
 ## ------------------ VENDOR AUTH ROUTES ------------------ ##
@@ -131,3 +136,9 @@ Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']
 Route::post('paymob/callback', [PaymobController::class, 'callback']);
 Route::match(['get', 'post'], 'paymob/response', [PaymobController::class, 'response']);
 Route::post('paymob/webhook', PaymobWebhookController::class);
+
+Route::prefix('admin')->middleware(['setLocale', 'auth:admin'])->group(function () {
+    Route::get('withdraw-requests', [AdminVendorWithdrawalRequestController::class, 'index']);
+    Route::post('withdraw-requests/{vendorWithdrawalRequest}/approve', [AdminVendorWithdrawalRequestController::class, 'approve']);
+    Route::post('withdraw-requests/{vendorWithdrawalRequest}/reject', [AdminVendorWithdrawalRequestController::class, 'reject']);
+});

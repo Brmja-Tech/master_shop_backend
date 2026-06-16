@@ -147,6 +147,12 @@
                             {{ __('dashboard.subcategories') }}</span>
                     </a>
                 </li>
+                <li class="nav-item @yield('withdraw-requests-active')">
+                    <a class="d-flex align-items-center" href="{{ route('dashboard.withdraw-requests.index') }}">
+                        <i data-feather="credit-card"></i><span class="menu-title text-truncate">
+                            {{ __('dashboard.withdraw-requests') }}</span>
+                    </a>
+                </li>
             @endcan
 
         </ul>
