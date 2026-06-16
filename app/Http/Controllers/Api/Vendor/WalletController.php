@@ -36,15 +36,17 @@ class WalletController extends Controller
     public function withdrawableOrders()
     {
         $vendor = auth('sanctum')->user();
-        $orders = $this->walletService->getWithdrawableOrders($vendor);
+        $orders = $this->walletService->getWithdrawableOrders($vendor, request()->integer('per_page', 15));
 
         return ApiResponse::sendResponse(
             200,
             __('vendor.withdrawable_orders_retrieved'),
+            VendorWithdrawableOrderResource::collection($orders->items()),
             [
-                'total_orders' => $orders->count(),
-                'total_amount' => (float) $orders->sum('total'),
-                'orders' => VendorWithdrawableOrderResource::collection($orders),
+                'current_page' => $orders->currentPage(),
+                'last_page' => $orders->lastPage(),
+                'per_page' => $orders->perPage(),
+                'total' => $orders->total(),
             ]
         );
     }

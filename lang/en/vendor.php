@@ -26,6 +26,7 @@ return [
     'admin_withdraw_requests_retrieved' => 'Withdrawal requests retrieved successfully for admin',
     'invalid_withdraw_amount' => 'Invalid withdrawal amount',
     'insufficient_withdrawable_orders_balance' => 'Requested amount exceeds available withdrawable orders balance',
+    'invalid_withdrawable_orders_selection' => 'Selected orders are not available for withdrawal or were already used in another request',
     'withdraw_amount_must_match_full_orders' => 'Withdraw amount must match the total of full available orders only',
     'withdraw_request_already_processed' => 'This withdrawal request has already been processed',
     'withdraw_method_instapay' => 'InstaPay',

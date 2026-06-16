@@ -26,6 +26,7 @@ return [
     'admin_withdraw_requests_retrieved' => 'تم جلب طلبات السحب للإدارة بنجاح',
     'invalid_withdraw_amount' => 'مبلغ السحب غير صالح',
     'insufficient_withdrawable_orders_balance' => 'المبلغ المطلوب أكبر من إجمالي الأوردرات المتاحة للسحب',
+    'invalid_withdrawable_orders_selection' => 'الأوردرات المختارة غير متاحة للسحب أو سبق استخدامها في طلب سحب',
     'withdraw_amount_must_match_full_orders' => 'لا يمكن السحب من جزء من أوردر. يجب أن يساوي المبلغ مجموع أوردرات كاملة متاحة',
     'withdraw_request_already_processed' => 'تمت معالجة طلب السحب من قبل بالفعل',
     'withdraw_method_instapay' => 'انستا باي',

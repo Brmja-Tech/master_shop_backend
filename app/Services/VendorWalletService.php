@@ -9,36 +9,29 @@ use App\Models\Order;
 use App\Models\Vendor;
 use App\Models\VendorWithdrawalRequest;
 use App\Models\VendorWithdrawalRequestOrder;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class VendorWalletService
 {
-    public function getWithdrawableOrders(Vendor $vendor): Collection
+    public function getWithdrawableOrders(Vendor $vendor, int $perPage = 15): LengthAwarePaginator
     {
         $eligibleOrders = Order::query()
             ->where('vendor_id', $vendor->id)
             ->where('payment_method', PaymentMethod::Paymob->value)
             ->where('payment_status', PaymentStatus::Paid->value)
             ->whereNotNull('paymob_transaction_id')
-            ->orderBy('id')
-            ->get();
-
-        return $eligibleOrders->filter(function (Order $order) {
-            $allocatedAmount = (float) VendorWithdrawalRequestOrder::query()
-                ->where('order_id', $order->id)
-                ->whereHas('withdrawalRequest', function ($query) {
-                    $query->whereIn('status', [
+            ->whereDoesntHave('withdrawalAllocations', function ($query) {
+                $query->whereHas('withdrawalRequest', function ($subQuery) {
+                    $subQuery->whereIn('status', [
                         VendorWithdrawalStatus::Pending->value,
                         VendorWithdrawalStatus::Approved->value,
                     ]);
-                })
-                ->sum('amount');
-
-            $availableAmount = round((float) $order->total - $allocatedAmount, 2);
-
-            return $availableAmount > 0;
-        })->values();
+                });
+            })
+            ->orderBy('id')
+            ->paginate($perPage);
     }
 
     public function createWithdrawalRequest(Vendor $vendor, array $data): VendorWithdrawalRequest
@@ -60,11 +53,8 @@ class VendorWalletService
                 ->lockForUpdate()
                 ->get();
 
-            $remainingAmount = $amount;
-            $allocations = [];
-
-            foreach ($eligibleOrders as $order) {
-                $allocatedAmount = (float) VendorWithdrawalRequestOrder::query()
+            $availableOrders = $eligibleOrders->filter(function (Order $order) {
+                return ! VendorWithdrawalRequestOrder::query()
                     ->where('order_id', $order->id)
                     ->whereHas('withdrawalRequest', function ($query) {
                         $query->whereIn('status', [
@@ -72,32 +62,12 @@ class VendorWalletService
                             VendorWithdrawalStatus::Approved->value,
                         ]);
                     })
-                    ->sum('amount');
+                    ->exists();
+            })->values();
 
-                $availableAmount = round((float) $order->total - $allocatedAmount, 2);
+            $matchedOrders = $this->findMatchingOrdersByAmount($availableOrders, $amount);
 
-                if ($availableAmount <= 0) {
-                    continue;
-                }
-
-                // Withdraw requests can only consume whole orders, never partial amounts.
-                if ($availableAmount > $remainingAmount) {
-                    continue;
-                }
-
-                $allocations[] = [
-                    'order' => $order,
-                    'amount' => $availableAmount,
-                ];
-
-                $remainingAmount = round($remainingAmount - $availableAmount, 2);
-
-                if ($remainingAmount <= 0) {
-                    break;
-                }
-            }
-
-            if ($remainingAmount > 0) {
+            if ($matchedOrders->isEmpty()) {
                 abort(422, __('vendor.withdraw_amount_must_match_full_orders'));
             }
 
@@ -109,11 +79,11 @@ class VendorWalletService
                 'status' => VendorWithdrawalStatus::Pending,
             ]);
 
-            foreach ($allocations as $allocation) {
+            foreach ($matchedOrders as $order) {
                 VendorWithdrawalRequestOrder::query()->create([
                     'vendor_withdrawal_request_id' => $withdrawalRequest->id,
-                    'order_id' => $allocation['order']->id,
-                    'amount' => $allocation['amount'],
+                    'order_id' => $order->id,
+                    'amount' => $order->total,
                 ]);
             }
 
@@ -165,5 +135,47 @@ class VendorWalletService
 
             return $withdrawalRequest->fresh(['vendor', 'processedByAdmin', 'orderAllocations.order']);
         });
+    }
+
+    private function findMatchingOrdersByAmount(Collection $orders, float $targetAmount): Collection
+    {
+        $targetCents = (int) round($targetAmount * 100);
+
+        if ($targetCents <= 0) {
+            return collect();
+        }
+
+        $states = [
+            0 => [],
+        ];
+
+        foreach ($orders as $order) {
+            $orderCents = (int) round(((float) $order->total) * 100);
+            $nextStates = $states;
+
+            foreach ($states as $sum => $selectedOrderIds) {
+                $newSum = $sum + $orderCents;
+
+                if ($newSum > $targetCents || array_key_exists($newSum, $nextStates)) {
+                    continue;
+                }
+
+                $nextStates[$newSum] = [...$selectedOrderIds, $order->id];
+            }
+
+            $states = $nextStates;
+
+            if (array_key_exists($targetCents, $states)) {
+                break;
+            }
+        }
+
+        if (! array_key_exists($targetCents, $states)) {
+            return collect();
+        }
+
+        $selectedIds = $states[$targetCents];
+
+        return $orders->whereIn('id', $selectedIds)->values();
     }
 }
