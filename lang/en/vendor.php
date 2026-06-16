@@ -15,5 +15,7 @@ return [
     'otp-verified-successfully' => 'OTP verified successfully',
     'password-reset-successful' => 'Password reset successfully',
     'order_status_updated' => 'Order status updated successfully',
+    'orders_retrieved' => 'Orders retrieved successfully',
+    'order_retrieved' => 'Order retrieved successfully',
 
 ];

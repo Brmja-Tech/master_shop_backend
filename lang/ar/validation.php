@@ -289,6 +289,7 @@ return [
     'successfully' => 'تم حفظ البيانات بنجاح',
     'Password-Reset-Successfully'=>'تم تغيير الرقم السري بنجاح',
     'login-success'=>'تم تسجيل الدخول بنجاح مرحبا : ',
+    'order_cannot_be_cancelled' => 'لا يمكن إلغاء الطلب في هذه المرحلة',
 
 
 ];

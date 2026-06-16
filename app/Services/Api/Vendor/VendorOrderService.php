@@ -7,14 +7,27 @@ use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use App\Models\Order;
 use App\Models\Vendor;
+use App\Repositories\Api\Vendor\VendorOrderRepository;
 use App\Services\FcmService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
 class VendorOrderService
 {
     public function __construct(
+        protected VendorOrderRepository $repository,
         protected FcmService $fcmService
     ) {}
+
+    public function index(Vendor $vendor, ?string $status, int $perPage): LengthAwarePaginator
+    {
+        return $this->repository->getPaginatedForVendor($vendor->id, $perPage, $status);
+    }
+
+    public function show(Vendor $vendor, int $orderId): Order
+    {
+        return $this->repository->findForVendor($orderId, $vendor->id);
+    }
 
     public function updateStatus(Vendor $vendor, Order $order, array $data): Order
     {
@@ -82,7 +95,7 @@ class VendorOrderService
                         Log::error("Failed to send FCM push notification to user ID {$user->id} for order #{$order->id}");
                     }
                 } else {
-                    Log::warning("User ID {$user->id} does not have an FCM token (معندهوش fcm). Notification skipped for order #{$order->id}");
+                    Log::warning("User ID {$user->id} does not have an FCM token. Notification skipped for order #{$order->id}");
                 }
             } else {
                 Log::warning("No user model associated with order #{$order->id}. Notification skipped.");
@@ -91,6 +104,6 @@ class VendorOrderService
             Log::error('FCM Notification dispatch failed for user order status update #' . $order->id . ': ' . $e->getMessage());
         }
 
-        return $order;
+        return $order->load(['vendor', 'items.product.images']);
     }
 }

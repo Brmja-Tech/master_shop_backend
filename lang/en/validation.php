@@ -277,4 +277,5 @@ return [
     'successfully' => 'Data has been saved successfully!',
     'Password-Reset-Successfully'=>'Password Reset Successfully',
     'login-success'=>'login Successfully welcome : ',
+    'order_cannot_be_cancelled' => 'Order cannot be cancelled at this stage',
 ];

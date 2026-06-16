@@ -58,6 +58,14 @@ class ApiExceptionHandler
             );
         }
 
+        if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+            return ApiResponse::sendResponse(
+                $e->getStatusCode(),
+                $e->getMessage(),
+                []
+            );
+        }
+
         return ApiResponse::sendResponse(
             500,
             __('validation.server-error'),

@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Resources\Api\Vendor;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Api\Vendor\VendorOrderItemResource;
+
+class VendorOrderResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        $isDetailed = $this->relationLoaded('items');
+
+        return [
+            'id' => $this->id,
+            'customer_first_name' => $this->customer_first_name,
+            'customer_last_name' => $this->customer_last_name,
+            'customer_phone' => $this->customer_phone,
+            'status' => $this->status?->value,
+            'payment_method' => $this->payment_method?->value,
+            'payment_status' => $this->payment_status?->value,
+            'subtotal' => $this->when($isDetailed, $this->subtotal),
+            'delivery_fee' => $this->when($isDetailed, $this->delivery_fee),
+            'total' => $this->total,
+            'delivery_address' => $this->delivery_address,
+            'notes' => $this->when($isDetailed, $this->notes),
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
+            'items_count' => $this->whenCounted('items'),
+            'items' => $this->whenLoaded('items', function () {
+                return VendorOrderItemResource::collection($this->items);
+            }),
+        ];
+    }
+}

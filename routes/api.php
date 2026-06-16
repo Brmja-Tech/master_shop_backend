@@ -84,6 +84,8 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
         Route::apiResource('subcategories', SubcategoryController::class);
         Route::post('products/{id}', [ProductController::class, 'update']);
         Route::apiResource('products', ProductController::class);
+        Route::get('orders', [VendorOrderController::class, 'index']);
+        Route::get('orders/{order}', [VendorOrderController::class, 'show']);
         Route::post('orders/{order}/status', [VendorOrderController::class, 'updateStatus']);
     });
 });
