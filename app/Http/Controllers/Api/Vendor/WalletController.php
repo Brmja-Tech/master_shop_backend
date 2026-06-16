@@ -46,6 +46,7 @@ class WalletController extends Controller
             $request->integer('per_page', 15),
             $request->input('withdraw_status')
         );
+        $availableWithdrawableAmount = $this->walletService->getAvailableWithdrawableAmount($vendor);
 
         return ApiResponse::sendResponse(
             200,
@@ -56,6 +57,9 @@ class WalletController extends Controller
                 'last_page' => $orders->lastPage(),
                 'per_page' => $orders->perPage(),
                 'total' => $orders->total(),
+            ],
+            [
+                'available_withdrawable_amount' => round($availableWithdrawableAmount, 2),
             ]
         );
     }

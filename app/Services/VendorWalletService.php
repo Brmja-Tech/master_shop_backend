@@ -19,8 +19,14 @@ class VendorWalletService
     {
         $orders = Order::query()
             ->where('vendor_id', $vendor->id)
-            ->where('payment_method', PaymentMethod::Paymob->value)
-            ->whereNotNull('paymob_transaction_id')
+            ->withSum(['withdrawalAllocations as allocated_withdraw_amount' => function ($query) {
+                $query->whereHas('withdrawalRequest', function ($subQuery) {
+                    $subQuery->whereIn('status', [
+                        VendorWithdrawalStatus::Pending->value,
+                        VendorWithdrawalStatus::Approved->value,
+                    ]);
+                });
+            }], 'amount')
             ->with([
                 'withdrawalAllocations' => function ($query) {
                     $query->with('withdrawalRequest')->latest();
@@ -50,6 +56,24 @@ class VendorWalletService
             $currentPage,
             ['path' => request()->url(), 'query' => request()->query()]
         );
+    }
+
+    public function getAvailableWithdrawableAmount(Vendor $vendor): float
+    {
+        return (float) Order::query()
+            ->where('vendor_id', $vendor->id)
+            ->where('payment_method', PaymentMethod::Paymob->value)
+            ->where('payment_status', PaymentStatus::Paid->value)
+            ->whereNotNull('paymob_transaction_id')
+            ->whereDoesntHave('withdrawalAllocations', function ($query) {
+                $query->whereHas('withdrawalRequest', function ($subQuery) {
+                    $subQuery->whereIn('status', [
+                        VendorWithdrawalStatus::Pending->value,
+                        VendorWithdrawalStatus::Approved->value,
+                    ]);
+                });
+            })
+            ->sum('total');
     }
 
     public function getWithdrawableOrders(Vendor $vendor, int $perPage = 15): LengthAwarePaginator
