@@ -8,6 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasTable('vendor_withdrawal_requests')) {
+            return;
+        }
+
         Schema::create('vendor_withdrawal_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vendor_id')->constrained()->cascadeOnDelete();

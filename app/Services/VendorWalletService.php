@@ -17,7 +17,7 @@ class VendorWalletService
 {
     public function getWithdrawableOrders(Vendor $vendor, int $perPage = 15): LengthAwarePaginator
     {
-        $eligibleOrders = Order::query()
+        return Order::query()
             ->where('vendor_id', $vendor->id)
             ->where('payment_method', PaymentMethod::Paymob->value)
             ->where('payment_status', PaymentStatus::Paid->value)
@@ -44,26 +44,22 @@ class VendorWalletService
                 abort(422, __('vendor.invalid_withdraw_amount'));
             }
 
-            $eligibleOrders = Order::query()
+            $availableOrders = Order::query()
                 ->where('vendor_id', $lockedVendor->id)
                 ->where('payment_method', PaymentMethod::Paymob->value)
                 ->where('payment_status', PaymentStatus::Paid->value)
                 ->whereNotNull('paymob_transaction_id')
-                ->orderBy('id')
-                ->lockForUpdate()
-                ->get();
-
-            $availableOrders = $eligibleOrders->filter(function (Order $order) {
-                return ! VendorWithdrawalRequestOrder::query()
-                    ->where('order_id', $order->id)
-                    ->whereHas('withdrawalRequest', function ($query) {
-                        $query->whereIn('status', [
+                ->whereDoesntHave('withdrawalAllocations', function ($query) {
+                    $query->whereHas('withdrawalRequest', function ($subQuery) {
+                        $subQuery->whereIn('status', [
                             VendorWithdrawalStatus::Pending->value,
                             VendorWithdrawalStatus::Approved->value,
                         ]);
-                    })
-                    ->exists();
-            })->values();
+                    });
+                })
+                ->orderBy('id')
+                ->lockForUpdate()
+                ->get();
 
             $matchedOrders = $this->findMatchingOrdersByAmount($availableOrders, $amount);
 

@@ -40,5 +40,4 @@ class VendorWithdrawalRequest extends Model
     {
         return $this->hasMany(VendorWithdrawalRequestOrder::class, 'vendor_withdrawal_request_id');
     }
-
 }

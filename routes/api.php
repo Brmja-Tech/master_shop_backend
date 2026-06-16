@@ -91,7 +91,6 @@ Route::prefix('vendor')->middleware('setLocale')->group(function () {
         Route::post('orders/{order}/status', [VendorOrderController::class, 'updateStatus']);
         Route::get('stats', [VendorOrderController::class, 'stats']);
         Route::get('wallet/withdrawable-order', [VendorWalletController::class, 'withdrawableOrders']);
-        Route::get('wallet/withdrawable-orders', [VendorWalletController::class, 'withdrawableOrders']);
         Route::get('wallet/withdraw-requests', [VendorWalletController::class, 'withdrawalRequests']);
         Route::post('wallet/withdraw-requests', [VendorWalletController::class, 'storeWithdrawalRequest']);
     });

@@ -15,28 +15,10 @@ class WalletController extends Controller
         protected VendorWalletService $walletService
     ) {}
 
-    public function withdrawalRequests(Request $request)
+    public function withdrawableOrders(Request $request)
     {
         $vendor = auth('sanctum')->user();
-        $requests = $vendor->withdrawalRequests()->with('orderAllocations.order')->latest()->paginate($request->integer('per_page', 15));
-
-        return ApiResponse::sendResponse(
-            200,
-            __('vendor.withdraw_requests_retrieved'),
-            VendorWithdrawalRequestResource::collection($requests->items()),
-            [
-                'current_page' => $requests->currentPage(),
-                'last_page' => $requests->lastPage(),
-                'per_page' => $requests->perPage(),
-                'total' => $requests->total(),
-            ]
-        );
-    }
-
-    public function withdrawableOrders()
-    {
-        $vendor = auth('sanctum')->user();
-        $orders = $this->walletService->getWithdrawableOrders($vendor, request()->integer('per_page', 15));
+        $orders = $this->walletService->getWithdrawableOrders($vendor, $request->integer('per_page', 15));
 
         return ApiResponse::sendResponse(
             200,
@@ -47,6 +29,27 @@ class WalletController extends Controller
                 'last_page' => $orders->lastPage(),
                 'per_page' => $orders->perPage(),
                 'total' => $orders->total(),
+            ]
+        );
+    }
+
+    public function withdrawalRequests(Request $request)
+    {
+        $vendor = auth('sanctum')->user();
+        $requests = $vendor->withdrawalRequests()
+            ->with('orderAllocations.order')
+            ->latest()
+            ->paginate($request->integer('per_page', 15));
+
+        return ApiResponse::sendResponse(
+            200,
+            __('vendor.withdraw_requests_retrieved'),
+            VendorWithdrawalRequestResource::collection($requests->items()),
+            [
+                'current_page' => $requests->currentPage(),
+                'last_page' => $requests->lastPage(),
+                'per_page' => $requests->perPage(),
+                'total' => $requests->total(),
             ]
         );
     }
