@@ -12,6 +12,9 @@ use App\Http\Requests\Api\PlaceOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\OrderService;
+use App\Services\PaymobService;
+use Illuminate\Http\Client\RequestException;
+use RuntimeException;
 
 class OrderController extends Controller
 {
@@ -87,7 +90,7 @@ class OrderController extends Controller
         );
     }
 
-    public function cancel(CancelOrderRequest $request, Order $order)
+    public function cancel(CancelOrderRequest $request, Order $order, PaymobService $paymobService)
     {
         abort_if($order->user_id !== auth('sanctum')->id(), 403);
 
@@ -101,10 +104,17 @@ class OrderController extends Controller
             'cancellation_reason' => $request->validated('cancellation_reason'),
         ];
 
-        if (
-            $order->payment_method === PaymentMethod::Paymob
-            && $order->payment_status === PaymentStatus::Paid
-        ) {
+        if ($order->payment_method === PaymentMethod::Paymob && $order->payment_status === PaymentStatus::Paid) {
+            try {
+                $paymobService->refundOrVoid($order);
+            } catch (RequestException|RuntimeException $exception) {
+                $message = $exception instanceof RequestException
+                    ? (data_get($exception->response?->json(), 'message') ?? 'Unable to refund this Paymob transaction right now.')
+                    : $exception->getMessage();
+
+                return ApiResponse::sendResponse(422, $message);
+            }
+
             $updates['payment_status'] = PaymentStatus::Refunded;
         }
 

@@ -9,14 +9,18 @@ use App\Models\Order;
 use App\Models\Vendor;
 use App\Repositories\Api\Vendor\VendorOrderRepository;
 use App\Services\FcmService;
+use App\Services\PaymobService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
+use RuntimeException;
 
 class VendorOrderService
 {
     public function __construct(
         protected VendorOrderRepository $repository,
-        protected FcmService $fcmService
+        protected FcmService $fcmService,
+        protected PaymobService $paymobService
     ) {}
 
     public function index(Vendor $vendor, ?string $status, int $perPage): LengthAwarePaginator
@@ -45,10 +49,17 @@ class VendorOrderService
                 'cancellation_reason' => $data['cancellation_reason'] ?? null,
             ];
 
-            if (
-                $order->payment_method === PaymentMethod::Paymob
-                && $order->payment_status === PaymentStatus::Paid
-            ) {
+            if ($order->payment_method === PaymentMethod::Paymob && $order->payment_status === PaymentStatus::Paid) {
+                try {
+                    $this->paymobService->refundOrVoid($order);
+                } catch (RequestException|RuntimeException $exception) {
+                    $message = $exception instanceof RequestException
+                        ? (data_get($exception->response?->json(), 'message') ?? 'Unable to refund this Paymob transaction right now.')
+                        : $exception->getMessage();
+
+                    abort(422, $message);
+                }
+
                 $updates['payment_status'] = PaymentStatus::Refunded;
             }
 

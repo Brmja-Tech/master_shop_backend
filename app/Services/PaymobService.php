@@ -2,15 +2,19 @@
 
 namespace App\Services;
 
+use App\Enums\PaymentStatus;
 use App\Models\Order;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use RuntimeException;
 
 class PaymobService
 {
+    private const BASE_URL = 'https://accept.paymob.com/api';
+
     public function createOrder(Order $order, array $billingData = []): array
     {
-        $authHttpResponse = Http::post('https://accept.paymob.com/api/auth/tokens', [
+        $authHttpResponse = Http::post(self::BASE_URL . '/auth/tokens', [
             'api_key' => config('paymob.api_key'),
         ]);
 
@@ -21,7 +25,7 @@ class PaymobService
         $merchantOrderId = 'order_' . $order->id . '_' . now()->timestamp;
 
         $orderHttpResponse = Http::withToken($token)
-            ->post('https://accept.paymob.com/api/ecommerce/orders', [
+            ->post(self::BASE_URL . '/ecommerce/orders', [
                 'auth_token' => $token,
                 'delivery_needed' => false,
                 'amount_cents' => $amountCents,
@@ -34,7 +38,7 @@ class PaymobService
 
         $paymobOrderId = $orderResponse['id'];
 
-        $paymentKeyHttpResponse = Http::post('https://accept.paymob.com/api/acceptance/payment_keys', [
+        $paymentKeyHttpResponse = Http::post(self::BASE_URL . '/acceptance/payment_keys', [
             'auth_token' => $token,
             'amount_cents' => $amountCents,
             'expiration' => 3600,
@@ -63,7 +67,7 @@ class PaymobService
         $paymentKeyResponse = $paymentKeyHttpResponse->throw()->json();
 
         $paymentKey = $paymentKeyResponse['token'];
-        $paymentUrl = 'https://accept.paymob.com/api/acceptance/iframes/'
+        $paymentUrl = self::BASE_URL . '/acceptance/iframes/'
             . config('paymob.iframe_id')
             . '?payment_token=' . $paymentKey;
 
@@ -71,6 +75,38 @@ class PaymobService
             'paymob_order_id' => $paymobOrderId,
             'payment_key' => $paymentKey,
             'payment_url' => $paymentUrl,
+        ];
+    }
+
+    public function refundOrVoid(Order $order): array
+    {
+        if (! $order->paymob_transaction_id) {
+            throw new RuntimeException('Missing Paymob transaction ID for this order.');
+        }
+
+        $token = $this->authenticate();
+        $transactionId = (int) $order->paymob_transaction_id;
+        $amountCents = (int) round(((float) $order->total) * 100);
+        $isCaptured = $order->payment_status === PaymentStatus::Paid;
+
+        $endpoint = $isCaptured
+            ? config('paymob.refund_endpoint', self::BASE_URL . '/acceptance/void_refund/refund')
+            : config('paymob.void_endpoint', self::BASE_URL . '/acceptance/void_refund/void');
+
+        $payload = [
+            'auth_token' => $token,
+            'transaction_id' => $transactionId,
+        ];
+
+        if ($isCaptured) {
+            $payload['amount_cents'] = $amountCents;
+        }
+
+        $response = Http::post($endpoint, $payload)->throw()->json();
+
+        return [
+            'action' => $isCaptured ? 'refund' : 'void',
+            'response' => $response,
         ];
     }
 
@@ -120,5 +156,34 @@ class PaymobService
         $computed = hash_hmac('sha512', $concatenated, (string) config('paymob.hmac_secret'));
 
         return hash_equals($computed, (string) $hmac);
+    }
+
+    public function syncOrderPaymentFromWebhook(Order $order, array $payload): void
+    {
+        $updates = [];
+
+        if (Arr::get($payload, 'obj.success') === true) {
+            $updates['payment_status'] = PaymentStatus::Paid;
+            $updates['paymob_transaction_id'] = (string) Arr::get($payload, 'obj.id');
+        }
+
+        if (Arr::get($payload, 'obj.is_refunded') === true || Arr::get($payload, 'obj.is_voided') === true) {
+            $updates['payment_status'] = PaymentStatus::Refunded;
+        }
+
+        if ($updates !== []) {
+            $order->update($updates);
+        }
+    }
+
+    private function authenticate(): string
+    {
+        $authHttpResponse = Http::post(self::BASE_URL . '/auth/tokens', [
+            'api_key' => config('paymob.api_key'),
+        ]);
+
+        $authResponse = $authHttpResponse->throw()->json();
+
+        return (string) $authResponse['token'];
     }
 }

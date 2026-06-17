@@ -17,11 +17,8 @@ class PaymobWebhookController extends Controller
 
         $order = Order::where('paymob_order_id', $request->input('obj.order.id'))->first();
 
-        if ($order && $request->input('obj.success') === true) {
-            $order->update([
-                'payment_status' => \App\Enums\PaymentStatus::Paid,
-                'paymob_transaction_id' => (string) $request->input('obj.id'),
-            ]);
+        if ($order) {
+            $paymobService->syncOrderPaymentFromWebhook($order, $request->all());
         }
 
         return response('ok', 200);
