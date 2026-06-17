@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendor\UpdateOrderStatusRequest;
 use App\Http\Resources\Api\Vendor\VendorOrderResource;
 use App\Models\Order;
+use App\Models\Vendor;
 use App\Services\Api\Vendor\VendorOrderService;
 use Illuminate\Http\Request;
 
@@ -39,13 +40,11 @@ class OrderController extends Controller
         );
     }
 
-    public function show(Order $order)
+    public function show(int $order)
     {
+        /** @var Vendor $vendor */
         $vendor = auth('sanctum')->user();
-
-        abort_if($order->vendor_id !== $vendor->id, 403);
-
-        $order = $this->service->show($vendor, $order->id);
+        $order = $this->resolveAuthenticatedVendorOrder($vendor, $order);
 
         return ApiResponse::sendResponse(
             200,
@@ -54,11 +53,11 @@ class OrderController extends Controller
         );
     }
 
-    public function updateStatus(UpdateOrderStatusRequest $request, Order $order)
+    public function updateStatus(UpdateOrderStatusRequest $request, int $order)
     {
+        /** @var Vendor $vendor */
         $vendor = auth('sanctum')->user();
-
-        abort_if($order->vendor_id !== $vendor->id, 403);
+        $order = $this->resolveAuthenticatedVendorOrder($vendor, $order);
 
         $order = $this->service->updateStatus($vendor, $order, $request->validated());
 
@@ -80,5 +79,13 @@ class OrderController extends Controller
             __('vendor.stats_retrieved'),
             $stats
         );
+    }
+
+    private function resolveAuthenticatedVendorOrder(Vendor $vendor, int $orderId): Order
+    {
+        return $vendor->orders()
+            ->with(['user', 'items.product.images'])
+            ->whereKey($orderId)
+            ->firstOrFail();
     }
 }
