@@ -19,6 +19,8 @@ class VendorWalletService
     {
         $orders = Order::query()
             ->where('vendor_id', $vendor->id)
+            ->where('payment_status', PaymentStatus::Paid->value)
+            ->where('payment_method', PaymentMethod::Paymob->value)
             ->withSum(['withdrawalAllocations as allocated_withdraw_amount' => function ($query) {
                 $query->whereHas('withdrawalRequest', function ($subQuery) {
                     $subQuery->whereIn('status', [
