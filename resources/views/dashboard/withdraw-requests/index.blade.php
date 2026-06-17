@@ -20,8 +20,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('withdrawRequestApproved', function() {
-                const approveModal = bootstrap.Modal.getInstance(document.getElementById('approveWithdrawRequestModal'));
-                if (approveModal) approveModal.hide();
+                const viewModal = bootstrap.Modal.getInstance(document.getElementById('viewWithdrawRequestModal'));
+                if (viewModal) viewModal.hide();
 
                 Swal.fire({
                     position: 'top-start',
@@ -37,8 +37,8 @@
             });
 
             Livewire.on('withdrawRequestRejected', function() {
-                const rejectModal = bootstrap.Modal.getInstance(document.getElementById('rejectWithdrawRequestModal'));
-                if (rejectModal) rejectModal.hide();
+                const viewModal = bootstrap.Modal.getInstance(document.getElementById('viewWithdrawRequestModal'));
+                if (viewModal) viewModal.hide();
 
                 Swal.fire({
                     position: 'top-start',

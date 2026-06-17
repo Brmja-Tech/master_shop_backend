@@ -325,10 +325,13 @@ return [
     'forbidden-access'                      => 'Forbidden Access',
     'forbidden-access-text'                 => 'Sorry, you do not have permission to access this page.',
     'forbidden-access-desc'                 => 'Please contact the administrator if you believe this is a mistake.',
-    '' => '',
-    '' => '',
-    '' => '',
-
-
-
+    'orders' => 'Orders',
+    'view_details' => 'View Details',
+    'withdraw_request_details' => 'Withdraw Request Details',
+    'vendor_details' => 'Vendor Details',
+    'withdrawal_details' => 'Withdrawal & Payment Details',
+    'processed_by' => 'Processed By',
+    'processed_at' => 'Processed At',
+    'admin_action_required' => 'Admin Action Required',
+    'write_admin_note_placeholder' => 'Write any notes here for the vendor...',
 ];

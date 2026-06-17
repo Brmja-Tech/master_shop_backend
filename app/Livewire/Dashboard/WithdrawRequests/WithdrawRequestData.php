@@ -40,6 +40,17 @@ class WithdrawRequestData extends Component
         $this->adminNote = '';
     }
 
+    public function getSelectedRequest(): ?VendorWithdrawalRequest
+    {
+        if (!$this->selectedRequestId) {
+            return null;
+        }
+
+        return VendorWithdrawalRequest::query()
+            ->with(['vendor', 'processedByAdmin', 'orderAllocations.order'])
+            ->find($this->selectedRequestId);
+    }
+
     public function approve(int $requestId): void
     {
         $request = VendorWithdrawalRequest::findOrFail($requestId);
