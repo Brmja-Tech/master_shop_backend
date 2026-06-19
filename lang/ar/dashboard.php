@@ -342,4 +342,11 @@ return [
     'privacy-setting' => 'إعدادات سياسة الخصوصية',
     'terms-setting' => 'إعدادات الشروط والأحكام',
     'faqs-settings' => 'إعدادات الأسئلة الشائعة',
+    'vendors' => 'المتاجر',
+    'create-vendor' => 'اضافة متجر',
+    'update-vendor' => 'تعديل متجر',
+    'owner-name' => 'اسم صاحب المتجر',
+    'store-name' => 'اسم المتجر',
+    'address-description' => 'وصف العنوان',
+    'working-hours' => 'ساعات العمل',
 ];

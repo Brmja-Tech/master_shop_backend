@@ -23,7 +23,6 @@ class ProductSeeder extends Seeder
                 'latitude' => 30.044420,
                 'longitude' => 31.235712,
                 'address_description' => 'Restaurant demo address',
-                'delivery_fee' => 20,
                 'rate' => 4.8,
             ],
             [
@@ -34,7 +33,6 @@ class ProductSeeder extends Seeder
                 'latitude' => 30.050000,
                 'longitude' => 31.240000,
                 'address_description' => 'Cafe demo address',
-                'delivery_fee' => 15,
                 'rate' => 4.2,
             ],
             [
@@ -45,7 +43,6 @@ class ProductSeeder extends Seeder
                 'latitude' => 30.060000,
                 'longitude' => 31.250000,
                 'address_description' => 'Supermarket demo address',
-                'delivery_fee' => 10,
                 'rate' => 3.9,
             ],
             [
@@ -56,7 +53,6 @@ class ProductSeeder extends Seeder
                 'latitude' => 30.070000,
                 'longitude' => 31.260000,
                 'address_description' => 'Pharmacy demo address',
-                'delivery_fee' => 12,
                 'rate' => 4.6,
             ],
         ];
@@ -82,7 +78,6 @@ class ProductSeeder extends Seeder
                     'latitude' => $vendorData['latitude'],
                     'longitude' => $vendorData['longitude'],
                     'address_description' => $vendorData['address_description'],
-                    'delivery_fee' => $vendorData['delivery_fee'],
                     'rate' => $vendorData['rate'],
                     'is_active' => true,
                     'is_verified' => true,
@@ -165,11 +160,8 @@ class ProductSeeder extends Seeder
                     'unit' => 'piece',
                     'price' => 150,
                     'expiry_date' => now()->addMonths(3)->toDateString(),
-                    'main_image' => '/uploads/products/demo-main-1.jpg',
-                    'images' => [
-                        '/uploads/products/demo-1-1.jpg',
-                        '/uploads/products/demo-1-2.jpg',
-                    ],
+                    'main_image' => '/uploads/images/1.jpeg',
+                    'images' => [],
                 ],
                 [
                     'name' => 'سلطة سيزر',
@@ -181,11 +173,8 @@ class ProductSeeder extends Seeder
                     'unit' => 'bowl',
                     'price' => 95,
                     'expiry_date' => now()->addWeeks(2)->toDateString(),
-                    'main_image' => '/uploads/products/demo-main-3.jpg',
-                    'images' => [
-                        '/uploads/products/demo-3-1.jpg',
-                        '/uploads/products/demo-3-2.jpg',
-                    ],
+                    'main_image' => '/uploads/images/2.jpeg',
+                    'images' => [],
                 ],
             ],
             'كافيه' => [
@@ -200,10 +189,8 @@ class ProductSeeder extends Seeder
                     'unit' => 'cup',
                     'price' => 60,
                     'expiry_date' => now()->addMonth()->toDateString(),
-                    'main_image' => '/uploads/products/demo-main-2.jpg',
-                    'images' => [
-                        '/uploads/products/demo-2-1.jpg',
-                    ],
+                    'main_image' => '/uploads/images/3.jpeg',
+                    'images' => [],
                 ],
                 [
                     'name' => 'قهوة تركي',
@@ -216,10 +203,8 @@ class ProductSeeder extends Seeder
                     'unit' => 'cup',
                     'price' => 45,
                     'expiry_date' => now()->addMonth()->toDateString(),
-                    'main_image' => '/uploads/products/demo-main-4.jpg',
-                    'images' => [
-                        '/uploads/products/demo-4-1.jpg',
-                    ],
+                    'main_image' => '/uploads/images/4.jpeg',
+                    'images' => [],
                 ],
             ],
             'سوبر ماركت' => [
@@ -233,10 +218,8 @@ class ProductSeeder extends Seeder
                     'unit' => 'pack',
                     'price' => 20,
                     'expiry_date' => now()->addDays(3)->toDateString(),
-                    'main_image' => '/uploads/products/demo-main-5.jpg',
-                    'images' => [
-                        '/uploads/products/demo-5-1.jpg',
-                    ],
+                    'main_image' => '/uploads/images/1.jpeg',
+                    'images' => [],
                 ],
                 [
                     'name' => 'لبن كامل الدسم',
@@ -248,10 +231,8 @@ class ProductSeeder extends Seeder
                     'unit' => 'bottle',
                     'price' => 38,
                     'expiry_date' => now()->addDays(10)->toDateString(),
-                    'main_image' => '/uploads/products/demo-main-6.jpg',
-                    'images' => [
-                        '/uploads/products/demo-6-1.jpg',
-                    ],
+                    'main_image' => '/uploads/images/2.jpeg',
+                    'images' => [],
                 ],
             ],
             'صيدلية' => [
@@ -265,10 +246,8 @@ class ProductSeeder extends Seeder
                     'unit' => 'tube',
                     'price' => 120,
                     'expiry_date' => now()->addYear()->toDateString(),
-                    'main_image' => '/uploads/products/demo-main-7.jpg',
-                    'images' => [
-                        '/uploads/products/demo-7-1.jpg',
-                    ],
+                    'main_image' => '/uploads/images/3.jpeg',
+                    'images' => [],
                 ],
                 [
                     'name' => 'فيتامين سي',
@@ -280,10 +259,8 @@ class ProductSeeder extends Seeder
                     'unit' => 'box',
                     'price' => 90,
                     'expiry_date' => now()->addYear()->toDateString(),
-                    'main_image' => '/uploads/products/demo-main-8.jpg',
-                    'images' => [
-                        '/uploads/products/demo-8-1.jpg',
-                    ],
+                    'main_image' => '/uploads/images/4.jpeg',
+                    'images' => [],
                 ],
             ],
             default => [],

@@ -33,5 +33,7 @@ return [
     'withdraw_method_instapay' => 'InstaPay',
     'withdraw_method_vodafone_cash' => 'Vodafone Cash',
     'withdraw_method_bank_account' => 'Bank Account',
-
+    'created' => 'Vendor created successfully',
+    'updated' => 'Vendor updated successfully',
+    'show' => 'Vendor retrieved successfully',
 ];

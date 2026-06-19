@@ -13,6 +13,8 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Dashboard\Auth\ResetPasswordController;
 use App\Http\Controllers\Dashboard\Settings\StoreTypeController;
 use App\Http\Controllers\Api\Admin\SubcategoryController as AdminSubcategoryController;
+use App\Http\Controllers\Api\Admin\VendorWithdrawalRequestController as AdminVendorWithdrawalRequestController;
+use App\Http\Controllers\Api\Admin\VendorController as AdminVendorController;
 
 
 
@@ -90,6 +92,8 @@ Route::group([
 
         Route::get('store-types',         [SettingsController::class, 'storeTypes'])->middleware('can:settings')->name('store-types.setting');
         Route::get('subcategories',       [SettingsController::class, 'subcategories'])->middleware('can:settings')->name('subcategories.setting');
+        Route::get('vendors',             [SettingsController::class, 'vendors'])->middleware('can:settings')->name('vendors.setting');
+        Route::get('vendor/profile/{id}', [SettingsController::class, 'vendorProfile'])->middleware('can:settings')->name('vendor.profile');
         Route::get('withdraw-requests',   [SettingsController::class, 'withdrawRequests'])->middleware('can:settings')->name('withdraw-requests.index');
 
     });
@@ -104,4 +108,8 @@ Route::group([
 Route::prefix('admin')->middleware(['setLocale', 'auth:admin'])->group(function () {
     Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);
     Route::apiResource('subcategories', AdminSubcategoryController::class);
+    Route::get('withdraw-requests', [AdminVendorWithdrawalRequestController::class, 'index']);
+    Route::post('withdraw-requests/{vendorWithdrawalRequest}/approve', [AdminVendorWithdrawalRequestController::class, 'approve']);
+    Route::post('withdraw-requests/{vendorWithdrawalRequest}/reject', [AdminVendorWithdrawalRequestController::class, 'reject']);
+    Route::apiResource('vendors', AdminVendorController::class)->except(['destroy']);
 });

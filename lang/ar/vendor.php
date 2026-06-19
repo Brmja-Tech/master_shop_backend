@@ -33,5 +33,7 @@ return [
     'withdraw_method_instapay' => 'انستا باي',
     'withdraw_method_vodafone_cash' => 'فودافون كاش',
     'withdraw_method_bank_account' => 'حساب بنكي',
-
+    'created' => 'تم إنشاء المتجر بنجاح',
+    'updated' => 'تم تحديث المتجر بنجاح',
+    'show' => 'تم جلب المتجر بنجاح',
 ];

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\SubcategoryController as AdminSubcategoryController;
-use App\Http\Controllers\Api\Admin\VendorWithdrawalRequestController as AdminVendorWithdrawalRequestController;
 use App\Http\Controllers\Api\Auth\ForgotController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\OrderController;
@@ -139,8 +138,4 @@ Route::post('paymob/callback', [PaymobController::class, 'callback']);
 Route::match(['get', 'post'], 'paymob/response', [PaymobController::class, 'response']);
 Route::post('paymob/webhook', PaymobWebhookController::class);
 
-Route::prefix('admin')->middleware(['setLocale', 'auth:admin'])->group(function () {
-    Route::get('withdraw-requests', [AdminVendorWithdrawalRequestController::class, 'index']);
-    Route::post('withdraw-requests/{vendorWithdrawalRequest}/approve', [AdminVendorWithdrawalRequestController::class, 'approve']);
-    Route::post('withdraw-requests/{vendorWithdrawalRequest}/reject', [AdminVendorWithdrawalRequestController::class, 'reject']);
-});
+

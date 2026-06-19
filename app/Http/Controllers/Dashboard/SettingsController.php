@@ -71,4 +71,14 @@ class SettingsController extends Controller
         return view('dashboard.contacts.index');
     }
 
+    public function vendors()
+    {
+        return view('dashboard.settings.vendors.index');
+    }
+
+    public function vendorProfile($id)
+    {
+        $vendor = \App\Models\Vendor::with(['products.images', 'storeType'])->findOrFail($id);
+        return view('dashboard.settings.vendors.profile', compact('vendor'));
+    }
 }

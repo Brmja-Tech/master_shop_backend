@@ -154,6 +154,13 @@
                             {{ __('dashboard.subcategories') }}</span>
                     </a>
                 </li>
+                <li class="nav-item @yield('vendors-active')">
+                    <a class="d-flex align-items-center" href="{{ route('dashboard.vendors.setting') }}">
+                         <i data-feather="users"></i><span class="menu-title text-truncate">
+                             {{ __('dashboard.vendors') }}</span>
+                         <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ App\Models\Vendor::count() }}</span>
+                    </a>
+                </li>
                 <li class="nav-item @yield('withdraw-requests-active')">
                     <a class="d-flex align-items-center" href="{{ route('dashboard.withdraw-requests.index') }}">
                         <i data-feather="credit-card"></i><span class="menu-title text-truncate">

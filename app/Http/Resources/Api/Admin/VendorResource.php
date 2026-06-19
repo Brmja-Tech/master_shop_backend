@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Api\Vendor\Auth;
+namespace App\Http\Resources\Api\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -20,10 +20,16 @@ class VendorResource extends JsonResource
             'logo' => $this->logo ? url($this->logo) : null,
             'banner' => $this->banner ? url($this->banner) : null,
             'rate' => (float) $this->rate,
-            'is_active' => $this->is_active,
+            'is_active' => (bool) $this->is_active,
+            'is_store_open' => (bool) $this->is_store_open,
+            'is_accepting_orders' => (bool) $this->is_accepting_orders,
+            'working_hours' => $this->working_hours,
             'work_from' => $this->work_from,
             'work_to' => $this->work_to,
-            'is_verified' => $this->is_verified,
+            'is_verified' => (bool) $this->is_verified,
+            'latitude' => $this->latitude !== null ? (float) $this->latitude : null,
+            'longitude' => $this->longitude !== null ? (float) $this->longitude : null,
+            'address_description' => $this->address_description,
         ];
     }
 }

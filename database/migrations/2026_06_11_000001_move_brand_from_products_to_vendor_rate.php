@@ -10,7 +10,7 @@ return new class extends Migration
     {
         if (! Schema::hasColumn('vendors', 'rate')) {
             Schema::table('vendors', function (Blueprint $table) {
-                $table->decimal('rate', 3, 2)->default(0)->after('delivery_fee');
+                $table->decimal('rate', 3, 2)->default(0)->after('banner');
             });
         }
 

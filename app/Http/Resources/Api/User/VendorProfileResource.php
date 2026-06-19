@@ -21,7 +21,6 @@ class VendorProfileResource extends JsonResource
             'logo' => $this->logo ? asset($this->logo) : null,
             'banner' => $this->banner ? asset($this->banner) : null,
             'rate' => $this->rate,
-            'delivery_fee' => $this->delivery_fee,
             'distance_in_km' => $this->distance_in_km,
             'is_store_open' => $this->is_store_open,
             'subcategories' => $this->profile_subcategories,

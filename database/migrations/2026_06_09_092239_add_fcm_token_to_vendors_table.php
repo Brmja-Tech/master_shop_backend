@@ -34,7 +34,6 @@ return new class extends Migration
 
             $table->string('banner')->nullable();
 
-            $table->decimal('delivery_fee', 8, 2)->default(0);
             $table->decimal('rate', 3, 2)->default(0);
 
             $table->boolean('is_active')->default(false);

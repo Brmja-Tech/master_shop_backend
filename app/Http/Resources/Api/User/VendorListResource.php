@@ -21,7 +21,6 @@ class VendorListResource extends JsonResource
             'store_type_name' => $this->whenLoaded('storeType', fn () => $this->storeType?->name),
             'logo' => $this->logo ? url($this->logo) : null,
             'rate' => (float) $this->rate,
-            'delivery_fee' => (float) $this->delivery_fee,
             'distance_in_meters' => $distanceInMeters,
             'distance_in_kilometers' => $distanceInMeters !== null ? round($distanceInMeters / 1000, 2) : null,
             'vendor_latitude' => $this->latitude !== null ? (float) $this->latitude : null,

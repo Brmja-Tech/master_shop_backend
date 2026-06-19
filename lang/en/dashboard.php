@@ -342,4 +342,11 @@ return [
     'privacy-setting' => 'Privacy Policy Settings',
     'terms-setting' => 'Terms & Conditions Settings',
     'faqs-settings' => 'FAQs Settings',
+    'vendors' => 'Vendors',
+    'create-vendor' => 'Create Vendor',
+    'update-vendor' => 'Update Vendor',
+    'owner-name' => 'Owner Name',
+    'store-name' => 'Store Name',
+    'address-description' => 'Address Description',
+    'working-hours' => 'Working Hours',
 ];

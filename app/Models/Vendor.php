@@ -25,7 +25,6 @@ class Vendor extends Authenticatable
         'address_description',
         'logo',
         'banner',
-        'delivery_fee',
         'rate',
         'is_active',
         'is_store_open',
@@ -49,7 +48,6 @@ class Vendor extends Authenticatable
         'is_store_open' => 'boolean',
         'is_accepting_orders' => 'boolean',
         'is_verified' => 'boolean',
-        'delivery_fee' => 'decimal:2',
         'rate' => 'decimal:2',
     ];
 

@@ -11,7 +11,6 @@
                 <th>{{ __('dashboard.name') }}</th>
                 <th>{{ __('dashboard.email') }}</th>
                 <th>{{ __('dashboard.phone') }}</th>
-                <th>{{ __('dashboard.status') }}</th>
                 <th>{{ __('dashboard.actions') }}</th>
             </tr>
         </thead>
@@ -26,13 +25,6 @@
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->email }}</td>
                         <td>{{ $item->phone }}</td>
-                        <td>
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox"
-                                    {{ $item->status == 1 ? 'checked' : '' }}
-                                    wire:click="updateStatus({{ $item->id }})">
-                            </div>
-                        </td>
                         <td>
                             <div class="d-flex align-items-center">
                                 <a class="btn btn-info waves-effect waves-float waves-light"
@@ -53,7 +45,7 @@
                     </tr>
                 @endforeach
             @else
-                <td colspan="6">
+                <td colspan="5">
                     <div class="text-danger text-center">{{ __('dashboard.no-data') }}</div>
                 </td>
             @endif

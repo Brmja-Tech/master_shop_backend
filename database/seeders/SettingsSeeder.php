@@ -28,8 +28,8 @@ class SettingsSeeder extends Seeder
         $data = [
             // Translatable
             'site_name' => [
-                'en' => 'FIX Store',
-                'ar' => 'FIX Store',
+                'en' => 'Master shop',
+                'ar' => 'Master shop',
             ],
             'site_title' => [
                 'en' => 'FIX Store — Multi Vendor Marketplace',

@@ -57,16 +57,6 @@
                                     <span class="fw-bolder me-25">{{ __('dashboard.phone') }}:</span>
                                     <span>{{ $user->phone }}</span>
                                 </li>
-                                <li class="mb-75">
-                                    <span class="fw-bolder me-25">{{ __('dashboard.status') }}:</span>
-                                    <span
-                                        class="badge bg-light-{{ $user->status == 1 ? 'success' : 'danger' }}">{{ $user->status == 1 ? __('dashboard.active') : __('dashboard.inactive') }}</span>
-                                </li>
-                                <li class="mb-75">
-                                    <span class="fw-bolder me-25">{{ __('dashboard.verified') }}:</span>
-                                    <span
-                                        class="badge bg-light-{{ $user->email_verified_at != null ? 'success' : 'danger' }}">{{ $user->email_verified_at != null ? __('dashboard.active') : __('dashboard.inactive') }}</span>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -120,53 +110,26 @@
                                     <th>{{ __('dashboard.created-at') }}</th>
                                     <th>{{ __('dashboard.phone') }}</th>
                                     <th>{{ __('dashboard.total-price') }}</th>
-                                    <th>{{ __('dashboard.status') }}</th>
+                                    <th>{{ __('dashboard.vendor') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($user->orders as $item)
+                                @foreach ($user->orders as $item)
                                     <tr>
                                         <td>#</td>
                                         <td>{{ $item->created_at }}</td>
-                                        <td>{{ $item->user_phone }}</td>
-                                        <td>{{ $item->total_price }}</td>
-                                        <td>{{ $item->status }}</td>
+                                        <td>{{ $item->customer_phone }}</td>
+                                        <td>{{ $item->total }}</td>
+                                        <td>{{ $item->vendor?->store_name ?? $item->vendor?->owner_name ?? '--' }}</td>
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <!-- /Invoice table -->
 
-                <!-- Project table -->
-                <div class="card">
-                    <h4 class="card-header">{{ __('dashboard.user-wishlist') }}</h4>
-                    <div class="table-responsive">
-                        <table class="table datatable-project">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>{{ __('dashboard.image') }}</th>
-                                    <th class="text-nowrap">{{ __('dashboard.name') }}</th>
-                                    <th>{{ __('dashboard.qty') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{-- @foreach ($user->wishlists as $item)
-                                    <tr>
-                                        <td>#</td>
-                                        <td><img src="{{ asset($item->product->image) }}" alt="image" width="50">
-                                        </td>
-                                        <td>{{ $item->product->name }}</td>
-                                        <td>{{ $item->product->qty }}</td>
-                                    </tr>
-                                @endforeach --}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- /Project table -->
+
 
 
             </div>
