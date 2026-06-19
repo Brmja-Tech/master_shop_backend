@@ -6,6 +6,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\CartItemStoreRequest;
 use App\Http\Requests\Api\User\CartItemUpdateRequest;
+use App\Http\Requests\Api\User\CheckoutSummaryRequest;
 use App\Services\Api\User\CartService;
 
 class CartController extends Controller
@@ -25,7 +26,7 @@ class CartController extends Controller
 
         return ApiResponse::sendResponse(
             200,
-            'Cart retrieved successfully',
+            __('front.cart-retrieved-successfully'),
             [
                 'items' => $result['items'],
                 'summary' => $result['summary'],
@@ -48,14 +49,14 @@ class CartController extends Controller
 
         if ($existingVendorId && $existingVendorId !== $incomingVendorId) {
             return response()->json([
-                'message' => 'Your cart contains items from another vendor. Please clear your cart first.',
+                'message' => __('front.cart-vendor-conflict'),
                 'current_vendor_id' => $existingVendorId,
             ], 422);
         }
 
         return ApiResponse::sendResponse(
             200,
-            'Product added to cart successfully',
+            __('front.product-add-to-cart'),
             $this->service->store(
                 $user,
                 $request->integer('product_id'),
@@ -68,7 +69,7 @@ class CartController extends Controller
     {
         return ApiResponse::sendResponse(
             200,
-            'Cart item updated successfully',
+            __('front.cart-item-updated-successfully'),
             $this->service->update(
                 auth('sanctum')->user(),
                 $id,
@@ -83,7 +84,7 @@ class CartController extends Controller
 
         return ApiResponse::sendResponse(
             200,
-            'Cart item removed successfully'
+            __('front.product-removed-from-cart')
         );
     }
 
@@ -93,7 +94,25 @@ class CartController extends Controller
 
         return ApiResponse::sendResponse(
             200,
-            'Cart cleared successfully'
+            __('front.cart-cleared-successfully')
         );
+    }
+
+    public function checkoutSummary(CheckoutSummaryRequest $request)
+    {
+        try {
+            $result = $this->service->checkoutSummary(
+                auth('sanctum')->user(),
+                $request->validated()
+            );
+
+            return ApiResponse::sendResponse(
+                200,
+                __('front.order-summary-calculated-successfully'),
+                $result
+            );
+        } catch (\Exception $e) {
+            return ApiResponse::sendResponse(422, $e->getMessage());
+        }
     }
 }

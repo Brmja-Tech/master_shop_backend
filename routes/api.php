@@ -124,6 +124,7 @@ Route::prefix('user')->middleware('user.auth')->group(function () {
         Route::put('items/{id}', [CartController::class, 'update']);
         Route::delete('items/{id}', [CartController::class, 'destroy']);
         Route::delete('clear', [CartController::class, 'clear']);
+        Route::post('checkout-summary', [CartController::class, 'checkoutSummary']);
     });
     Route::prefix('orders')->group(function () {
         Route::post('', [OrderController::class, 'store']);

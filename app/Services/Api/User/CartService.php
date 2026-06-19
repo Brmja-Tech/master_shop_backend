@@ -68,6 +68,60 @@ class CartService
         $this->repository->clear($user);
     }
 
+    public function checkoutSummary(User $user, array $data): array
+    {
+        $cartItems = $this->repository->getUserCartItems($user)->load('product.vendor');
+
+        if ($cartItems->isEmpty()) {
+            throw new \Exception('السلة فارغة');
+        }
+
+        $vendor = $cartItems->first()->product?->vendor;
+        if (! $vendor || ! $vendor->is_active) {
+            throw new \Exception('المتجر غير متاح حالياً');
+        }
+
+        $selectedAddress = null;
+        if (! empty($data['address_id'])) {
+            $selectedAddress = $user->addresses()->find($data['address_id']);
+            if (! $selectedAddress) {
+                throw new \Exception('العنوان المحدد غير موجود');
+            }
+        }
+
+        $deliveryLatitude = $selectedAddress?->latitude ?? ($data['delivery_latitude'] ?? null);
+        $deliveryLongitude = $selectedAddress?->longitude ?? ($data['delivery_longitude'] ?? null);
+
+        $deliveryCalculation = \App\Helpers\DeliveryHelper::calculateFee(
+            $vendor->latitude !== null ? (float) $vendor->latitude : null,
+            $vendor->longitude !== null ? (float) $vendor->longitude : null,
+            $deliveryLatitude !== null ? (float) $deliveryLatitude : null,
+            $deliveryLongitude !== null ? (float) $deliveryLongitude : null
+        );
+
+        $subtotal = 0;
+        $discountAmount = 0;
+
+        foreach ($cartItems as $item) {
+            $product = $item->product;
+            if (! $product) continue;
+
+            $finalPrice = (float) $product->price_after_discount;
+            $subtotal += $finalPrice * (int) $item->quantity;
+            $discountAmount += ((float) $product->price - $finalPrice) * (int) $item->quantity;
+        }
+
+        $deliveryFee = $deliveryCalculation['delivery_fee'];
+        $total = $subtotal + $deliveryFee;
+
+        return [
+            'subtotal' => round($subtotal, 2),
+            'discount_amount' => round($discountAmount, 2),
+            'delivery_fee' => round($deliveryFee, 2),
+            'total' => round($total, 2),
+        ];
+    }
+
     private function buildSummary($items): array
     {
         $subtotal = $items->sum(function ($item) {

@@ -223,4 +223,9 @@ return [
     '' => '',
 
     'location-updated-successfully'             => 'تم تحديث الموقع بنجاح',
+    'order-summary-calculated-successfully'     => 'تم حساب ملخص الطلب بنجاح',
+    'cart-retrieved-successfully'               => 'تم جلب السلة بنجاح',
+    'cart-item-updated-successfully'            => 'تم تحديث المنتج في السلة بنجاح',
+    'cart-cleared-successfully'                 => 'تم تفريغ السلة بنجاح',
+    'cart-vendor-conflict'                      => 'عربتك تحتوي على منتجات من متجر آخر. يرجى إفراغ السلة أولاً.',
 ];
