@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('paymob_order_id')->nullable();
             $table->string('paymob_transaction_id')->nullable();
 
-            $table->string('delivery_address');
+            $table->string('delivery_address')->nullable();
             $table->decimal('delivery_latitude', 10, 7)->nullable();
             $table->decimal('delivery_longitude', 10, 7)->nullable();
 

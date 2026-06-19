@@ -64,7 +64,7 @@ class OrderService
                 }
             }
 
-            $deliveryAddress = $selectedAddress?->address ?? $data['delivery_address'];
+            $deliveryAddress = $selectedAddress?->address ?? ($data['delivery_address'] ?? null);
             $deliveryLatitude = $selectedAddress?->latitude ?? ($data['delivery_latitude'] ?? null);
             $deliveryLongitude = $selectedAddress?->longitude ?? ($data['delivery_longitude'] ?? null);
 
