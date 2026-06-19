@@ -16,6 +16,12 @@ class SettingsController extends Controller
     } //End genralSetting method
 
 
+    public function deliverySetting()
+    {
+        return view('dashboard.settings.delivery.index');
+    }
+
+
     public function aboutSetting()
     {
         $about = About::first();

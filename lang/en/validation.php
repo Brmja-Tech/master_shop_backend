@@ -278,4 +278,5 @@ return [
     'Password-Reset-Successfully'=>'Password Reset Successfully',
     'login-success'=>'login Successfully welcome : ',
     'order_cannot_be_cancelled' => 'Order cannot be cancelled at this stage',
+    'accurate_location_required' => 'Please determine the location accurately.',
 ];

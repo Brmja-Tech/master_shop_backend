@@ -83,6 +83,14 @@ class SettingsSeeder extends Seeder
             Setting::query()->create($data);
         }
 
+        \App\Models\DeliverySetting::query()->updateOrCreate(
+            ['id' => 1],
+            [
+                'price_per_km' => 5.00,
+                'min_delivery_fee' => 15.00,
+            ]
+        );
+
         /*
         |--------------------------------------------------------------------------
         | Banners

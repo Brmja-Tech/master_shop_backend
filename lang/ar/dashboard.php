@@ -334,4 +334,12 @@ return [
     'processed_at' => 'تاريخ المعالجة',
     'admin_action_required' => 'اتخاذ إجراء بشأن الطلب',
     'write_admin_note_placeholder' => 'اكتب أي ملاحظات هنا للتاجر...',
+    'delivery-settings' => 'إعدادات التوصيل',
+    'delivery-price-per-km' => 'سعر التوصيل لكل كيلومتر',
+    'min-delivery-fee' => 'الحد الأدنى للتوصيل',
+    'banners' => 'البانرات الإعلانية',
+    'about-setting' => 'إعدادات من نحن',
+    'privacy-setting' => 'إعدادات سياسة الخصوصية',
+    'terms-setting' => 'إعدادات الشروط والأحكام',
+    'faqs-settings' => 'إعدادات الأسئلة الشائعة',
 ];

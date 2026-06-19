@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\DeliveryStatus;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
@@ -23,13 +22,13 @@ class OrderService
             $cartItems = $user->cartItems()->with('product.vendor')->get();
 
             if ($cartItems->isEmpty()) {
-                throw new \Exception('Cart is empty');
+                throw new \Exception('السلة فارغة');
             }
 
             $vendor = $cartItems->first()->product?->vendor;
 
             if (! $vendor || ! $vendor->is_active) {
-                throw new \Exception('Vendor is not available');
+                throw new \Exception('المتجر غير متاح حالياً');
             }
 
             $unavailable = [];
@@ -52,24 +51,34 @@ class OrderService
             }
 
             if ($unavailable !== []) {
-                throw new \Exception('These products are unavailable: ' . implode(', ', $unavailable));
+                throw new \Exception('هذه المنتجات غير متوفرة حالياً: ' . implode(', ', $unavailable));
             }
 
-            $deliveryFee = (float) $vendor->delivery_fee;
-            $total = $subtotal + $deliveryFee;
             $selectedAddress = null;
 
             if (! empty($data['address_id'])) {
                 $selectedAddress = $user->addresses()->find($data['address_id']);
 
                 if (! $selectedAddress) {
-                    throw new \Exception('Selected address was not found');
+                    throw new \Exception('العنوان المحدد غير موجود');
                 }
             }
 
             $deliveryAddress = $selectedAddress?->address ?? $data['delivery_address'];
             $deliveryLatitude = $selectedAddress?->latitude ?? ($data['delivery_latitude'] ?? null);
             $deliveryLongitude = $selectedAddress?->longitude ?? ($data['delivery_longitude'] ?? null);
+
+            // Calculate distance and delivery fee using DeliveryHelper
+            $deliveryCalculation = \App\Helpers\DeliveryHelper::calculateFee(
+                $vendor->latitude !== null ? (float) $vendor->latitude : null,
+                $vendor->longitude !== null ? (float) $vendor->longitude : null,
+                $deliveryLatitude !== null ? (float) $deliveryLatitude : null,
+                $deliveryLongitude !== null ? (float) $deliveryLongitude : null
+            );
+
+            $distanceInKm = $deliveryCalculation['distance_km'];
+            $deliveryFee = $deliveryCalculation['delivery_fee'];
+            $total = $subtotal + $deliveryFee;
 
             $order = Order::create([
                 'user_id' => $user->id,
@@ -109,16 +118,6 @@ class OrderService
             foreach ($cartItems as $item) {
                 $item->product->decrement('remaining_quantity', $item->quantity);
             }
-
-            $order->delivery()->create([
-                'status' => DeliveryStatus::Searching,
-                'pickup_address' => $vendor->address_description,
-                'pickup_latitude' => $vendor->latitude,
-                'pickup_longitude' => $vendor->longitude,
-                'dropoff_address' => $deliveryAddress,
-                'dropoff_latitude' => $deliveryLatitude,
-                'dropoff_longitude' => $deliveryLongitude,
-            ]);
 
             if ($order->payment_method === PaymentMethod::Paymob) {
                 $paymentData = $this->paymobService->createOrder($order->load('user'), $data);

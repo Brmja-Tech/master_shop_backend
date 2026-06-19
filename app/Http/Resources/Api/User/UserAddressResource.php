@@ -14,6 +14,8 @@ class UserAddressResource extends JsonResource
             'title' => $this->title,
             'address' => $this->address,
             'area' => $this->area,
+            'latitude' => (float) $this->latitude,
+            'longitude' => (float) $this->longitude,
             'is_default' => (bool) $this->is_default,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

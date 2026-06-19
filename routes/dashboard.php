@@ -81,6 +81,7 @@ Route::group([
         ############################### settings Routes ############################################
         Route::get('banners',             [SettingsController::class, 'banners'])->middleware('can:settings')->name('banners');
         Route::get('settings',            [SettingsController::class, 'genralSetting'])->middleware('can:settings')->name('settings');
+        Route::get('delivery-settings',   [SettingsController::class, 'deliverySetting'])->middleware('can:settings')->name('delivery.setting');
         Route::get('abouts',              [SettingsController::class, 'aboutSetting'])->middleware('can:settings')->name('about.setting');
         Route::get('faqs',                [SettingsController::class, 'faqs'])->middleware('can:settings')->name('faqs.setting');
         Route::get('privacy',             [SettingsController::class, 'privacy'])->middleware('can:settings')->name('privacy.setting');

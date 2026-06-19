@@ -34,6 +34,8 @@ class SettingsResource extends JsonResource
 
             'copyright' => $this->site_copyright,
             'promotion' => $this->promotion_url,
+            'delivery_price_per_km' => (float) (\App\Models\DeliverySetting::first()?->price_per_km ?? 0),
+            'min_delivery_fee' => (float) (\App\Models\DeliverySetting::first()?->min_delivery_fee ?? 0),
         ];
     }
 }

@@ -97,6 +97,13 @@
                         </li>
                     </ul>
                     <ul class="menu-content">
+                        <li><a class="@yield('delivery-settings-active') d-flex align-items-center"
+                                href="{{ route('dashboard.delivery.setting') }}"><i data-feather="circle"></i><span
+                                    class="menu-item text-truncate"
+                                    data-i18n="Roles">{{ __('dashboard.delivery-settings') }}</span></a>
+                        </li>
+                    </ul>
+                    <ul class="menu-content">
                         <li><a class="@yield('banners-active') d-flex align-items-center"
                                 href="{{ route('dashboard.banners') }}"><i data-feather="circle"></i><span
                                     class="menu-item text-truncate"

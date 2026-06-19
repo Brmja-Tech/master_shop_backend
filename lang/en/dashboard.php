@@ -334,4 +334,12 @@ return [
     'processed_at' => 'Processed At',
     'admin_action_required' => 'Admin Action Required',
     'write_admin_note_placeholder' => 'Write any notes here for the vendor...',
+    'delivery-settings' => 'Delivery Settings',
+    'delivery-price-per-km' => 'Delivery Price Per Kilometer',
+    'min-delivery-fee' => 'Minimum Delivery Fee',
+    'banners' => 'Banners',
+    'about-setting' => 'About Us Settings',
+    'privacy-setting' => 'Privacy Policy Settings',
+    'terms-setting' => 'Terms & Conditions Settings',
+    'faqs-settings' => 'FAQs Settings',
 ];

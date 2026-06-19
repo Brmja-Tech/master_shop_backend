@@ -11,11 +11,15 @@ class UserAddress extends Model
         'title',
         'address',
         'area',
+        'latitude',
+        'longitude',
         'is_default',
     ];
 
     protected $casts = [
         'is_default' => 'boolean',
+        'latitude' => 'float',
+        'longitude' => 'float',
     ];
 
     public function user(): BelongsTo
