@@ -22,6 +22,8 @@ class VendorUpdate extends Component
     public $logo;
     public $banner;
     public $address_description;
+    public $work_from;
+    public $work_to;
     public $is_active;
     public $is_verified;
 
@@ -35,6 +37,8 @@ class VendorUpdate extends Component
         $this->store_name = $this->vendor->store_name;
         $this->store_type_id = $this->vendor->store_type_id;
         $this->address_description = $this->vendor->address_description;
+        $this->work_from = $this->vendor->work_from ? \Carbon\Carbon::parse($this->vendor->work_from)->format('H:i') : '';
+        $this->work_to = $this->vendor->work_to ? \Carbon\Carbon::parse($this->vendor->work_to)->format('H:i') : '';
         $this->is_active = (bool) $this->vendor->is_active;
         $this->is_verified = (bool) $this->vendor->is_verified;
         $this->password = '';
@@ -54,6 +58,8 @@ class VendorUpdate extends Component
             'logo' => ['nullable', 'image', 'max:5120'],
             'banner' => ['nullable', 'image', 'max:5120'],
             'address_description' => ['nullable', 'string'],
+            'work_from' => ['nullable', 'string'],
+            'work_to' => ['nullable', 'string'],
             'is_active' => ['boolean'],
             'is_verified' => ['boolean'],
         ];
@@ -92,7 +98,7 @@ class VendorUpdate extends Component
         $this->vendor->update($data);
 
         $this->dispatch('vendorUpdateMS');
-        $this->reset(['owner_name', 'phone', 'password', 'store_name', 'store_type_id', 'logo', 'banner', 'address_description', 'vendor']);
+        $this->reset(['owner_name', 'phone', 'password', 'store_name', 'store_type_id', 'logo', 'banner', 'address_description', 'work_from', 'work_to', 'vendor']);
         $this->dispatch('updateModalToggle');
         $this->dispatch('refreshData')->to(VendorData::class);
     }

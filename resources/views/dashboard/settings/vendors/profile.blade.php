@@ -51,6 +51,14 @@
                                         {{ $vendor->is_verified ? __('dashboard.yes') : __('dashboard.no') }}
                                     </span>
                                 </li>
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">{{ __('dashboard.work-from') }}:</span>
+                                    <span>{{ $vendor->work_from ? \Carbon\Carbon::parse($vendor->work_from)->format('H:i') : '--' }}</span>
+                                </li>
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">{{ __('dashboard.work-to') }}:</span>
+                                    <span>{{ $vendor->work_to ? \Carbon\Carbon::parse($vendor->work_to)->format('H:i') : '--' }}</span>
+                                </li>
                             </ul>
                         </div>
                     </div>

@@ -23,6 +23,8 @@ class VendorProfileResource extends JsonResource
             'rate' => $this->rate,
             'distance_in_km' => $this->distance_in_km,
             'is_store_open' => $this->is_store_open,
+            'work_from' => $this->work_from,
+            'work_to' => $this->work_to,
             'subcategories' => $this->profile_subcategories,
             'products' => collect($this->profile_products ?? $this->products ?? [])->map(function ($product) {
                 $mainImage = $product->images->where('is_main', true)->first();

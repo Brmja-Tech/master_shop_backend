@@ -93,7 +93,7 @@ class ProductRequest extends FormRequest
             'is_available' => ['nullable', 'boolean'],
             'unit' => array_merge($requiredOrSometimes, ['string', 'max:255']),
             'price' => array_merge($requiredOrSometimes, ['numeric', 'min:0']),
-            'expiry_date' => ['nullable', 'date'],
+            'expiry_date' => ['nullable', 'date', 'after:today'],
             'main_image' => $mainImageRule,
             'images' => $imageRule,
             'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],

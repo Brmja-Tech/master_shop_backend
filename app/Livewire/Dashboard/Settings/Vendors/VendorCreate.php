@@ -20,6 +20,8 @@ class VendorCreate extends Component
     public $logo;
     public $banner;
     public $address_description;
+    public $work_from;
+    public $work_to;
     public $is_active = true;
     public $is_verified = true;
 
@@ -34,6 +36,8 @@ class VendorCreate extends Component
             'logo' => ['nullable', 'image', 'max:5120'],
             'banner' => ['nullable', 'image', 'max:5120'],
             'address_description' => ['nullable', 'string'],
+            'work_from' => ['nullable', 'string'],
+            'work_to' => ['nullable', 'string'],
             'is_active' => ['boolean'],
             'is_verified' => ['boolean'],
         ];
@@ -57,7 +61,7 @@ class VendorCreate extends Component
 
         Vendor::create($data);
 
-        $this->reset(['owner_name', 'phone', 'password', 'store_name', 'store_type_id', 'logo', 'banner', 'address_description']);
+        $this->reset(['owner_name', 'phone', 'password', 'store_name', 'store_type_id', 'logo', 'banner', 'address_description', 'work_from', 'work_to']);
         $this->is_active = true;
         $this->is_verified = true;
 

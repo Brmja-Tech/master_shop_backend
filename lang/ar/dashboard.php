@@ -349,4 +349,6 @@ return [
     'store-name' => 'اسم المتجر',
     'address-description' => 'وصف العنوان',
     'working-hours' => 'ساعات العمل',
+    'work-from' => 'العمل من',
+    'work-to' => 'العمل إلى',
 ];

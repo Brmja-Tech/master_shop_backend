@@ -349,4 +349,6 @@ return [
     'store-name' => 'Store Name',
     'address-description' => 'Address Description',
     'working-hours' => 'Working Hours',
+    'work-from' => 'Work From',
+    'work-to' => 'Work To',
 ];

@@ -42,6 +42,18 @@
     </div>
     <div class="row">
         <div class="col-md-6 mb-1">
+            <label class="form-label">{{ __('dashboard.work-from') }}</label>
+            <input type="time" wire:model="work_from" class="form-control">
+            @include('dashboard.includes.error', ['property' => 'work_from'])
+        </div>
+        <div class="col-md-6 mb-1">
+            <label class="form-label">{{ __('dashboard.work-to') }}</label>
+            <input type="time" wire:model="work_to" class="form-control">
+            @include('dashboard.includes.error', ['property' => 'work_to'])
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-1">
             <label class="form-label">{{ __('dashboard.logo') }}</label>
             <input type="file" wire:model="logo" class="form-control">
             @if ($vendor && $vendor->logo)
