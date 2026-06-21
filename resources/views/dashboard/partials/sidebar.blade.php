@@ -3,9 +3,21 @@
         <ul class="nav navbar-nav flex-row">
             @php
                 $setting = \App\Models\Setting::first();
+                $dashboardLogo = asset('uploads/images/logo.jpeg');
+                $vendorsCount = \App\Models\Vendor::count();
+                $approvedVendorsCount = \App\Models\Vendor::query()
+                    ->where(function ($query) {
+                        $query->where('is_verified', true)
+                            ->orWhere('approval_status', 'approved');
+                    })
+                    ->count();
+                $pendingVendorRequestsCount = \App\Models\Vendor::query()
+                    ->where('is_verified', false)
+                    ->whereIn('approval_status', ['pending', 'rejected'])
+                    ->count();
             @endphp
             <li class="nav-item me-auto"><a class="navbar-brand" href="{{ route('dashboard.home') }}"><span
-                        class="brand-logo"><img src="{{ asset($setting->logo) }}"></span>
+                        class="brand-logo"><img src="{{ $dashboardLogo }}" alt="Dashboard Logo"></span>
                     <h2 class="brand-text">{{ $setting->site_name }}</h2>
                 </a></li>
             <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i
@@ -77,6 +89,11 @@
                                 href="{{ route('dashboard.users.index') }}"><i data-feather="circle"></i><span
                                     class="menu-item text-truncate"
                                     data-i18n="Roles">{{ __('dashboard.users') }}</span></a>
+                        </li>
+                        <li><a class="@yield('createUser-active') d-flex align-items-center"
+                                href="{{ route('dashboard.users.index', ['create' => 1]) }}"><i data-feather="circle"></i><span
+                                    class="menu-item text-truncate"
+                                    data-i18n="Permission">{{ __('dashboard.create-user') }}</span></a>
                         </li>
                     </ul>
                 </li>
@@ -154,18 +171,57 @@
                             {{ __('dashboard.subcategories') }}</span>
                     </a>
                 </li>
-                <li class="nav-item @yield('vendors-active')">
-                    <a class="d-flex align-items-center" href="{{ route('dashboard.vendors.setting') }}">
+                <li class="nav-item @yield('vendors-open') @yield('vendor-requests-open')">
+                    <a class="d-flex align-items-center" href="#">
                          <i data-feather="users"></i><span class="menu-title text-truncate">
                              {{ __('dashboard.vendors') }}</span>
-                         <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ App\Models\Vendor::count() }}</span>
+                         <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $vendorsCount }}</span>
                     </a>
+                    <ul class="menu-content">
+                        <li>
+                            <a class="@yield('vendor-requests-active') d-flex align-items-center" href="{{ route('dashboard.vendors.requests') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.vendor_requests') }}</span>
+                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $pendingVendorRequestsCount }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="@yield('vendors-active') d-flex align-items-center" href="{{ route('dashboard.vendors.setting') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.vendors') }}</span>
+                                <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ $approvedVendorsCount }}</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item @yield('withdraw-requests-active')">
                     <a class="d-flex align-items-center" href="{{ route('dashboard.withdraw-requests.index') }}">
                         <i data-feather="credit-card"></i><span class="menu-title text-truncate">
                             {{ __('dashboard.withdraw-requests') }}</span>
                     </a>
+                </li>
+                <li class="nav-item @yield('deliveries-open') @yield('delivery-requests-open')">
+                    <a class="d-flex align-items-center" href="#">
+                        <i data-feather="truck"></i><span class="menu-title text-truncate">
+                            {{ __('dashboard.deliveries') }}</span>
+                        <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ App\Models\DeliveryUser::count() }}</span>
+                    </a>
+                    <ul class="menu-content">
+                        <li>
+                            <a class="@yield('delivery-requests-active') d-flex align-items-center" href="{{ route('dashboard.deliveries.requests') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.delivery_requests') }}</span>
+                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ App\Models\DeliveryUser::where('approval_status', 'pending')->count() }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="@yield('deliveries-active') d-flex align-items-center" href="{{ route('dashboard.deliveries.index') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.deliveries') }}</span>
+                                <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ App\Models\DeliveryUser::where('approval_status', 'approved')->count() }}</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             @endcan
 

@@ -74,6 +74,95 @@
 
 
 @stack('js')
+@php
+    $firebaseWebConfig = config('services.firebase.web', []);
+    $hasFirebaseWebConfig = filled($firebaseWebConfig['api_key'] ?? null)
+        && filled($firebaseWebConfig['project_id'] ?? null)
+        && filled($firebaseWebConfig['messaging_sender_id'] ?? null)
+        && filled($firebaseWebConfig['app_id'] ?? null)
+        && filled($firebaseWebConfig['vapid_key'] ?? null);
+@endphp
+@if (auth('admin')->check() && $hasFirebaseWebConfig)
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
+        import { getMessaging, getToken, isSupported } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging.js';
+
+        const firebaseConfig = {
+            apiKey: @js($firebaseWebConfig['api_key']),
+            authDomain: @js($firebaseWebConfig['auth_domain']),
+            projectId: @js($firebaseWebConfig['project_id']),
+            storageBucket: @js($firebaseWebConfig['storage_bucket']),
+            messagingSenderId: @js($firebaseWebConfig['messaging_sender_id']),
+            appId: @js($firebaseWebConfig['app_id']),
+        };
+
+        const vapidKey = @js($firebaseWebConfig['vapid_key']);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        async function syncAdminFcmToken(token) {
+            if (!token || !csrfToken) {
+                return;
+            }
+
+            const lastToken = window.localStorage.getItem('admin_fcm_token');
+            if (lastToken === token) {
+                return;
+            }
+
+            const response = await fetch('/admin/fcm-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    fcm_token: token,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to persist admin FCM token.');
+            }
+
+            window.localStorage.setItem('admin_fcm_token', token);
+        }
+
+        async function initAdminMessaging() {
+            const supported = await isSupported();
+
+            if (!supported || !('Notification' in window) || !('serviceWorker' in navigator)) {
+                return;
+            }
+
+            if (Notification.permission === 'denied') {
+                return;
+            }
+
+            const permission = Notification.permission === 'granted'
+                ? 'granted'
+                : await Notification.requestPermission();
+
+            if (permission !== 'granted') {
+                return;
+            }
+
+            const app = initializeApp(firebaseConfig);
+            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+            const messaging = getMessaging(app);
+            const token = await getToken(messaging, {
+                vapidKey,
+                serviceWorkerRegistration: registration,
+            });
+
+            await syncAdminFcmToken(token);
+        }
+
+        initAdminMessaging().catch(error => {
+            console.error('Admin FCM initialization failed:', error);
+        });
+    </script>
+@endif
 <script>
     $(window).on('load', function() {
         if (feather) {

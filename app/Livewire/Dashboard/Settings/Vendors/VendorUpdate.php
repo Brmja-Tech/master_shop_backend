@@ -68,6 +68,9 @@ class VendorUpdate extends Component
     public function submit()
     {
         $data = $this->validate();
+        $data['approval_status'] = $data['is_verified']
+            ? 'approved'
+            : ($this->vendor->approval_status === 'rejected' ? 'rejected' : 'pending');
 
         $imageManger = app(\App\Utils\ImageManger::class);
 

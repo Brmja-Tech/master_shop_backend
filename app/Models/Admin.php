@@ -27,6 +27,7 @@ class Admin extends Authenticatable
         'x_url',
         'linkedin',
         'whatsapp',
+        'fcm_token',
     ];
 
     /**

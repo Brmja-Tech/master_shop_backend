@@ -21,6 +21,10 @@ class VendorAuthService
 
         $data['is_verified'] = false;
 
+        $data['approval_status'] = 'pending';
+
+        $data['ban'] = false;
+
         return $this->repository->create($data);
     }
     public function login(array $data): array
@@ -35,10 +39,18 @@ class VendorAuthService
             ];
         }
 
-        if (! $vendor->is_verified) {
+        if ($vendor->approval_status !== 'approved') {
             return [
                 'status'  => 403,
                 'message' => 'vendor.not-verified',
+                'data'    => [],
+            ];
+        }
+
+        if ($vendor->ban) {
+            return [
+                'status'  => 403,
+                'message' => 'vendor.banned',
                 'data'    => [],
             ];
         }

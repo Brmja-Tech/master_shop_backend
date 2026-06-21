@@ -21,6 +21,16 @@ class VendorAuthController extends Controller
             $request->validated()
         );
 
+        // إخطار جميع المشرفين (Admins) بتسجيل المتجر الجديد
+        try {
+            $admins = \App\Models\Admin::all();
+            foreach ($admins as $admin) {
+                $admin->notify(new \App\Notifications\Admin\NewVendorRegistrationNotification($vendor));
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('فشل إرسال إشعار تسجيل متجر للمشرفين: ' . $e->getMessage());
+        }
+
         return ApiResponse::sendResponse(
             201,
             __('vendor.register_success'),

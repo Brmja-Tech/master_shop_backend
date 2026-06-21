@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             Route::middleware('web')
                 ->group(base_path('routes/dashboard.php'));
+
+            Route::middleware('api')
+                ->group(base_path('routes/delivery.php'));
         }
     )
  ->withMiddleware(function (Middleware $middleware) {
@@ -52,6 +55,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Vendor
         'vendor.auth' => \App\Http\Middleware\VendorAuthMiddleware::class,
+        'delivery.auth' => \App\Http\Middleware\DeliveryAuthMiddleware::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'user.auth' => \App\Http\Middleware\UserAuthMiddleware::class,
         'user.guest' => \App\Http\Middleware\UserGuestMiddleware::class,

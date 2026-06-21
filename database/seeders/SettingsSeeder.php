@@ -17,7 +17,7 @@ class SettingsSeeder extends Seeder
      */
     public function run(): void
     {
-        $defaultImage = 'uploads/images/logo.png';
+        $defaultImage = 'uploads/images/logo.jpeg';
 
         /*
         |--------------------------------------------------------------------------

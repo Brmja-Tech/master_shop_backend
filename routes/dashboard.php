@@ -5,8 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\AdminController;
+use App\Http\Controllers\Dashboard\AdminFcmTokenController;
+use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Dashboard\DeliveryController;
 use App\Http\Controllers\Dashboard\Auth\AuthController;
 use App\Http\Controllers\Dashboard\Auth\ForgotController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -93,8 +96,18 @@ Route::group([
         Route::get('store-types',         [SettingsController::class, 'storeTypes'])->middleware('can:settings')->name('store-types.setting');
         Route::get('subcategories',       [SettingsController::class, 'subcategories'])->middleware('can:settings')->name('subcategories.setting');
         Route::get('vendors',             [SettingsController::class, 'vendors'])->middleware('can:settings')->name('vendors.setting');
+        Route::get('vendor-requests',     [SettingsController::class, 'requests'])->middleware('can:settings')->name('vendors.requests');
         Route::get('vendor/profile/{id}', [SettingsController::class, 'vendorProfile'])->middleware('can:settings')->name('vendor.profile');
+        Route::post('vendors/{id}/status', [SettingsController::class, 'updateStatus'])->middleware('can:settings')->name('vendors.status');
+        Route::post('vendors/{id}/ban',    [SettingsController::class, 'toggleBan'])->middleware('can:settings')->name('vendors.ban');
         Route::get('withdraw-requests',   [SettingsController::class, 'withdrawRequests'])->middleware('can:settings')->name('withdraw-requests.index');
+
+        ############################### Deliveries Routes #######################################
+        Route::get('deliveries',             [DeliveryController::class, 'index'])->middleware('can:settings')->name('deliveries.index');
+        Route::get('delivery-requests',      [DeliveryController::class, 'requests'])->middleware('can:settings')->name('deliveries.requests');
+        Route::get('deliveries/{id}',        [DeliveryController::class, 'show'])->middleware('can:settings')->name('deliveries.show');
+        Route::post('deliveries/{id}/status', [DeliveryController::class, 'updateStatus'])->middleware('can:settings')->name('deliveries.status');
+        Route::post('deliveries/{id}/ban',    [DeliveryController::class, 'toggleBan'])->middleware('can:settings')->name('deliveries.ban');
 
     });
 
@@ -106,6 +119,10 @@ Route::group([
 });
 
 Route::prefix('admin')->middleware(['setLocale', 'auth:admin'])->group(function () {
+    Route::post('fcm-token', [AdminFcmTokenController::class, 'store']);
+    Route::get('notifications', [NotificationController::class, 'index']);
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::post('notifications/{notificationId}/read', [NotificationController::class, 'markAsRead']);
     Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);
     Route::apiResource('subcategories', AdminSubcategoryController::class);
     Route::get('withdraw-requests', [AdminVendorWithdrawalRequestController::class, 'index']);

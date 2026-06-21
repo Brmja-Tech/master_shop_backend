@@ -40,4 +40,6 @@ return [
     'rate_updated' => 'Rating updated successfully',
     'already_rated' => 'You have already rated this vendor. You can update your rating instead.',
     'rate_not_found' => 'You have not rated this vendor yet.',
+    'not-verified' => 'Your account is not verified yet. Please wait for admin approval.',
+    'banned' => 'Your account has been banned. Please contact support.',
 ];

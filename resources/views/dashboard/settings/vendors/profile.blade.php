@@ -46,9 +46,25 @@
                                     <span>{{ $vendor->address_description ?? '--' }}</span>
                                 </li>
                                 <li class="mb-75">
-                                    <span class="fw-bolder me-25">{{ __('dashboard.verified') }}:</span>
-                                    <span class="badge bg-light-{{ $vendor->is_verified ? 'success' : 'danger' }}">
-                                        {{ $vendor->is_verified ? __('dashboard.yes') : __('dashboard.no') }}
+                                    <span class="fw-bolder me-25">{{ __('dashboard.approval_status') }}:</span>
+                                    @if ($vendor->approval_status === 'approved')
+                                        <span class="badge bg-light-success">{{ __('dashboard.approved') }}</span>
+                                    @elseif ($vendor->approval_status === 'rejected')
+                                        <span class="badge bg-light-danger">{{ __('dashboard.rejected') }}</span>
+                                    @else
+                                        <span class="badge bg-light-warning">{{ __('dashboard.pending') }}</span>
+                                    @endif
+                                </li>
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">{{ __('dashboard.active_status') }}:</span>
+                                    <span class="badge bg-light-{{ $vendor->is_active ? 'success' : 'secondary' }}">
+                                        {{ $vendor->is_active ? __('dashboard.active') : __('dashboard.inactive') }}
+                                    </span>
+                                </li>
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">{{ __('dashboard.ban_status') }}:</span>
+                                    <span class="badge bg-light-{{ $vendor->ban ? 'danger' : 'success' }}">
+                                        {{ $vendor->ban ? __('dashboard.inactive') : __('dashboard.active') }}
                                     </span>
                                 </li>
                                 <li class="mb-75">
@@ -60,6 +76,38 @@
                                     <span>{{ $vendor->work_to ? \Carbon\Carbon::parse($vendor->work_to)->format('H:i') : '--' }}</span>
                                 </li>
                             </ul>
+                        </div>
+
+                        <!-- Approval & Rejection Actions -->
+                        <div class="d-flex justify-content-center gap-1 mt-2 pt-1 border-top">
+                            <form action="{{ route('dashboard.vendors.status', ['id' => $vendor->id, 'status' => 'approved']) }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-success waves-effect waves-float waves-light">
+                                    <i class="fa-solid fa-check me-25"></i> {{ __('dashboard.approve') }}
+                                </button>
+                            </form>
+                            <form action="{{ route('dashboard.vendors.status', ['id' => $vendor->id, 'status' => 'rejected']) }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-danger waves-effect waves-float waves-light">
+                                    <i class="fa-solid fa-xmark me-25"></i> {{ __('dashboard.reject') }}
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Ban & Unban Actions -->
+                        <div class="d-flex justify-content-center gap-1 mt-1">
+                            <form action="{{ route('dashboard.vendors.ban', ['id' => $vendor->id]) }}" method="POST" class="d-inline w-100">
+                                @csrf
+                                @if ($vendor->ban)
+                                    <button type="submit" class="btn btn-outline-success w-100 waves-effect waves-float waves-light">
+                                        <i class="fa-solid fa-unlock me-25"></i> إلغاء الحظر (تفعيل الحساب)
+                                    </button>
+                                @else
+                                    <button type="submit" class="btn btn-outline-danger w-100 waves-effect waves-float waves-light">
+                                        <i class="fa-solid fa-ban me-25"></i> حظر حساب المتجر
+                                    </button>
+                                @endif
+                            </form>
                         </div>
                     </div>
                 </div>

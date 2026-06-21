@@ -73,12 +73,48 @@ class SettingsController extends Controller
 
     public function vendors()
     {
-        return view('dashboard.settings.vendors.index');
+        return view('dashboard.settings.vendors.index', ['is_request_page' => false]);
+    }
+
+    public function requests()
+    {
+        return view('dashboard.settings.vendors.index', ['is_request_page' => true]);
     }
 
     public function vendorProfile($id)
     {
         $vendor = \App\Models\Vendor::with(['products.images', 'storeType'])->findOrFail($id);
         return view('dashboard.settings.vendors.profile', compact('vendor'));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $status = $request->query('status') ?? $request->input('status');
+
+        if (!in_array($status, ['approved', 'rejected'])) {
+            return redirect()->back()->with('error', 'الحالة المرسلة غير صالحة.');
+        }
+
+        $vendor = \App\Models\Vendor::findOrFail($id);
+        $vendor->update([
+            'approval_status' => $status,
+            'is_verified' => $status === 'approved',
+        ]);
+
+        $messageKey = $status === 'approved' 
+            ? 'dashboard.vendor_approved_successfully' 
+            : 'dashboard.vendor_rejected_successfully';
+
+        return redirect()->back()->with('success', __($messageKey));
+    }
+
+    public function toggleBan($id)
+    {
+        $vendor = \App\Models\Vendor::findOrFail($id);
+        $vendor->update([
+            'ban' => !$vendor->ban
+        ]);
+
+        return redirect()->back()->with('success', __('dashboard.status-change'));
     }
 }

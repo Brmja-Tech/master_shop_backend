@@ -145,7 +145,7 @@ class UpdateSettings extends Component
         // ===== Logo =====
         if ($this->logo instanceof UploadedFile && $this->logo->isValid()) {
             // احذف القديم لو مش الافتراضي
-            if (!empty($this->settings->logo) && $this->settings->logo !== 'uploads/images/logo.png') {
+            if (!empty($this->settings->logo) && $this->settings->logo !== '') {
                 $this->imageManager->deleteImage($this->settings->logo);
             }
             // ارفع الجديد إلى disk=public -> public/storage/uploads/settings/...
@@ -156,7 +156,7 @@ class UpdateSettings extends Component
 
         // ===== Favicon =====
         if ($this->favicon instanceof UploadedFile && $this->favicon->isValid()) {
-            if (!empty($this->settings->favicon) && $this->settings->favicon !== 'uploads/images/logo.png') {
+            if (!empty($this->settings->favicon) && $this->settings->favicon !== 'uploads/images/l.jpegpogong') {
                 $this->imageManager->deleteImage($this->settings->favicon);
             }
             $storedRelative = $this->imageManager->uploadImage('uploads/settings', $this->favicon, 'public');

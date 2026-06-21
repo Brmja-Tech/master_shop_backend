@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
     @php
         $setting = \App\Models\Setting::first();
+        $dashboardLogo = asset('uploads/images/logo.jpeg');
     @endphp
     <meta name="description" content="{{ $setting?->meta_desc ?? '' }}">
     <meta name="keywords"
@@ -113,7 +114,7 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 <a class="brand-logo d-flex align-items-center">
-                                    <img src="{{ asset($setting?->logo ?? '') }}" width="80" alt="Logo">
+                                    <img src="{{ $dashboardLogo }}" width="80" alt="Dashboard Logo">
                                     <h2 class="brand-text text-primary mb-0">{{ $setting?->site_name ?? 'Dashboard' }}</h2>
                                 </a>
 

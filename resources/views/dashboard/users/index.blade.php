@@ -1,6 +1,12 @@
-@extends('dashboard.master', ['title' => 'Users'])
-@section('users-active', 'active')
-@section('users-open', 'open')
+@extends('dashboard.master', ['title' => request()->has('create') ? __('dashboard.create-user') : __('dashboard.users')])
+
+@if (request()->has('create'))
+    @section('createUser-active', 'active')
+    @section('createUser-open', 'open')
+@else
+    @section('users-active', 'active')
+    @section('users-open', 'open')
+@endif
 
 @section('content')
 
@@ -101,6 +107,11 @@
                 });
             });
         });
+        @if (request()->has('create'))
+            document.addEventListener('DOMContentLoaded', function() {
+                $('#createModal').modal('show');
+            });
+        @endif
     </script>
     {{-- End scripts from seewtalert delete livewire --}}
 @endpush

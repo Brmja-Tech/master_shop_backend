@@ -46,6 +46,7 @@ class VendorCreate extends Component
     public function submit()
     {
         $data = $this->validate();
+        $data['approval_status'] = $this->is_verified ? 'approved' : 'pending';
 
         $imageManger = app(\App\Utils\ImageManger::class);
 
