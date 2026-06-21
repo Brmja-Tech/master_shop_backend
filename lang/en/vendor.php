@@ -36,4 +36,8 @@ return [
     'created' => 'Vendor created successfully',
     'updated' => 'Vendor updated successfully',
     'show' => 'Vendor retrieved successfully',
+    'rate_submitted' => 'Rating submitted successfully',
+    'rate_updated' => 'Rating updated successfully',
+    'already_rated' => 'You have already rated this vendor. You can update your rating instead.',
+    'rate_not_found' => 'You have not rated this vendor yet.',
 ];

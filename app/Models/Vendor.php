@@ -75,4 +75,18 @@ class Vendor extends Authenticatable
     {
         return $this->hasMany(VendorWithdrawalRequest::class);
     }
+
+    public function rates(): HasMany
+    {
+        return $this->hasMany(VendorRate::class);
+    }
+
+    /**
+     * Recalculate and update the vendor's average rating.
+     */
+    public function updateAverageRating(): void
+    {
+        $average = round($this->rates()->avg('rate') ?? 0.00, 2);
+        $this->update(['rate' => $average]);
+    }
 }

@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\FavoriteProductController;
 use App\Http\Controllers\Api\User\UserAddressController;
 use App\Http\Controllers\Api\User\VendorController as UserVendorController;
+use App\Http\Controllers\Api\User\VendorRateController;
 use App\Http\Controllers\Dashboard\Settings\StoreTypeController;
 
 
@@ -133,6 +134,12 @@ Route::prefix('user')->middleware('user.auth')->group(function () {
     });
     Route::get('favorites', [FavoriteProductController::class, 'index']);
 });
+
+Route::middleware('user.auth')->group(function () {
+    Route::post('vendors/{id}/rate', [VendorRateController::class, 'store']);
+    Route::put('vendors/{id}/rate', [VendorRateController::class, 'update']);
+});
+
 Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']);
 Route::post('paymob/callback', [PaymobController::class, 'callback']);
 Route::match(['get', 'post'], 'paymob/response', [PaymobController::class, 'response']);
