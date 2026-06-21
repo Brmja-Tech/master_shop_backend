@@ -8,4 +8,6 @@ return [
     'invalid_credentials' => 'Invalid login credentials',
     'account_banned' => 'This account has been banned',
     'not_approved' => 'The account is still under admin review and has not been approved yet',
+    'profile_retrieved' => 'Profile retrieved successfully',
+    'profile_updated' => 'Profile updated successfully',
 ];
