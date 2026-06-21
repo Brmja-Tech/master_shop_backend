@@ -76,7 +76,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        abort_if($order->user_id !== auth('sanctum')->id(), 403);
+        abort_if($order->user_id != auth('sanctum')->id(), 403);
 
         $order->load([
             'vendor:id,store_name,logo',
