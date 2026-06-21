@@ -75,39 +75,102 @@
 
 @stack('js')
 @php
+    $firebaseDbUrl = config('services.firebase.database_url');
     $firebaseWebConfig = config('services.firebase.web', []);
     $hasFirebaseWebConfig = filled($firebaseWebConfig['api_key'] ?? null)
         && filled($firebaseWebConfig['project_id'] ?? null)
         && filled($firebaseWebConfig['messaging_sender_id'] ?? null)
         && filled($firebaseWebConfig['app_id'] ?? null)
         && filled($firebaseWebConfig['vapid_key'] ?? null);
+    $projectId = $firebaseWebConfig['project_id'] ?: 'master-shop-df984';
 @endphp
-@if (auth('admin')->check() && $hasFirebaseWebConfig)
+
+@if (auth('admin')->check() && ($hasFirebaseWebConfig || $firebaseDbUrl))
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
+        import { initializeApp, getApp, getApps } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
         import { getMessaging, getToken, isSupported } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging.js';
+        import { getDatabase, ref, onChildAdded, onValue } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js';
 
         const firebaseConfig = {
-            apiKey: @js($firebaseWebConfig['api_key']),
-            authDomain: @js($firebaseWebConfig['auth_domain']),
-            projectId: @js($firebaseWebConfig['project_id']),
-            storageBucket: @js($firebaseWebConfig['storage_bucket']),
-            messagingSenderId: @js($firebaseWebConfig['messaging_sender_id']),
-            appId: @js($firebaseWebConfig['app_id']),
+            projectId: @js($projectId),
+            @if ($firebaseDbUrl)
+                databaseURL: @js($firebaseDbUrl),
+            @endif
+            @if ($hasFirebaseWebConfig)
+                apiKey: @js($firebaseWebConfig['api_key']),
+                authDomain: @js($firebaseWebConfig['auth_domain']),
+                storageBucket: @js($firebaseWebConfig['storage_bucket']),
+                messagingSenderId: @js($firebaseWebConfig['messaging_sender_id']),
+                appId: @js($firebaseWebConfig['app_id']),
+            @endif
         };
 
+        let app;
+        try {
+            app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+        } catch (e) {
+            console.error('Firebase app initialization failed', e);
+        }
+
+        const adminId = @js(auth('admin')->id());
+
+        // 1. Setup Firebase Realtime Database Notifications
+        @if ($firebaseDbUrl)
+        try {
+            const db = getDatabase(app);
+            const notificationsRef = ref(db, 'notifications/admin_' + adminId);
+
+            let isInitialLoad = true;
+
+            onValue(notificationsRef, () => {
+                isInitialLoad = false;
+            }, { onlyOnce: true });
+
+            onChildAdded(notificationsRef, (snapshot) => {
+                if (!isInitialLoad) {
+                    const notification = snapshot.val();
+                    
+                    if (window.Livewire) {
+                        window.Livewire.dispatch('refreshNotifications');
+                    }
+
+                    if (window.toastr) {
+                        window.toastr.success(
+                            notification.message || 'لديك إشعار جديد',
+                            notification.title || 'إشعار جديد',
+                            {
+                                closeButton: true,
+                                tapToDismiss: false,
+                                rtl: true,
+                                positionClass: 'toast-top-left'
+                            }
+                        );
+                    }
+
+                    try {
+                        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav');
+                        audio.volume = 0.5;
+                        audio.play();
+                    } catch (e) {
+                        console.log('Audio play blocked', e);
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Firebase Realtime Database setup failed:', error);
+        }
+        @endif
+
+        // 2. Setup Firebase Cloud Messaging (FCM)
+        @if ($hasFirebaseWebConfig)
         const vapidKey = @js($firebaseWebConfig['vapid_key']);
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
         async function syncAdminFcmToken(token) {
-            if (!token || !csrfToken) {
-                return;
-            }
+            if (!token || !csrfToken) return;
 
             const lastToken = window.localStorage.getItem('admin_fcm_token');
-            if (lastToken === token) {
-                return;
-            }
+            if (lastToken === token) return;
 
             const response = await fetch('/admin/fcm-token', {
                 method: 'POST',
@@ -116,38 +179,25 @@
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
                 },
-                body: JSON.stringify({
-                    fcm_token: token,
-                }),
+                body: JSON.stringify({ fcm_token: token }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to persist admin FCM token.');
+            if (response.ok) {
+                window.localStorage.setItem('admin_fcm_token', token);
             }
-
-            window.localStorage.setItem('admin_fcm_token', token);
         }
 
         async function initAdminMessaging() {
             const supported = await isSupported();
-
-            if (!supported || !('Notification' in window) || !('serviceWorker' in navigator)) {
-                return;
-            }
-
-            if (Notification.permission === 'denied') {
-                return;
-            }
+            if (!supported || !('Notification' in window) || !('serviceWorker' in navigator)) return;
+            if (Notification.permission === 'denied') return;
 
             const permission = Notification.permission === 'granted'
                 ? 'granted'
                 : await Notification.requestPermission();
 
-            if (permission !== 'granted') {
-                return;
-            }
+            if (permission !== 'granted') return;
 
-            const app = initializeApp(firebaseConfig);
             const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
             const messaging = getMessaging(app);
             const token = await getToken(messaging, {
@@ -159,8 +209,9 @@
         }
 
         initAdminMessaging().catch(error => {
-            console.error('Admin FCM initialization failed:', error);
+            console.error('Admin FCM setup failed:', error);
         });
+        @endif
     </script>
 @endif
 <script>

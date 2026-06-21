@@ -6,6 +6,8 @@ use Livewire\Component;
 
 class NavbarNotifications extends Component
 {
+    protected $listeners = ['refreshNotifications' => '$refresh'];
+
     public function getNotificationsProperty()
     {
         if (!auth('admin')->check()) {

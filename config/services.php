@@ -37,6 +37,7 @@ return [
                 ? env('FIREBASE_CREDENTIALS')
                 : base_path(env('FIREBASE_CREDENTIALS')))
             : storage_path('app/firebase/firebase_credentials.json'),
+        'database_url' => env('FIREBASE_DATABASE_URL'),
         'web' => [
             'api_key' => env('FIREBASE_WEB_API_KEY'),
             'auth_domain' => env('FIREBASE_WEB_AUTH_DOMAIN'),
