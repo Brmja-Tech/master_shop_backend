@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Enums\OrderStatus;
 use App\Models\DeliveryRefusedOrder;
 use App\Models\DeliveryUser;
 use App\Models\Order;
+use App\Notifications\UserOrderStatusUpdatedNotification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
@@ -93,9 +95,11 @@ class DeliveryAutoAssignService
 
             $lockedOrder->update([
                 'delivery_id' => $deliveryUser->id,
-                'status' => \App\Enums\OrderStatus::OnTheWay->value,
+                'status' => OrderStatus::OnTheWay->value,
                 'delivery_status' => 'assigned',
             ]);
+
+            $this->notifyUserAboutOrderStatusChange($lockedOrder);
 
             Log::info("[DELIVERY_AUTO_ASSIGN] Order #{$order->id} accepted successfully by Driver ID {$deliveryUser->id}. Status updated to 'on_the_way' and delivery status to 'assigned'.");
             return true;
@@ -124,20 +128,22 @@ class DeliveryAutoAssignService
                 return false;
             }
 
-            if ($lockedOrder->status?->value === \App\Enums\OrderStatus::Delivered->value) {
+            if ($lockedOrder->status?->value === OrderStatus::Delivered->value) {
                 Log::info("[DELIVERY_AUTO_ASSIGN] Order #{$order->id} is already completed.");
                 return true;
             }
 
-            if ($lockedOrder->status?->value === \App\Enums\OrderStatus::Cancelled->value) {
+            if ($lockedOrder->status?->value === OrderStatus::Cancelled->value) {
                 Log::warning("[DELIVERY_AUTO_ASSIGN] Order #{$order->id} completion failed. Order is cancelled.");
                 return false;
             }
 
             $lockedOrder->update([
-                'status' => \App\Enums\OrderStatus::Delivered->value,
+                'status' => OrderStatus::Delivered->value,
                 'delivery_status' => 'delivered',
             ]);
+
+            $this->notifyUserAboutOrderStatusChange($lockedOrder);
 
             Log::info("[DELIVERY_AUTO_ASSIGN] Order #{$order->id} completed successfully by Driver ID {$deliveryUser->id}.");
             return true;
@@ -427,5 +433,57 @@ class DeliveryAutoAssignService
                 'order_id' => $order->id,
             ], $context)
         );
+    }
+
+    private function notifyUserAboutOrderStatusChange(Order $order): void
+    {
+        try {
+            $user = $order->user;
+
+            if (! $user) {
+                Log::warning("No user model associated with order #{$order->id}. Notification skipped.");
+                return;
+            }
+
+            $user->notify(new UserOrderStatusUpdatedNotification($order));
+
+            $userFcmToken = trim((string) ($user->fcm_token ?? ''));
+
+            if ($userFcmToken === '') {
+                Log::warning("User ID {$user->id} does not have an FCM token. Notification skipped for order #{$order->id}.");
+                return;
+            }
+
+            $locale = app()->getLocale();
+            $statusLabelAr = $order->status->label();
+            $statusLabelEn = match ($order->status) {
+                OrderStatus::Pending => 'Pending',
+                OrderStatus::Accepted => 'Accepted',
+                OrderStatus::Preparing => 'Preparing',
+                OrderStatus::Ready => 'Ready',
+                OrderStatus::OnTheWay => 'On the way',
+                OrderStatus::Delivered => 'Delivered',
+                OrderStatus::Cancelled => 'Cancelled',
+            };
+
+            $title = ($locale === 'ar') ? 'تحديث حالة الطلب' : 'Order Status Update';
+            $body = ($locale === 'ar')
+                ? "تم تحديث حالة طلبك رقم #{$order->id} إلى {$statusLabelAr}"
+                : "Your order #{$order->id} status has been updated to {$statusLabelEn}";
+
+            $sent = app(FcmService::class)->sendNotification($userFcmToken, $title, $body, [
+                'order_id' => (string) $order->id,
+                'status' => $order->status->value,
+                'type' => 'order_status_update',
+            ]);
+
+            if ($sent) {
+                Log::info("FCM push notification sent successfully to user ID {$user->id} for status update of order #{$order->id}");
+            } else {
+                Log::error("Failed to send FCM push notification to user ID {$user->id} for order #{$order->id}");
+            }
+        } catch (\Throwable $e) {
+            Log::error('FCM Notification dispatch failed for user order status update #' . $order->id . ': ' . $e->getMessage());
+        }
     }
 }

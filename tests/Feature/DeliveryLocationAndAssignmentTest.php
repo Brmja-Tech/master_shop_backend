@@ -312,6 +312,16 @@ class DeliveryLocationAndAssignmentTest extends TestCase
             'status' => 'on_the_way',
             'delivery_status' => 'assigned',
         ]);
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_type' => User::class,
+            'notifiable_id' => $user->id,
+        ]);
+
+        $notification = $user->notifications()->latest()->first();
+        $this->assertNotNull($notification);
+        $this->assertSame('order_status_update', $notification->data['type']);
+        $this->assertSame($order->id, $notification->data['order_id']);
+        $this->assertSame('on_the_way', $notification->data['status']);
     }
 
     public function test_available_orders_endpoint_returns_open_ready_orders_for_delivery_user(): void
@@ -652,5 +662,17 @@ class DeliveryLocationAndAssignmentTest extends TestCase
             'status' => 'delivered',
             'delivery_status' => 'delivered',
         ]);
+
+        $user = User::findOrFail($order->user_id);
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_type' => User::class,
+            'notifiable_id' => $user->id,
+        ]);
+
+        $notification = $user->notifications()->latest()->first();
+        $this->assertNotNull($notification);
+        $this->assertSame('order_status_update', $notification->data['type']);
+        $this->assertSame($order->id, $notification->data['order_id']);
+        $this->assertSame('delivered', $notification->data['status']);
     }
 }
