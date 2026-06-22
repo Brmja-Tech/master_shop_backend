@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Enums\OrderStatus;
+use App\Enums\PaymentMethod;
+use App\Enums\PaymentStatus;
 use App\Models\DeliveryRefusedOrder;
 use App\Models\DeliveryUser;
 use App\Models\Order;
@@ -138,10 +140,16 @@ class DeliveryAutoAssignService
                 return false;
             }
 
-            $lockedOrder->update([
+            $updates = [
                 'status' => OrderStatus::Delivered->value,
                 'delivery_status' => 'delivered',
-            ]);
+            ];
+
+            if ($lockedOrder->payment_method?->value === PaymentMethod::Cash->value) {
+                $updates['payment_status'] = PaymentStatus::Paid->value;
+            }
+
+            $lockedOrder->update($updates);
 
             $this->notifyUserAboutOrderStatusChange($lockedOrder);
 

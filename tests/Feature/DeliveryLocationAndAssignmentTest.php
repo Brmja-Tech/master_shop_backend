@@ -661,6 +661,7 @@ class DeliveryLocationAndAssignmentTest extends TestCase
             'delivery_id' => $captain->id,
             'status' => 'delivered',
             'delivery_status' => 'delivered',
+            'payment_status' => 'paid',
         ]);
 
         $user = User::findOrFail($order->user_id);
