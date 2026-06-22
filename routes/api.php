@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\SubcategoryController as AdminSubcategoryController;
 use App\Http\Controllers\Api\Auth\ForgotController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\Delivery\ProfileController as DeliveryProfileController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PaymobController;
 use App\Http\Controllers\Api\PaymobWebhookController;
@@ -135,6 +136,7 @@ Route::prefix('user')->middleware('user.auth')->group(function () {
     Route::get('favorites', [FavoriteProductController::class, 'index']);
 });
 
+
 Route::middleware('user.auth')->group(function () {
     Route::post('vendors/{id}/rate', [VendorRateController::class, 'store']);
     Route::put('vendors/{id}/rate', [VendorRateController::class, 'update']);
@@ -144,5 +146,5 @@ Route::get('subcategories/lookup', [AdminSubcategoryController::class, 'lookup']
 Route::post('paymob/callback', [PaymobController::class, 'callback']);
 Route::match(['get', 'post'], 'paymob/response', [PaymobController::class, 'response']);
 Route::post('paymob/webhook', PaymobWebhookController::class);
-
+Route::middleware('delivery.auth')->post('/update_location', [DeliveryProfileController::class, 'updateLocation']);
 

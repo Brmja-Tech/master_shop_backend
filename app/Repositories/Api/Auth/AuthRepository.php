@@ -119,7 +119,7 @@ class AuthRepository
 
         if ($user->email_verified_at == null) {
             $otp = $this->otp->generate($user->phone, 'numeric', 5, 20);
-            $user->notify(new SendOtpNotify());
+            $user->notify(new \App\Notifications\SendOtpNotify($otp->token));
 
             return [
                 'status'  => 415,
@@ -176,14 +176,14 @@ class AuthRepository
         $otp = $this->otp->generate($user->phone, 'numeric', 5, 20);
 
         // Send new OTP
-        $user->notify(new SendOtpNotify());
+        $user->notify(new \App\Notifications\SendOtpNotify($otp->token));
 
         return [
             'status'  => 200,
             'message' => __('front.otp-resent-successfully'),
             'data'    => [
                 'phone'    => $user->phone,
-                'otp_code' => $otp->token, // For testing only
+                'otp_code' => $otp->token, 
             ]
         ];
     } // End resendOtp Method

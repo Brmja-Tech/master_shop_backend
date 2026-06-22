@@ -13,7 +13,8 @@ class OrderService
 {
     public function __construct(
         protected PaymobService $paymobService,
-        protected FcmService $fcmService
+        protected FcmService $fcmService,
+        protected DeliveryAutoAssignService $deliveryAutoAssignService
     ) {}
 
     public function placeOrder(User $user, array $data): Order

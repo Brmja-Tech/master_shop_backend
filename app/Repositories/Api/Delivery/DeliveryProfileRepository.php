@@ -12,4 +12,14 @@ class DeliveryProfileRepository
 
         return $deliveryUser->fresh();
     }
+
+    public function updateLocation(DeliveryUser $deliveryUser, float $lat, float $lng): DeliveryUser
+    {
+        $deliveryUser->update([
+            'lat' => $lat,
+            'lng' => $lng,
+        ]);
+
+        return $deliveryUser->fresh();
+    }
 }

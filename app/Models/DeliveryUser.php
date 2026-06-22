@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -47,4 +49,28 @@ class DeliveryUser extends Authenticatable
         'balance' => 'decimal:2',
         'max_active_orders' => 'integer',
     ];
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class, 'delivery_id');
+    }
+
+    public function activeOrders(): HasMany
+    {
+        return $this->orders()
+            ->where(function ($query) {
+                $query->whereIn('delivery_status', [
+                    'assigned',
+                    'picked_up',
+                ])->orWhereIn('status', [
+                    OrderStatus::Accepted->value,
+                    OrderStatus::OnTheWay->value,
+                ]);
+            });
+    }
+
+    public function refusedOrders(): HasMany
+    {
+        return $this->hasMany(DeliveryRefusedOrder::class, 'delivery_id');
+    }
 }

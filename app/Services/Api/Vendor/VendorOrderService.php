@@ -7,6 +7,7 @@ use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use App\Models\Order;
 use App\Models\Vendor;
+use App\Services\DeliveryAutoAssignService;
 use App\Repositories\Api\Vendor\VendorOrderRepository;
 use App\Services\FcmService;
 use App\Services\PaymobService;
@@ -20,7 +21,8 @@ class VendorOrderService
     public function __construct(
         protected VendorOrderRepository $repository,
         protected FcmService $fcmService,
-        protected PaymobService $paymobService
+        protected PaymobService $paymobService,
+        protected DeliveryAutoAssignService $deliveryAutoAssignService
     ) {}
 
     public function index(Vendor $vendor, ?string $status, int $perPage): LengthAwarePaginator
@@ -68,6 +70,14 @@ class VendorOrderService
             $order->update([
                 'status' => $newStatus,
             ]);
+        }
+
+        if (
+            $newStatus === OrderStatus::Ready &&
+            empty($order->delivery_id)
+        ) {
+            $this->deliveryAutoAssignService->notifyCandidates($order->fresh(['vendor']));
+            $order->refresh();
         }
 
         // Send FCM push notification to the user (customer)

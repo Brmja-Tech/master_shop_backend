@@ -39,7 +39,7 @@ class VendorAuthService
             ];
         }
 
-        if ($vendor->approval_status !== 'approved') {
+        if (! $vendor->is_verified) {
             return [
                 'status'  => 403,
                 'message' => 'vendor.not-verified',

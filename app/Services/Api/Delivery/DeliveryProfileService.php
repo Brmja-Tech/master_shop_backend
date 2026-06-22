@@ -44,4 +44,13 @@ class DeliveryProfileService
 
         return $this->repository->update($deliveryUser, $data);
     }
+
+    public function updateLocation(DeliveryUser $deliveryUser, array $data): DeliveryUser
+    {
+        return $this->repository->updateLocation(
+            $deliveryUser,
+            (float) $data['lat'],
+            (float) $data['lng']
+        );
+    }
 }
