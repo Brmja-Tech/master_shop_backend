@@ -112,6 +112,38 @@ class DeliveryAutoAssignService
         ]);
     }
 
+    public function complete(Order $order, DeliveryUser $deliveryUser): bool
+    {
+        Log::info("[DELIVERY_AUTO_ASSIGN] Driver ID {$deliveryUser->id} is attempting to complete Order #{$order->id}.");
+
+        return DB::transaction(function () use ($order, $deliveryUser) {
+            $lockedOrder = Order::query()->whereKey($order->id)->lockForUpdate()->firstOrFail();
+
+            if ((int) $lockedOrder->delivery_id !== (int) $deliveryUser->id) {
+                Log::warning("[DELIVERY_AUTO_ASSIGN] Order #{$order->id} completion failed. It is not assigned to Driver ID {$deliveryUser->id}.");
+                return false;
+            }
+
+            if ($lockedOrder->status?->value === \App\Enums\OrderStatus::Delivered->value) {
+                Log::info("[DELIVERY_AUTO_ASSIGN] Order #{$order->id} is already completed.");
+                return true;
+            }
+
+            if ($lockedOrder->status?->value === \App\Enums\OrderStatus::Cancelled->value) {
+                Log::warning("[DELIVERY_AUTO_ASSIGN] Order #{$order->id} completion failed. Order is cancelled.");
+                return false;
+            }
+
+            $lockedOrder->update([
+                'status' => \App\Enums\OrderStatus::Delivered->value,
+                'delivery_status' => 'delivered',
+            ]);
+
+            Log::info("[DELIVERY_AUTO_ASSIGN] Order #{$order->id} completed successfully by Driver ID {$deliveryUser->id}.");
+            return true;
+        }, 3);
+    }
+
     public function availableOrdersFor(DeliveryUser $deliveryUser): SupportCollection
     {
         if (

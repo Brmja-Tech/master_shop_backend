@@ -15,7 +15,10 @@ Route::prefix('delivery')->name('delivery.')->middleware('setLocale')->group(fun
         Route::post('profile', [ProfileController::class, 'update']);
         Route::post('location', [ProfileController::class, 'updateLocation']);
         Route::get('orders/available', [OrderController::class, 'index']);
+        Route::get('orders/current-accepted', [OrderController::class, 'currentAccepted']);
+        Route::get('orders/completed', [OrderController::class, 'completed']);
         Route::post('orders/{order}/accept', [OrderController::class, 'accept']);
+        Route::post('orders/{order}/complete', [OrderController::class, 'complete']);
         Route::post('orders/{order}/reject', [OrderController::class, 'reject']);
     });
 });

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Models\Country;
+use App\Models\DeliveryUser;
 use App\Models\Governorate;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder
         Role::truncate();
         Governorate::truncate();
         Country::truncate();
+        DeliveryUser::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
@@ -49,6 +51,7 @@ class DatabaseSeeder extends Seeder
             StoreTypeSeeder::class,
             SubcategorySeeder::class,
             ProductSeeder::class,
+            DeliveryUserSeeder::class,
         ]);
     }
 }
