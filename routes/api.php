@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\Vendor\OrderController as VendorOrderController;
 use App\Http\Controllers\Api\Vendor\WalletController as VendorWalletController;
 use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\FavoriteProductController;
+use App\Http\Controllers\Api\User\NotificationController as UserNotificationController;
 use App\Http\Controllers\Api\User\UserAddressController;
 use App\Http\Controllers\Api\User\VendorController as UserVendorController;
 use App\Http\Controllers\Api\User\VendorRateController;
@@ -133,6 +134,11 @@ Route::prefix('user')->middleware('user.auth')->group(function () {
         Route::get('{order}', [OrderController::class, 'show']);
         Route::post('{order}/cancel', [OrderController::class, 'cancel']);
     });
+    Route::prefix('notifications')->group(function () {
+        Route::get('', [UserNotificationController::class, 'index']);
+        Route::post('{notificationId}/read', [UserNotificationController::class, 'markAsRead']);
+        Route::post('read-all', [UserNotificationController::class, 'markAllAsRead']);
+    });
     Route::get('favorites', [FavoriteProductController::class, 'index']);
 });
 
@@ -147,4 +153,3 @@ Route::post('paymob/callback', [PaymobController::class, 'callback']);
 Route::match(['get', 'post'], 'paymob/response', [PaymobController::class, 'response']);
 Route::post('paymob/webhook', PaymobWebhookController::class);
 Route::middleware('delivery.auth')->post('/update_location', [DeliveryProfileController::class, 'updateLocation']);
-

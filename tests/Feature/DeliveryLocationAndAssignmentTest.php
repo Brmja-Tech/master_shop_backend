@@ -235,6 +235,13 @@ class DeliveryLocationAndAssignmentTest extends TestCase
             'delivery_id' => null,
             'delivery_status' => 'searching',
         ]);
+
+        $notification = $user->notifications()->latest()->first();
+
+        $this->assertNotNull($notification);
+        $this->assertSame('order_status_update', $notification->data['type']);
+        $this->assertSame($order->id, $notification->data['order_id']);
+        $this->assertSame('ready', $notification->data['status']);
     }
 
     public function test_first_delivery_user_to_accept_gets_the_order(): void

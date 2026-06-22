@@ -7,6 +7,7 @@ use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use App\Models\Order;
 use App\Models\Vendor;
+use App\Notifications\UserOrderStatusUpdatedNotification;
 use App\Services\DeliveryAutoAssignService;
 use App\Repositories\Api\Vendor\VendorOrderRepository;
 use App\Services\FcmService;
@@ -84,6 +85,8 @@ class VendorOrderService
         try {
             $user = $order->user;
             if ($user) {
+                $user->notify(new UserOrderStatusUpdatedNotification($order));
+
                 $userFcmToken = trim((string) ($user->fcm_token ?? ''));
                 if ($userFcmToken !== '') {
                     $locale = app()->getLocale();

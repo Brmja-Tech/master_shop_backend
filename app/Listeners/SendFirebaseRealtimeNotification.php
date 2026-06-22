@@ -2,9 +2,12 @@
 
 namespace App\Listeners;
 
+use App\Models\Admin;
+use App\Models\DeliveryUser;
+use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Notifications\Events\NotificationSent;
 use App\Services\FirebaseRealtimeService;
-use App\Models\Admin;
 use Illuminate\Support\Facades\Log;
 
 class SendFirebaseRealtimeNotification
@@ -27,35 +30,44 @@ class SendFirebaseRealtimeNotification
         $notifiable = $event->notifiable;
         $notification = $event->notification;
 
-        // Check if the recipient is an Admin
-        if ($notifiable instanceof Admin) {
-            try {
-                // Get notification data
-                $data = [];
-                if (method_exists($notification, 'toDatabase')) {
-                    $data = $notification->toDatabase($notifiable);
-                } elseif (method_exists($notification, 'toArray')) {
-                    $data = $notification->toArray($notifiable);
-                }
+        if (
+            ! $notifiable instanceof Admin &&
+            ! $notifiable instanceof User &&
+            ! $notifiable instanceof Vendor &&
+            ! $notifiable instanceof DeliveryUser
+        ) {
+            return;
+        }
 
-                $title = $data['title'] ?? 'إشعار جديد';
-                $message = $data['message'] ?? '';
-
-                $notifiableType = strtolower(class_basename($notifiable));
-                $path = 'notifications/' . $notifiableType . '_' . $notifiable->id;
-
-                $payload = [
-                    'id' => $notification->id,
-                    'title' => $title,
-                    'message' => $message,
-                    'data' => $data,
-                    'created_at' => now()->toISOString(),
-                ];
-
-                \App\Jobs\FirebasePushJob::dispatch($path, $payload);
-            } catch (\Throwable $e) {
-                Log::error('Failed to push notification to Firebase Realtime Database: ' . $e->getMessage());
+        try {
+            $data = [];
+            if (method_exists($notification, 'toDatabase')) {
+                $data = $notification->toDatabase($notifiable);
+            } elseif (method_exists($notification, 'toArray')) {
+                $data = $notification->toArray($notifiable);
             }
+
+            if ($data instanceof \Illuminate\Notifications\Messages\DatabaseMessage) {
+                $data = $data->data;
+            }
+
+            $title = $data['title'] ?? 'إشعار جديد';
+            $message = $data['message'] ?? '';
+
+            $notifiableType = strtolower(class_basename($notifiable));
+            $path = 'notifications/' . $notifiableType . '_' . $notifiable->id;
+
+            $payload = [
+                'id' => $notification->id,
+                'title' => $title,
+                'message' => $message,
+                'data' => $data,
+                'created_at' => now()->toISOString(),
+            ];
+
+            \App\Jobs\FirebasePushJob::dispatch($path, $payload);
+        } catch (\Throwable $e) {
+            Log::error('Failed to push notification to Firebase Realtime Database: ' . $e->getMessage());
         }
     }
 }
