@@ -25,6 +25,8 @@ class OrderResource extends JsonResource
             'total' => $this->total,
             'delivery_address' => $this->delivery_address,
             'notes' => $this->notes,
+            'quantity_item' => $this->items_count ?? ($this->relationLoaded('items') ? $this->items->count() : $this->items()->count()),
+            'created_at' => $this->created_at?->toDateTimeString(),
             'vendor' => $this->whenLoaded('vendor', function () {
                 return [
                     'id' => $this->vendor?->id,
