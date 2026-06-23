@@ -1,32 +1,28 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\StoreType;
 use Illuminate\Database\Seeder;
-
 class StoreTypeSeeder extends Seeder
 {
     public function run(): void
     {
         $defaultImage = 'uploads/images/logo.jpeg';
-
         $storeTypes = [
             [
                 'name' => 'سوبر ماركت',
-                'image' => $defaultImage,
+                'image' => 'uploads/store-types/supermarket.png',
             ],
             [
                 'name' => 'صيدلية',
-                'image' => $defaultImage,
+                'image' => 'uploads/store-types/pharmacy.png',
             ],
             [
                 'name' => 'مطعم',
-                'image' => $defaultImage,
+                'image' => 'uploads/store-types/restaurant.png',
             ],
             [
                 'name' => 'كافيه',
-                'image' => $defaultImage,
+                'image' => 'uploads/store-types/cafe.png',
             ],
         ];
 

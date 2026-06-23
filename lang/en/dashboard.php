@@ -367,6 +367,7 @@ return [
     'delivery_approved_successfully' => 'Delivery user approved successfully',
     'delivery_rejected_successfully' => 'Delivery user rejected successfully',
     'delivery_requests' => 'Delivery Requests',
+    'delivery_withdraw_requests' => 'Delivery Withdraw Requests',
     'all_requests' => 'All Delivery Requests',
     'vendor_requests' => 'Vendor Requests',
     'vendor_approved_successfully' => 'Vendor approved successfully',

@@ -17,6 +17,7 @@ use App\Http\Controllers\Dashboard\Auth\ResetPasswordController;
 use App\Http\Controllers\Dashboard\Settings\StoreTypeController;
 use App\Http\Controllers\Api\Admin\SubcategoryController as AdminSubcategoryController;
 use App\Http\Controllers\Api\Admin\VendorWithdrawalRequestController as AdminVendorWithdrawalRequestController;
+use App\Http\Controllers\Api\Admin\DeliveryWithdrawalRequestController as AdminDeliveryWithdrawalRequestController;
 use App\Http\Controllers\Api\Admin\VendorController as AdminVendorController;
 
 
@@ -108,6 +109,7 @@ Route::group([
         Route::get('deliveries/{id}',        [DeliveryController::class, 'show'])->middleware('can:settings')->name('deliveries.show');
         Route::post('deliveries/{id}/status', [DeliveryController::class, 'updateStatus'])->middleware('can:settings')->name('deliveries.status');
         Route::post('deliveries/{id}/ban',    [DeliveryController::class, 'toggleBan'])->middleware('can:settings')->name('deliveries.ban');
+        Route::get('delivery-withdraw-requests', [DeliveryController::class, 'withdrawRequests'])->middleware('can:settings')->name('delivery-withdraw-requests.index');
 
     });
 
@@ -128,5 +130,8 @@ Route::prefix('admin')->middleware(['setLocale', 'auth:admin'])->group(function 
     Route::get('withdraw-requests', [AdminVendorWithdrawalRequestController::class, 'index']);
     Route::post('withdraw-requests/{vendorWithdrawalRequest}/approve', [AdminVendorWithdrawalRequestController::class, 'approve']);
     Route::post('withdraw-requests/{vendorWithdrawalRequest}/reject', [AdminVendorWithdrawalRequestController::class, 'reject']);
+    Route::get('delivery-withdraw-requests', [AdminDeliveryWithdrawalRequestController::class, 'index']);
+    Route::post('delivery-withdraw-requests/{deliveryWithdrawalRequest}/approve', [AdminDeliveryWithdrawalRequestController::class, 'approve']);
+    Route::post('delivery-withdraw-requests/{deliveryWithdrawalRequest}/reject', [AdminDeliveryWithdrawalRequestController::class, 'reject']);
     Route::apiResource('vendors', AdminVendorController::class)->except(['destroy']);
 });

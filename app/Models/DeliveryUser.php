@@ -73,4 +73,9 @@ class DeliveryUser extends Authenticatable
     {
         return $this->hasMany(DeliveryRefusedOrder::class, 'delivery_id');
     }
+
+    public function withdrawalRequests(): HasMany
+    {
+        return $this->hasMany(DeliveryWithdrawalRequest::class, 'delivery_id');
+    }
 }

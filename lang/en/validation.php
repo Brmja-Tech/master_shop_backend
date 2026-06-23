@@ -278,4 +278,5 @@ return [
     'login-success'=>'login Successfully welcome : ',
     'order_cannot_be_cancelled' => 'Order cannot be cancelled at this stage',
     'accurate_location_required' => 'Please determine the location accurately.',
+    'name_regex' => 'The name must consist of at least two parts (e.g., first and last name).',
 ];

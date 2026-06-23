@@ -151,6 +151,22 @@ class DeliveryAutoAssignService
 
             $lockedOrder->update($updates);
 
+            // Update delivery wallet if paid online (Paymob)
+            if ($lockedOrder->payment_method?->value === PaymentMethod::Paymob->value) {
+                $lockedDeliveryUser = DeliveryUser::query()->whereKey($deliveryUser->id)->lockForUpdate()->firstOrFail();
+                $lockedDeliveryUser->increment('balance', $lockedOrder->delivery_fee);
+
+                DB::table('delivery_wallet_transactions')->insert([
+                    'delivery_id' => $lockedDeliveryUser->id,
+                    'order_id' => $lockedOrder->id,
+                    'type' => 'delivered_online',
+                    'amount' => $lockedOrder->delivery_fee,
+                    'note' => 'Delivery fee for order #' . $lockedOrder->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
             $this->notifyUserAboutOrderStatusChange($lockedOrder);
 
             Log::info("[DELIVERY_AUTO_ASSIGN] Order #{$order->id} completed successfully by Driver ID {$deliveryUser->id}.");

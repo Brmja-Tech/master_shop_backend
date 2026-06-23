@@ -41,7 +41,12 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'       => 'required|string|max:255',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^\S+\s+\S+.*$/u',
+            ],
             'email'      => 'nullable|string|email|max:255|unique:users,email',
             'phone'      => [
                 'required',
@@ -65,6 +70,16 @@ class RegisterRequest extends FormRequest
             'phone'    => __('dashboard.phone'),
             'email'    => __('dashboard.email'),
             'password' => __('dashboard.password'),
+        ];
+    }
+
+    /**
+     * Get the validation messages that apply to the request.
+     */
+    public function messages(): array
+    {
+        return [
+            'name.regex' => __('validation.name_regex'),
         ];
     }
 

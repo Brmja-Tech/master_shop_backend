@@ -76,6 +76,11 @@ class Order extends Model
         return $this->hasMany(VendorWithdrawalRequestOrder::class);
     }
 
+    public function deliveryWithdrawalAllocations(): HasMany
+    {
+        return $this->hasMany(DeliveryWithdrawalRequestOrder::class);
+    }
+
     public function scopeForUser(Builder $query, int $userId): Builder
     {
         return $query->where('user_id', $userId);

@@ -32,12 +32,12 @@ class SettingsSeeder extends Seeder
                 'ar' => 'Master shop',
             ],
             'site_title' => [
-                'en' => 'FIX Store — Multi Vendor Marketplace',
-                'ar' => 'FIX Store — منصة تسوق متعددة التجار',
+                'en' => 'Master shop — Multi Vendor Marketplace',
+                'ar' => 'Master shop — منصة تسوق متعددة التجار',
             ],
             'site_desc' => [
-                'en' => 'FIX Store is a multi-vendor marketplace that brings customers, stores, and trusted vendors together in one simple shopping platform.',
-                'ar' => 'FIX Store هي منصة تسوق متعددة التجار تجمع العملاء والمتاجر والبائعين الموثوقين في مكان واحد لتجربة شراء سهلة.',
+                'en' => 'Master shop is a multi-vendor marketplace that brings customers, stores, and trusted vendors together in one simple shopping platform.',
+                'ar' => 'Master shop هي منصة تسوق متعددة التجار تجمع العملاء والمتاجر والبائعين الموثوقين في مكان واحد لتجربة شراء سهلة.',
             ],
             'site_address' => [
                 'en' => 'Cairo, Egypt',
@@ -48,8 +48,8 @@ class SettingsSeeder extends Seeder
                 'ar' => 'منصة متعددة التجار, تسوق أونلاين, تجارة إلكترونية, بائعين, متاجر, تجار, منتجات, توصيل, عروض',
             ],
             'meta_desc' => [
-                'en' => 'FIX Store connects customers with multiple vendors and stores, making it easy to browse products, compare options, place orders, and shop with confidence.',
-                'ar' => 'FIX Store يربط العملاء بعدة تجار ومتاجر، لتصفح المنتجات ومقارنة الاختيارات وإتمام الطلبات بسهولة وثقة.',
+                'en' => 'Master shop connects customers with multiple vendors and stores, making it easy to browse products, compare options, place orders, and shop with confidence.',
+                'ar' => 'Master shop يربط العملاء بعدة تجار ومتاجر، لتصفح المنتجات ومقارنة الاختيارات وإتمام الطلبات بسهولة وثقة.',
             ],
 
             // Non-translatable
@@ -58,12 +58,12 @@ class SettingsSeeder extends Seeder
             'email_support' => 'support@fix-store.com',
 
             // Social
-            'facebook'  => 'https://facebook.com/fixstore',
-            'x_url'     => 'https://x.com/fixstore',
-            'youtube'   => 'https://youtube.com/@fixstore',
-            'instagram' => 'https://instagram.com/fixstore',
-            'tiktok'    => 'https://tiktok.com/@fixstore',
-            'linkedin'  => 'https://linkedin.com/company/fixstore',
+            'facebook'  => 'https://facebook.com/Master shop',
+            'x_url'     => 'https://x.com/Master shop',
+            'youtube'   => 'https://youtube.com/@Master shop',
+            'instagram' => 'https://instagram.com/Master shop',
+            'tiktok'    => 'https://tiktok.com/@Master shop',
+            'linkedin'  => 'https://linkedin.com/company/Master shop',
             'whatsapp'  => '+201000000000',
 
             // Media
@@ -71,7 +71,7 @@ class SettingsSeeder extends Seeder
             'favicon' => $defaultImage,
 
             // Others
-            'site_copyright' => '© ' . now()->year . ' FIX Store. All rights reserved.',
+            'site_copyright' => '© ' . now()->year . ' Master shop. All rights reserved.',
             'promotion_url'  => 'https://fix-store.com/offers',
         ];
 
@@ -129,12 +129,12 @@ class SettingsSeeder extends Seeder
             ['id' => 1],
             [
                 'title' => [
-                    'en' => 'About FIX Store',
-                    'ar' => 'عن FIX Store',
+                    'en' => 'About Master shop',
+                    'ar' => 'عن Master shop',
                 ],
                 'desc' => [
-                    'en' => 'FIX Store is a multi-vendor marketplace designed to connect customers with trusted stores and sellers. Our platform allows vendors to showcase their products, manage their store, and reach more customers, while giving shoppers a smooth, secure, and reliable shopping experience from different vendors in one place.',
-                    'ar' => 'FIX Store هي منصة تسوق متعددة التجار مصممة لربط العملاء بمتاجر وبائعين موثوقين. تتيح المنصة للتجار عرض منتجاتهم وإدارة متاجرهم والوصول لعملاء أكثر، وفي نفس الوقت توفر للعملاء تجربة تسوق سهلة وآمنة وموثوقة من أكثر من تاجر في مكان واحد.',
+                    'en' => 'Master shop is a multi-vendor marketplace designed to connect customers with trusted stores and sellers. Our platform allows vendors to showcase their products, manage their store, and reach more customers, while giving shoppers a smooth, secure, and reliable shopping experience from different vendors in one place.',
+                    'ar' => 'Master shop هي منصة تسوق متعددة التجار مصممة لربط العملاء بمتاجر وبائعين موثوقين. تتيح المنصة للتجار عرض منتجاتهم وإدارة متاجرهم والوصول لعملاء أكثر، وفي نفس الوقت توفر للعملاء تجربة تسوق سهلة وآمنة وموثوقة من أكثر من تاجر في مكان واحد.',
                 ],
                 'banner' => $defaultImage,
                 'image'  => $defaultImage,
@@ -155,8 +155,8 @@ class SettingsSeeder extends Seeder
                     'ar' => 'سياسة الخصوصية',
                 ],
                 'desc' => [
-                    'en' => 'At FIX Store, we respect the privacy of customers and vendors. We collect and use data only to manage accounts, operate stores, process orders, provide delivery updates, improve the marketplace experience, and offer customer support. We do not sell personal information to third parties.',
-                    'ar' => 'في FIX Store نحترم خصوصية العملاء والتجار. نقوم بجمع واستخدام البيانات فقط لإدارة الحسابات وتشغيل المتاجر ومعالجة الطلبات وتحديثات التوصيل وتحسين تجربة المنصة وتقديم الدعم. لا نقوم ببيع البيانات الشخصية لأي طرف ثالث.',
+                    'en' => 'At Master shop, we respect the privacy of customers and vendors. We collect and use data only to manage accounts, operate stores, process orders, provide delivery updates, improve the marketplace experience, and offer customer support. We do not sell personal information to third parties.',
+                    'ar' => 'في Master shop نحترم خصوصية العملاء والتجار. نقوم بجمع واستخدام البيانات فقط لإدارة الحسابات وتشغيل المتاجر ومعالجة الطلبات وتحديثات التوصيل وتحسين تجربة المنصة وتقديم الدعم. لا نقوم ببيع البيانات الشخصية لأي طرف ثالث.',
                 ],
                 'banner' => $defaultImage,
                 'image'  => $defaultImage,
@@ -177,7 +177,7 @@ class SettingsSeeder extends Seeder
                     'ar' => 'الشروط والأحكام',
                 ],
                 'desc' => [
-                    'en' => 'By using FIX Store, customers and vendors agree to the marketplace terms related to accounts, store management, product listings, orders, payments, delivery, returns, commissions, and platform policies. Vendors are responsible for the accuracy of their products, prices, and availability.',
+                    'en' => 'By using Master shop, customers and vendors agree to the marketplace terms related to accounts, store management, product listings, orders, payments, delivery, returns, commissions, and platform policies. Vendors are responsible for the accuracy of their products, prices, and availability.',
                     'ar' => 'باستخدام FIX Store، يوافق العملاء والتجار على شروط المنصة المتعلقة بالحسابات وإدارة المتاجر وعرض المنتجات والطلبات والدفع والتوصيل والاسترجاع والعمولات وسياسات المنصة. يتحمل التجار مسؤولية دقة بيانات المنتجات والأسعار وتوفر المنتجات.',
                 ],
                 'banner' => $defaultImage,
@@ -194,12 +194,12 @@ class SettingsSeeder extends Seeder
         $faqs = [
             [
                 'question' => [
-                    'en' => 'What is FIX Store?',
+                    'en' => 'What is Master shop?',
                     'ar' => 'ما هو FIX Store؟',
                 ],
                 'answer' => [
-                    'en' => 'FIX Store is a multi-vendor marketplace where customers can browse and buy products from different trusted vendors and stores in one platform.',
-                    'ar' => 'FIX Store هي منصة تسوق متعددة التجار تتيح للعملاء تصفح وشراء المنتجات من أكثر من تاجر ومتجر موثوق في مكان واحد.',
+                    'en' => 'Master shop is a multi-vendor marketplace where customers can browse and buy products from different trusted vendors and stores in one platform.',
+                    'ar' => 'Master shop هي منصة تسوق متعددة التجار تتيح للعملاء تصفح وشراء المنتجات من أكثر من تاجر ومتجر موثوق في مكان واحد.',
                 ],
                 'status' => 1,
             ],
@@ -216,7 +216,7 @@ class SettingsSeeder extends Seeder
             ],
             [
                 'question' => [
-                    'en' => 'Can vendors sell on FIX Store?',
+                    'en' => 'Can vendors sell on Master shop?',
                     'ar' => 'هل التجار يقدروا يبيعوا على FIX Store؟',
                 ],
                 'answer' => [
@@ -227,12 +227,12 @@ class SettingsSeeder extends Seeder
             ],
             [
                 'question' => [
-                    'en' => 'Are products sold by FIX Store or vendors?',
-                    'ar' => 'المنتجات بتتباع من FIX Store ولا من التجار؟',
+                    'en' => 'Are products sold by Master shop or vendors?',
+                    'ar' => 'المنتجات بتتباع من Master shop ولا من التجار؟',
                 ],
                 'answer' => [
-                    'en' => 'FIX Store is a marketplace. Products are listed by different vendors, and each product may be linked to its related store or seller.',
-                    'ar' => 'FIX Store هي منصة ماركت بليس. المنتجات بيتم عرضها من تجار مختلفين، وكل منتج بيكون مرتبط بالمتجر أو البائع الخاص به.',
+                    'en' => 'Master shop is a marketplace. Products are listed by different vendors, and each product may be linked to its related store or seller.',
+                    'ar' => 'Master shop هي منصة ماركت بليس. المنتجات بيتم عرضها من تجار مختلفين، وكل منتج بيكون مرتبط بالمتجر أو البائع الخاص به.',
                 ],
                 'status' => 1,
             ],

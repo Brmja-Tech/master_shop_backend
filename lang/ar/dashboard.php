@@ -367,6 +367,7 @@ return [
     'delivery_approved_successfully' => 'تم قبول المندوب بنجاح',
     'delivery_rejected_successfully' => 'تم رفض المندوب بنجاح',
     'delivery_requests' => 'طلبات المناديب',
+    'delivery_withdraw_requests' => 'طلبات سحب المناديب',
     'all_requests' => 'كل طلبات الانضمام',
     'vendor_requests' => 'طلبات المتاجر',
     'vendor_approved_successfully' => 'تم قبول المتجر بنجاح',

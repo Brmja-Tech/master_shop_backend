@@ -61,4 +61,9 @@ class DeliveryController extends Controller
 
         return redirect()->back()->with('success', __('dashboard.status-change'));
     }
+
+    public function withdrawRequests()
+    {
+        return view('dashboard.delivery-withdraw-requests.index');
+    }
 }

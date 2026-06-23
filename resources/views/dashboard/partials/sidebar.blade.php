@@ -15,6 +15,12 @@
                     ->where('is_verified', false)
                     ->whereIn('approval_status', ['pending', 'rejected'])
                     ->count();
+                $pendingVendorWithdrawRequestsCount = \App\Models\VendorWithdrawalRequest::query()
+                    ->where('status', \App\Enums\VendorWithdrawalStatus::Pending)
+                    ->count();
+                $pendingDeliveryWithdrawRequestsCount = \App\Models\DeliveryWithdrawalRequest::query()
+                    ->where('status', \App\Enums\DeliveryWithdrawalStatus::Pending)
+                    ->count();
             @endphp
             <li class="nav-item me-auto"><a class="navbar-brand" href="{{ route('dashboard.home') }}"><span
                         class="brand-logo"><img src="{{ $dashboardLogo }}" alt="Dashboard Logo"></span>
@@ -192,13 +198,14 @@
                                 <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ $approvedVendorsCount }}</span>
                             </a>
                         </li>
+                        <li>
+                            <a class="@yield('withdraw-requests-active') d-flex align-items-center" href="{{ route('dashboard.withdraw-requests.index') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.withdraw-requests') }}</span>
+                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $pendingVendorWithdrawRequestsCount }}</span>
+                            </a>
+                        </li>
                     </ul>
-                </li>
-                <li class="nav-item @yield('withdraw-requests-active')">
-                    <a class="d-flex align-items-center" href="{{ route('dashboard.withdraw-requests.index') }}">
-                        <i data-feather="credit-card"></i><span class="menu-title text-truncate">
-                            {{ __('dashboard.withdraw-requests') }}</span>
-                    </a>
                 </li>
                 <li class="nav-item @yield('deliveries-open') @yield('delivery-requests-open')">
                     <a class="d-flex align-items-center" href="#">
@@ -219,6 +226,13 @@
                                 <i data-feather="circle"></i><span class="menu-item text-truncate">
                                     {{ __('dashboard.deliveries') }}</span>
                                 <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ App\Models\DeliveryUser::where('approval_status', 'approved')->count() }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="@yield('delivery-withdraw-requests-active') d-flex align-items-center" href="{{ route('dashboard.delivery-withdraw-requests.index') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.delivery_withdraw_requests') }}</span>
+                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $pendingDeliveryWithdrawRequestsCount }}</span>
                             </a>
                         </li>
                     </ul>
