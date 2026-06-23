@@ -161,6 +161,7 @@ class ProductSeeder extends Seeder
             'مطعم' => [
                 [
                     'name' => 'برجر لحم فاخر',
+                    'subcategory_name' => 'وجبات',
                     'description' => 'برجر لحم مشوي مع الجبن والخضار الطازجة',
                     'quantity' => 30,
                     'remaining_quantity' => 24,
@@ -174,6 +175,7 @@ class ProductSeeder extends Seeder
                 ],
                 [
                     'name' => 'بيتزا مارجريتا',
+                    'subcategory_name' => 'وجبات',
                     'description' => 'بيتزا مارجريتا كلاسيكية بجبنة الموزاريلا والريحان الطازج',
                     'quantity' => 25,
                     'remaining_quantity' => 15,
@@ -187,6 +189,7 @@ class ProductSeeder extends Seeder
                 ],
                 [
                     'name' => 'سلطة سيزر بالدجاج',
+                    'subcategory_name' => 'مقبلات',
                     'description' => 'سلطة سيزر الطازجة مع قطع الدجاج المشوي والجبن البارميزان',
                     'quantity' => 20,
                     'remaining_quantity' => 10,
@@ -230,7 +233,7 @@ class ProductSeeder extends Seeder
                 ],
                 [
                     'name' => 'كرواسون زبدة مقرمش',
-                    'subcategory_name' => 'مخبوزات',
+                    'subcategory_name' => 'حلويات',
                     'description' => 'كرواسون فرنسي طازج ومقرمش بالزبدة',
                     'quantity' => 30,
                     'remaining_quantity' => 12,
@@ -246,6 +249,7 @@ class ProductSeeder extends Seeder
             'سوبر ماركت' => [
                 [
                     'name' => 'لبن كامل الدسم',
+                    'subcategory_name' => 'ألبان',
                     'description' => 'لبن بقري كامل الدسم طازج 1 لتر',
                     'quantity' => 60,
                     'remaining_quantity' => 42,
@@ -259,6 +263,7 @@ class ProductSeeder extends Seeder
                 ],
                 [
                     'name' => 'جبنة بيضاء طبيعية',
+                    'subcategory_name' => 'ألبان',
                     'description' => 'جبنة بيضاء طبيعية فيتا طازجة',
                     'quantity' => 45,
                     'remaining_quantity' => 20,
@@ -272,6 +277,7 @@ class ProductSeeder extends Seeder
                 ],
                 [
                     'name' => 'أرز مصري فاخر',
+                    'subcategory_name' => 'مخبوزات',
                     'description' => 'أرز مصري بلدي فاخر درجة أولى 1 كجم',
                     'quantity' => 100,
                     'remaining_quantity' => 80,
@@ -287,6 +293,7 @@ class ProductSeeder extends Seeder
             'صيدلية' => [
                 [
                     'name' => 'كريم مرطب طبيعي',
+                    'subcategory_name' => 'عناية بالبشرة',
                     'description' => 'كريم مرطب للبشرة الجافة والحساسة',
                     'quantity' => 25,
                     'remaining_quantity' => 20,
@@ -300,6 +307,7 @@ class ProductSeeder extends Seeder
                 ],
                 [
                     'name' => 'فيتامين سي فوار',
+                    'subcategory_name' => 'فيتامينات',
                     'description' => 'أقراص فيتامين سي فوارة لتعزيز المناعة',
                     'quantity' => 35,
                     'remaining_quantity' => 30,
@@ -313,6 +321,7 @@ class ProductSeeder extends Seeder
                 ],
                 [
                     'name' => 'شامبو مغذي للشعر',
+                    'subcategory_name' => 'عناية بالبشرة',
                     'description' => 'شامبو مغذي للشعر التالف والجاف بخلاصة الزيوت الطبيعية',
                     'quantity' => 30,
                     'remaining_quantity' => 15,
