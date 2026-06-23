@@ -5,8 +5,11 @@ namespace App\Services;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
+use App\Http\Resources\Api\Vendor\VendorOrderResource;
+use App\Jobs\FirebasePushJob;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -182,6 +185,22 @@ class OrderService
             }
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error('FCM Notification dispatch failed for order #' . ($order->id ?? 'unknown') . ': ' . $e->getMessage());
+        }
+
+        try {
+            $vendorOrder = $order->loadMissing(['items.product.images']);
+
+            FirebasePushJob::dispatch(
+                'orders/vendor_' . $vendorOrder->vendor_id,
+                [
+                    'event' => 'new_order',
+                    'order_id' => $vendorOrder->id,
+                    'created_at' => now()->toISOString(),
+                    'data' => (new VendorOrderResource($vendorOrder))->toArray(new Request()),
+                ]
+            );
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Firebase realtime order dispatch failed for order #' . ($order->id ?? 'unknown') . ': ' . $e->getMessage());
         }
 
         return $order;

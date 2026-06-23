@@ -57,6 +57,8 @@ class DeliveryLocationAndAssignmentTest extends TestCase
 
     public function test_new_order_is_not_assigned_immediately_before_vendor_marks_it_ready(): void
     {
+        Queue::fake();
+
         $storeType = StoreType::create(['name' => 'Pharmacy']);
 
         $vendor = Vendor::create([
@@ -151,6 +153,18 @@ class DeliveryLocationAndAssignmentTest extends TestCase
             'vendor_id' => $vendor->id,
             'delivery_id' => null,
         ]);
+
+        Queue::assertPushed(FirebasePushJob::class, function (FirebasePushJob $job) use ($vendor) {
+            $path = (fn () => $this->path)->call($job);
+            $data = (fn () => $this->data)->call($job);
+
+            return $path === 'orders/vendor_' . $vendor->id
+                && data_get($data, 'event') === 'new_order'
+                && data_get($data, 'order_id') !== null
+                && data_get($data, 'data.id') === data_get($data, 'order_id')
+                && data_get($data, 'data.customer_first_name') === 'Test'
+                && data_get($data, 'data.status') === 'pending';
+        });
     }
 
     public function test_vendor_status_ready_marks_order_as_searching_for_delivery(): void
