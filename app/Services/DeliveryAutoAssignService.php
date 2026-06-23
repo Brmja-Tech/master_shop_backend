@@ -8,6 +8,7 @@ use App\Enums\PaymentStatus;
 use App\Models\DeliveryRefusedOrder;
 use App\Models\DeliveryUser;
 use App\Models\Order;
+use App\Notifications\DeliveryOrderOfferNotification;
 use App\Notifications\UserOrderStatusUpdatedNotification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
@@ -42,6 +43,8 @@ class DeliveryAutoAssignService
             : "A new order #{$order->id} is ready for pickup";
 
         foreach ($candidates as $candidate) {
+            $candidate->notify(new DeliveryOrderOfferNotification($order));
+
             $token = trim((string) $candidate->fcm_token);
 
             if ($token === '') {

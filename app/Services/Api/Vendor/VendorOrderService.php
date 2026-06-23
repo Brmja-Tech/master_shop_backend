@@ -85,7 +85,9 @@ class VendorOrderService
         try {
             $user = $order->user;
             if ($user) {
-                $user->notify(new UserOrderStatusUpdatedNotification($order));
+                if ($newStatus !== OrderStatus::Ready) {
+                    $user->notify(new UserOrderStatusUpdatedNotification($order));
+                }
 
                 $userFcmToken = trim((string) ($user->fcm_token ?? ''));
                 if ($userFcmToken !== '') {

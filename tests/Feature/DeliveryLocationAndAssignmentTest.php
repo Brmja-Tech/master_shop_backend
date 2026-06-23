@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\OrderStatus;
+use App\Jobs\FirebasePushJob;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use App\Models\CartItem;
@@ -15,6 +16,7 @@ use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class DeliveryLocationAndAssignmentTest extends TestCase
@@ -153,6 +155,8 @@ class DeliveryLocationAndAssignmentTest extends TestCase
 
     public function test_vendor_status_ready_marks_order_as_searching_for_delivery(): void
     {
+        Queue::fake();
+
         $storeType = StoreType::create(['name' => 'Supermarket']);
 
         $vendor = Vendor::create([
@@ -236,12 +240,26 @@ class DeliveryLocationAndAssignmentTest extends TestCase
             'delivery_status' => 'searching',
         ]);
 
-        $notification = $user->notifications()->latest()->first();
+        $user->refresh();
+        $nearest->refresh();
+
+        $this->assertCount(0, $user->notifications);
+
+        $notification = $nearest->notifications()->latest()->first();
 
         $this->assertNotNull($notification);
-        $this->assertSame('order_status_update', $notification->data['type']);
+        $this->assertSame('delivery_order_offer', $notification->data['type']);
         $this->assertSame($order->id, $notification->data['order_id']);
         $this->assertSame('ready', $notification->data['status']);
+
+        Queue::assertPushed(FirebasePushJob::class, function (FirebasePushJob $job) use ($nearest, $order) {
+            $path = (fn () => $this->path)->call($job);
+            $data = (fn () => $this->data)->call($job);
+
+            return $path === 'notifications/deliveryuser_' . $nearest->id
+                && data_get($data, 'data.type') === 'delivery_order_offer'
+                && data_get($data, 'data.order_id') === $order->id;
+        });
     }
 
     public function test_first_delivery_user_to_accept_gets_the_order(): void
