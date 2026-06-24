@@ -79,8 +79,8 @@ Route::group([
         Route::get('users',                  [UserController::class, 'index'])->middleware('can:users')->name('users.index');
         Route::get('user/profile/{id}',      [UserController::class, 'userProfile'])->middleware('can:users')->name('user.profile');
         Route::post('user/{id}/ban',         [UserController::class, 'toggleBan'])->middleware('can:users')->name('users.ban');
-        Route::get('orders',                 [OrderController::class, 'index'])->name('orders.index');
-        Route::get('orders/{id}',            [OrderController::class, 'show'])->name('orders.show');
+        Route::get('orders',                 [OrderController::class, 'index'])->middleware('can:orders')->name('orders.index');
+        Route::get('orders/{id}',            [OrderController::class, 'show'])->middleware('can:orders')->name('orders.show');
         ############################### End Users Routes #########################################
 
 
@@ -89,11 +89,11 @@ Route::group([
 
 
         ############################### settings Routes ############################################
-        Route::get('banners',             [SettingsController::class, 'banners'])->middleware('can:settings')->name('banners');
+        Route::get('banners',             [SettingsController::class, 'banners'])->middleware('can:banners')->name('banners');
         Route::get('settings',            [SettingsController::class, 'genralSetting'])->middleware('can:settings')->name('settings');
         Route::get('delivery-settings',   [SettingsController::class, 'deliverySetting'])->middleware('can:settings')->name('delivery.setting');
-        Route::get('abouts',              [SettingsController::class, 'aboutSetting'])->middleware('can:settings')->name('about.setting');
-        Route::get('faqs',                [SettingsController::class, 'faqs'])->middleware('can:settings')->name('faqs.setting');
+        Route::get('abouts',              [SettingsController::class, 'aboutSetting'])->middleware('can:about')->name('about.setting');
+        Route::get('faqs',                [SettingsController::class, 'faqs'])->middleware('can:faqs')->name('faqs.setting');
         Route::get('privacy',             [SettingsController::class, 'privacy'])->middleware('can:settings')->name('privacy.setting');
         Route::get('terms',               [SettingsController::class, 'terms'])->middleware('can:settings')->name('terms.setting');
         ############################### End settings Routes ############################################

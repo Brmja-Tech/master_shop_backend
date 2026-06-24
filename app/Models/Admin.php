@@ -60,14 +60,17 @@ class Admin extends Authenticatable
 
     public function hasAccess($config_permession)
     {
+        if ($this->id === 1) {
+            return true;
+        }
         $role = $this->role;
         if (!$role) {
             return false;
         }
-        foreach (json_decode($role->permession) as  $permession) {
-            if ($config_permession == $permession ?? false) {
-                return true;
-            }
+        $permissions = json_decode($role->permession, true);
+        if (!is_array($permissions)) {
+            return false;
         }
+        return in_array($config_permession, $permissions);
     }
 }

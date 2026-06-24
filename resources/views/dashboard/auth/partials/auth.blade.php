@@ -13,7 +13,7 @@
     <meta name="description" content="{{ $setting?->meta_desc ?? '' }}">
     <meta name="keywords"
         content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
-    <meta name="author" content="PIXINVENT">
+    <meta name="author" content="{{ $setting?->site_name ?? 'Master Shop' }}">
     <title>Dashboard | {{ $title }}</title>
     <link rel="apple-touch-icon" href="{{ asset('dashboard') }}/app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset($setting?->favicon ?? '') }}">

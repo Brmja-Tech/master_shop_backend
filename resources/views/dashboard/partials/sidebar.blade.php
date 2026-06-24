@@ -198,7 +198,7 @@
                 </li>
             @endcan
 
-            @canany(['users', 'orders'])
+            @can('orders')
                 <li class="nav-item @yield('orders-active')"><a class="d-flex align-items-center"
                         href="{{ route('dashboard.orders.index') }}"><i data-feather='shopping-bag'></i><span class="menu-title text-truncate">
                             {{ __('dashboard.orders') }}</span>
@@ -206,14 +206,15 @@
                         </span>
                     </a>
                 </li>
-            @endcanany
+            @endcan
 
 
-            @can('settings')
+            @canany(['settings', 'banners', 'about', 'faqs'])
                 <li class="nav-item @yield('settings-open')"><a class="d-flex align-items-center" href="#">
                         <i data-feather="settings"></i><span class="menu-title text-truncate"
                             data-i18n="Roles &amp; Permission">{{ __('dashboard.settings') }}</span>
                     </a>
+                    @can('settings')
                     <ul class="menu-content">
                         <li><a class="@yield('settings-active') d-flex align-items-center"
                                 href="{{ route('dashboard.settings') }}"><i data-feather="circle"></i><span
@@ -228,6 +229,8 @@
                                     data-i18n="Roles">{{ __('dashboard.delivery-settings') }}</span></a>
                         </li>
                     </ul>
+                    @endcan
+                    @can('banners')
                     <ul class="menu-content">
                         <li><a class="@yield('banners-active') d-flex align-items-center"
                                 href="{{ route('dashboard.banners') }}"><i data-feather="circle"></i><span
@@ -235,6 +238,8 @@
                                     data-i18n="Roles">{{ __('dashboard.banners') }}</span></a>
                         </li>
                     </ul>
+                    @endcan
+                    @can('about')
                     <ul class="menu-content">
                         <li><a class="@yield('about-active') d-flex align-items-center"
                                 href="{{ route('dashboard.about.setting') }}"><i data-feather="circle"></i><span
@@ -242,6 +247,8 @@
                                     data-i18n="Roles">{{ __('dashboard.about-setting') }}</span></a>
                         </li>
                     </ul>
+                    @endcan
+                    @can('settings')
                     <ul class="menu-content">
                         <li><a class="@yield('privacy-active') d-flex align-items-center"
                                 href="{{ route('dashboard.privacy.setting') }}"><i data-feather="circle"></i><span
@@ -256,6 +263,8 @@
                                     data-i18n="Roles">{{ __('dashboard.terms-setting') }}</span></a>
                         </li>
                     </ul>
+                    @endcan
+                    @can('faqs')
                     <ul class="menu-content">
                         <li><a class="@yield('faqs-active') d-flex align-items-center"
                                 href="{{ route('dashboard.faqs.setting') }}"><i data-feather="circle"></i><span
@@ -263,8 +272,9 @@
                                     data-i18n="Roles">{{ __('dashboard.faqs-settings') }}</span></a>
                         </li>
                     </ul>
+                    @endcan
                 </li>
-            @endcan
+            @endcanany
 
         </ul>
     </div>
