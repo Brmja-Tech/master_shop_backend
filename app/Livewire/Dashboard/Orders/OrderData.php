@@ -11,6 +11,7 @@ class OrderData extends Component
     use WithPagination;
 
     public $search = '';
+    public $payment_method = '';
 
     protected $listeners = ['refreshData' => '$refresh'];
 
@@ -19,9 +20,15 @@ class OrderData extends Component
         $this->resetPage();
     }
 
+    public function updatingPaymentMethod()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         $search = $this->search;
+        $payment_method = $this->payment_method;
 
         $data = Order::with(['user', 'vendor', 'items.product.images'])
             ->when($search, function ($query) use ($search) {
@@ -33,6 +40,9 @@ class OrderData extends Component
                         $q->where('store_name', 'like', '%' . $search . '%')
                             ->orWhere('owner_name', 'like', '%' . $search . '%');
                     });
+            })
+            ->when($payment_method, function ($query) use ($payment_method) {
+                $query->where('payment_method', $payment_method);
             })
             ->latest()
             ->paginate(10);

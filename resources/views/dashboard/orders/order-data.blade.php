@@ -1,7 +1,12 @@
 <div class="table-responsive" wire:ignore.self>
-    <div class="card-header pb-1 px-0">
+    <div class="card-header pb-1 px-0 d-flex gap-1 align-items-center">
         <input type="text" wire:model.live="search" class="form-control w-25"
             placeholder="{{ __('dashboard.search-here') }}">
+        <select wire:model.live="payment_method" class="form-select w-25">
+            <option value="">{{ __('dashboard.all-payment-methods') }}</option>
+            <option value="cash">{{ __('dashboard.cash') }}</option>
+            <option value="paymob">{{ __('dashboard.paymob') }}</option>
+        </select>
     </div>
     <table class="table table-hover">
         <thead>
