@@ -6,7 +6,7 @@
 
 
 <!-- BEGIN: Page Vendor JS-->
-{{-- <script src="{{ asset('dashboard') }}/app-assets/vendors/js/charts/apexcharts.min.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="{{ asset('dashboard') }}/app-assets/vendors/js/extensions/toastr.min.js"></script>
 <script src="{{ asset('dashboard') }}/app-assets/js/scripts/extensions/ext-component-toastr.js"></script>
 

@@ -1,4 +1,5 @@
 <div>
+    @can('home')
     <!-- General System Statistics -->
     <div class="row match-height mb-2">
         <div class="col-12">
@@ -161,6 +162,40 @@
         </div>
     </div>
 
+    <!-- Charts Section -->
+    <div class="row match-height">
+        <!-- Weekly Orders and Revenue Chart -->
+        <div class="col-lg-8 col-12 mb-2">
+            <div class="card">
+                <div class="card-header border-bottom d-flex justify-content-between align-items-center">
+                    <h4 class="card-title text-primary">
+                        <i data-feather="trending-up" class="me-50"></i>
+                        {{ app()->getLocale() == 'ar' ? 'حركة المبيعات والإيرادات (آخر 7 أيام)' : 'Sales & Revenue Trend (Last 7 Days)' }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div id="weekly-orders-revenue-chart" wire:ignore style="min-height: 350px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Status Distribution Chart -->
+        <div class="col-lg-4 col-12 mb-2">
+            <div class="card">
+                <div class="card-header border-bottom">
+                    <h4 class="card-title text-primary">
+                        <i data-feather="pie-chart" class="me-50"></i>
+                        {{ app()->getLocale() == 'ar' ? 'توزيع حالات الطلبات' : 'Order Status Breakdown' }}
+                    </h4>
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <div id="order-status-distribution-chart" wire:ignore style="min-height: 350px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endcan
+
     <!-- Script to ensure Feather Icons are updated during Livewire renders -->
     <script>
         document.addEventListener('livewire:init', () => {
@@ -172,3 +207,98 @@
         });
     </script>
 </div>
+
+@push('js')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var weeklyDates = @json($weeklyDates);
+        var weeklyCounts = @json($weeklyCounts);
+        var weeklyRevenues = @json($weeklyRevenues);
+
+        var statusLabels = @json($statusLabels);
+        var statusSeries = @json($statusSeries);
+
+        // 1. Weekly Sales & Revenue Trend Chart
+        var optionsTrend = {
+            series: [{
+                name: "{{ app()->getLocale() == 'ar' ? 'الإيرادات' : 'Revenue' }}",
+                type: 'column',
+                data: weeklyRevenues
+            }, {
+                name: "{{ app()->getLocale() == 'ar' ? 'عدد الطلبات' : 'Orders Count' }}",
+                type: 'line',
+                data: weeklyCounts
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+                toolbar: { show: false }
+            },
+            stroke: {
+                width: [0, 4],
+                curve: 'smooth'
+            },
+            colors: ['#7367F0', '#28C76F'], // Primary & Success
+            dataLabels: {
+                enabled: true,
+                enabledOnSeries: [1]
+            },
+            labels: weeklyDates,
+            xaxis: {
+                type: 'category'
+            },
+            yaxis: [{
+                title: {
+                    text: "{{ app()->getLocale() == 'ar' ? 'الإيرادات' : 'Revenue' }}"
+                },
+            }, {
+                opposite: true,
+                title: {
+                    text: "{{ app()->getLocale() == 'ar' ? 'عدد الطلبات' : 'Orders Count' }}"
+                }
+            }],
+            tooltip: {
+                shared: true,
+                intersect: false,
+            }
+        };
+
+        var trendEl = document.querySelector("#weekly-orders-revenue-chart");
+        if (trendEl) {
+            var chartTrend = new ApexCharts(trendEl, optionsTrend);
+            chartTrend.render();
+        }
+
+        // 2. Order Status Distribution Chart
+        var optionsStatus = {
+            series: statusSeries,
+            chart: {
+                height: 350,
+                type: 'donut',
+            },
+            labels: statusLabels,
+            colors: ['#FF9F43', '#82868B', '#7367F0', '#00CFE8', '#1E1E1E', '#28C76F', '#EA5455'],
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }],
+            legend: {
+                position: 'bottom'
+            }
+        };
+
+        var statusEl = document.querySelector("#order-status-distribution-chart");
+        if (statusEl) {
+            var chartStatus = new ApexCharts(statusEl, optionsStatus);
+            chartStatus.render();
+        }
+    });
+</script>
+@endpush
