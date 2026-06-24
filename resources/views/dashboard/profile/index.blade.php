@@ -41,7 +41,7 @@
 
                             <!-- form -->
                             <hr>
-                            <form action="{{route('dashboard.profile.update')}}" enctype="multipart/form-data" method="POST">
+                             <form action="{{route('dashboard.profile.update')}}" enctype="multipart/form-data" method="POST">
                                 @csrf
                                 <div class="row mb-2">
                                     <div class="col-md-6">
@@ -63,6 +63,7 @@
                                             @include('dashboard.includes.error', ['property' => 'email'])
                                     </div>
                                 </div>
+                                {{--
                                 <div class="row mb-2">
                                     <div class="col-md-6">
                                         <input class="form-control" type="text" name="facebook" placeholder="{{ __('dashboard.facebook-url')}}"
@@ -87,6 +88,7 @@
                                             @include('dashboard.includes.error', ['property' => 'whatsapp'])
                                     </div>
                                 </div>
+                                --}}
                                 <div class=" mt-2 col-sm-9 offset-sm-3">
                                     <button type="submit"
                                         class="btn btn-primary waves-effect waves-float waves-light">{{ __('dashboard.submit') }}</button>
@@ -96,6 +98,7 @@
                         </div>
                     </div>
 
+                    {{--
                     <!-- deactivate account  -->
                     <div class="card">
                         <div class="card-header border-bottom">
@@ -124,6 +127,7 @@
                             </form>
                         </div>
                     </div>
+                    --}}
                     <!--/ profile -->
                 </div>
             </div>

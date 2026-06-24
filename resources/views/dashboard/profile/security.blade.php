@@ -75,6 +75,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{--
                                     <!-- Password Requirements -->
                                     <div class="col-12">
                                         <p class="fw-bolder">{{__('dashboard.password-requirements')}}</p>
@@ -85,6 +86,7 @@
                                             <li>{{__('dashboard.at-least-one-number-symbol-or-whitespace-character')}}</li>
                                         </ul>
                                     </div>
+                                    --}}
                                     <!-- Buttons -->
                                     <div class="col-12">
                                         <button type="submit"
