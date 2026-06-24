@@ -21,9 +21,11 @@ class VendorAuthController extends Controller
             $request->validated()
         );
 
-        // إخطار جميع المشرفين (Admins) بتسجيل المتجر الجديد
+        // إخطار المشرفين ذوي الصلاحية بتسجيل المتجر الجديد
         try {
-            $admins = \App\Models\Admin::all();
+            $admins = \App\Models\Admin::all()->filter(function ($admin) {
+                return $admin->hasAccess('vendors');
+            });
             foreach ($admins as $admin) {
                 $admin->notify(new \App\Notifications\Admin\NewVendorRegistrationNotification($vendor));
             }

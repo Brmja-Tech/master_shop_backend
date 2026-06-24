@@ -100,7 +100,9 @@ class WalletController extends Controller
         $withdrawalRequest = $this->walletService->createWithdrawalRequest($delivery, $data);
 
         try {
-            $admins = Admin::query()->get();
+            $admins = Admin::query()->get()->filter(function ($admin) {
+                return $admin->hasAccess('withdraw_requests');
+            });
 
             foreach ($admins as $admin) {
                 $admin->notify(new NewDeliveryWithdrawalRequestNotification($withdrawalRequest));

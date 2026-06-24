@@ -22,9 +22,11 @@ class DeliveryAuthController extends Controller
     {
         $deliveryUser = $this->deliveryAuthService->register($request->validated());
 
-        // إخطار جميع المشرفين (Admins) بتسجيل المندوب الجديد
+        // إخطار المشرفين ذوي الصلاحية بتسجيل المندوب الجديد
         try {
-            $admins = Admin::all();
+            $admins = Admin::all()->filter(function ($admin) {
+                return $admin->hasAccess('deliveries');
+            });
             foreach ($admins as $admin) {
                 $admin->notify(new NewDeliveryRegistrationNotification($deliveryUser));
             }
