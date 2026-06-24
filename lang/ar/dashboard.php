@@ -373,4 +373,10 @@ return [
     'vendor_requests' => 'طلبات المتاجر',
     'vendor_approved_successfully' => 'تم قبول المتجر بنجاح',
     'vendor_rejected_successfully' => 'تم رفض المتجر بنجاح',
+    'ban' => 'حظر',
+    'unban' => 'إلغاء الحظر',
+    'confirm_ban_message' => 'تريد حظر هذا المستخدم !',
+    'confirm_unban_message' => 'تريد إلغاء حظر هذا المستخدم !',
+    'yes_ban' => 'نعم حظر !!',
+    'yes_unban' => 'نعم إلغاء حظر !!',
 ];

@@ -32,6 +32,7 @@ class User extends Authenticatable
         'area',
         'latitude',
         'longitude',
+        'ban',
 
     ];
 
@@ -61,6 +62,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'birth_date' => 'date',
             'password' => 'hashed',
+            'ban' => 'boolean',
         ];
     }
 

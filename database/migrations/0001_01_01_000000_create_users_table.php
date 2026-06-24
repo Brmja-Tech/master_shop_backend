@@ -13,13 +13,9 @@ return new class extends Migration
 {
     Schema::create('users', function (Blueprint $table) {
         $table->id();
-
         $table->string('image')->nullable();
-
         $table->string('name');
-
         $table->string('email')->unique()->nullable();
-
         $table->string('phone')->unique()->nullable();
 
         $table->string('password');
@@ -35,6 +31,8 @@ return new class extends Migration
         $table->string('firebase_uid')->nullable()->unique();
 
         $table->string('auth_provider')->nullable();
+
+        $table->boolean('ban')->default(false);
 
         $table->rememberToken();
 

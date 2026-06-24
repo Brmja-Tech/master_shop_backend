@@ -95,5 +95,16 @@ class UserService
         return $user;
     } // End changeStatus method
 
+    public function toggleBan($id)
+    {
+        $user = Self::getUser($id);
+        $user = $this->userRepository->toggleBan($user);
+        if (!$user) {
+            flash()->error(__('validation.something-valid'));
+            return redirect()->back();
+        }
+        return $user;
+    } // End toggleBan method
+
 
 }

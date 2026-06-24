@@ -61,4 +61,11 @@ class UserRepository
         return $user;
     } // End changestatus method
 
+    public function toggleBan($user)
+    {
+        $user->ban = !$user->ban;
+        $user->save();
+        return $user;
+    } // End toggleBan method
+
 }

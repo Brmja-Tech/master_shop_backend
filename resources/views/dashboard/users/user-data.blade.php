@@ -33,11 +33,14 @@
                                     <i class="fa-regular fa-eye"></i>
                                 </a>
 
-                                <a class="btn btn-danger waves-effect waves-float waves-light" href="#"
-                                    data-id="{{ $item->id }}"
-                                    wire:click.prevent="$dispatch('userDelete', {id: {{ $item->id }}})"
-                                    title="{{ __('dashboard.delete') }}">
-                                    <i class="fa-solid fa-trash"></i>
+                                <a class="btn btn-{{ $item->ban ? 'success' : 'danger' }} waves-effect waves-float waves-light ms-1" href="#"
+                                    wire:click.prevent="$dispatch('userBanToggle', {id: {{ $item->id }}, ban: {{ $item->ban ? 'true' : 'false' }}})"
+                                    title="{{ $item->ban ? __('dashboard.unban') : __('dashboard.ban') }}">
+                                    @if($item->ban)
+                                        <i class="fa-solid fa-unlock"></i>
+                                    @else
+                                        <i class="fa-solid fa-ban"></i>
+                                    @endif
                                 </a>
 
                             </div>

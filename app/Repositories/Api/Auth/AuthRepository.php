@@ -62,6 +62,14 @@ class AuthRepository
             ];
         }
 
+        if ($user->ban) {
+            return [
+                'status'  => 403,
+                'message' => __('front.your-account-is-banned'),
+                'data'    => []
+            ];
+        }
+
         // Verify OTP code
         $otp = $this->otp->validate($user->phone, $data['code']);
         if (!$otp->status) {
@@ -112,6 +120,14 @@ class AuthRepository
             return [
                 'status'  => 422,
                 'message' => __('front.user-not-found'),
+                'data'    => []
+            ];
+        }
+
+        if ($user->ban) {
+            return [
+                'status'  => 403,
+                'message' => __('front.your-account-is-banned'),
                 'data'    => []
             ];
         }

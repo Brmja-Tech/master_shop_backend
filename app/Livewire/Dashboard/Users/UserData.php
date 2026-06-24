@@ -9,7 +9,7 @@ use Livewire\WithPagination;
 class UserData extends Component
 {
     use WithPagination;
-    protected $listeners = ['refreshData' => '$refresh', 'deleteItem'];
+    protected $listeners = ['refreshData' => '$refresh', 'deleteItem', 'toggleBanItem'];
     protected $userService;
     public $search;
 
@@ -37,6 +37,13 @@ class UserData extends Component
     {
         $this->userService->destroy($id);
         $this->dispatch('itemDeleted');
+        $this->dispatch('refreshData');
+    }
+
+    public function toggleBanItem($id)
+    {
+        $this->userService->toggleBan($id);
+        $this->dispatch('banToggled');
         $this->dispatch('refreshData');
     }
 

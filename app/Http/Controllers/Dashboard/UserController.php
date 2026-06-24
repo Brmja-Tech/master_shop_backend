@@ -33,4 +33,11 @@ class UserController extends Controller
         return view('dashboard.users.profile', compact(['user']));
     }
 
+    public function toggleBan($id)
+    {
+        $this->userService->toggleBan($id);
+        flash()->success(__('dashboard.status-change'));
+        return redirect()->back();
+    }
+
 }

@@ -78,30 +78,31 @@
         });
     </script>
     {{-- End scripts from livewire success msg --}}
-    {{-- Scripts from seewtalert delete livewire --}}
+    {{-- Scripts from sweetalert ban livewire --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            Livewire.on('userDelete', function(data) {
+            Livewire.on('userBanToggle', function(data) {
+                const isBanned = data.ban;
                 Swal.fire({
                     title: "{{ __('dashboard.are_you_sure') }}",
-                    text: "{{ __('dashboard.confirm_delete_message') }}",
+                    text: isBanned ? "{{ __('dashboard.confirm_unban_message') }}" : "{{ __('dashboard.confirm_ban_message') }}",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonText: "{{ __('dashboard.yes_delete') }}",
+                    confirmButtonText: isBanned ? "{{ __('dashboard.yes_unban') }}" : "{{ __('dashboard.yes_ban') }}",
                     cancelButtonText: "{{ __('dashboard.cancel') }}"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Livewire.dispatch('deleteItem', {
+                        Livewire.dispatch('toggleBanItem', {
                             id: data.id
                         });
                     }
                 });
             });
 
-            window.addEventListener('itemDeleted', function() {
+            window.addEventListener('banToggled', function() {
                 Swal.fire({
                     title: "{{ __('dashboard.success') }}",
-                    text: "{{ __('dashboard.item_deleted_successfully') }}",
+                    text: "{{ __('dashboard.status-change') }}",
                     icon: "success",
                     timer: 2000
                 });

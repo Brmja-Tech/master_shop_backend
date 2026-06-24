@@ -77,6 +77,7 @@ Route::group([
         ############################### Users Routes ############################################
         Route::get('users',                  [UserController::class, 'index'])->middleware('can:users')->name('users.index');
         Route::get('user/profile/{id}',      [UserController::class, 'userProfile'])->middleware('can:users')->name('user.profile');
+        Route::post('user/{id}/ban',         [UserController::class, 'toggleBan'])->middleware('can:users')->name('users.ban');
         ############################### End Users Routes #########################################
 
 

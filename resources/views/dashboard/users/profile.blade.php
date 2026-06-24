@@ -57,7 +57,28 @@
                                     <span class="fw-bolder me-25">{{ __('dashboard.phone') }}:</span>
                                     <span>{{ $user->phone }}</span>
                                 </li>
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">{{ __('dashboard.ban_status') }}:</span>
+                                    <span class="badge bg-light-{{ $user->ban ? 'danger' : 'success' }}">
+                                        {{ $user->ban ? __('dashboard.inactive') : __('dashboard.active') }}
+                                    </span>
+                                </li>
                             </ul>
+                        </div>
+                        <!-- Ban & Unban Actions -->
+                        <div class="d-flex justify-content-center gap-1 mt-2 pt-1 border-top">
+                            <form action="{{ route('dashboard.users.ban', ['id' => $user->id]) }}" method="POST" class="d-inline w-100">
+                                @csrf
+                                @if ($user->ban)
+                                    <button type="submit" class="btn btn-outline-success w-100 waves-effect waves-float waves-light">
+                                        <i class="fa-solid fa-unlock me-25"></i> إلغاء الحظر (تفعيل الحساب)
+                                    </button>
+                                @else
+                                    <button type="submit" class="btn btn-outline-danger w-100 waves-effect waves-float waves-light">
+                                        <i class="fa-solid fa-ban me-25"></i> حظر حساب المستخدم
+                                    </button>
+                                @endif
+                            </form>
                         </div>
                     </div>
                 </div>

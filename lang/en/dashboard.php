@@ -373,4 +373,10 @@ return [
     'vendor_requests' => 'Vendor Requests',
     'vendor_approved_successfully' => 'Vendor approved successfully',
     'vendor_rejected_successfully' => 'Vendor rejected successfully',
+    'ban' => 'Ban',
+    'unban' => 'Unban',
+    'confirm_ban_message' => 'You want to ban this user!',
+    'confirm_unban_message' => 'You want to unban this user!',
+    'yes_ban' => 'Yes, Ban !!',
+    'yes_unban' => 'Yes, Unban !!',
 ];
