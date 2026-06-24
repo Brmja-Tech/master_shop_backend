@@ -1,15 +1,48 @@
-<div class="table-responsive" wire:ignore.self>
-    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <input type="text" wire:model.live="search" class="form-control w-25 min-w-200"
-            placeholder="{{ __('dashboard.search-here') }}">
+<div class="table-responsive">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2 pb-2">
+        <div class="d-flex align-items-center gap-1 flex-wrap w-100">
+            <!-- Search Bar -->
+            <div style="flex: 1; min-width: 200px; max-width: 300px;">
+                <input type="text" wire:model.live="search" class="form-control"
+                    placeholder="{{ __('dashboard.search-here') }}">
+            </div>
             
-        @if ($is_request_page)
-            <select wire:model.live="approval_status" class="form-select w-25 min-w-200">
-                <option value="">{{ __('dashboard.all_requests') }}</option>
-                <option value="pending">{{ __('dashboard.pending') }}</option>
-                <option value="rejected">{{ __('dashboard.rejected') }}</option>
-            </select>
-        @endif
+            <!-- Active Status Filter -->
+            <div style="width: 200px;">
+                <select wire:model.live="active_status" class="form-select">
+                    <option value="">{{ __('dashboard.active_status') }} ({{ __('dashboard.all_statuses') }})</option>
+                    <option value="1">{{ __('dashboard.active') }}</option>
+                    <option value="0">{{ __('dashboard.inactive') }}</option>
+                </select>
+            </div>
+
+            <!-- Ban Status Filter -->
+            <div style="width: 200px;">
+                <select wire:model.live="ban_status" class="form-select">
+                    <option value="">{{ __('dashboard.ban_status') }} ({{ __('dashboard.all_statuses') }})</option>
+                    <option value="0">{{ __('dashboard.active') }} ({{ __('dashboard.unban') ?? 'غير محظور' }})</option>
+                    <option value="1">{{ __('dashboard.inactive') }} ({{ __('dashboard.ban') ?? 'محظور' }})</option>
+                </select>
+            </div>
+
+            <!-- Approval Status Filter -->
+            <div style="width: 200px;">
+                @if ($is_request_page)
+                    <select wire:model.live="approval_status" class="form-select">
+                        <option value="">{{ __('dashboard.approval_status') }} ({{ __('dashboard.all_requests') }})</option>
+                        <option value="pending">{{ __('dashboard.pending') }}</option>
+                        <option value="rejected">{{ __('dashboard.rejected') }}</option>
+                    </select>
+                @else
+                    <select wire:model.live="approval_status" class="form-select">
+                        <option value="">{{ __('dashboard.approval_status') }} ({{ __('dashboard.all_statuses') }})</option>
+                        <option value="approved">{{ __('dashboard.approved') }}</option>
+                        <option value="pending">{{ __('dashboard.pending') }}</option>
+                        <option value="rejected">{{ __('dashboard.rejected') }}</option>
+                    </select>
+                @endif
+            </div>
+        </div>
     </div>
     <table class="table">
         <thead>
@@ -27,7 +60,7 @@
         <tbody>
             @if ($data->count() > 0)
                 @foreach ($data as $item)
-                    <tr>
+                    <tr wire:key="delivery-row-{{ $item->id }}">
                         <td>
                             @if ($item->img)
                                 <img src="{{ asset(ltrim($item->img, '/')) }}" alt="image" width="60" height="60" class="rounded-circle object-cover">
@@ -57,10 +90,7 @@
                             @endif
                         </td>
                         <td>
-                            <span class="badge bg-light-{{ $item->ban ? 'danger' : 'success' }}" 
-                                  style="cursor: pointer;" 
-                                  wire:click="toggleBan({{ $item->id }})"
-                                  title="اضغط للتعديل">
+                            <span class="badge bg-light-{{ $item->ban ? 'danger' : 'success' }}">
                                 {{ $item->ban ? __('dashboard.inactive') : __('dashboard.active') }}
                             </span>
                         </td>
@@ -72,11 +102,14 @@
                                     <i class="fa-regular fa-eye"></i>
                                 </a>
 
-                                <a class="btn btn-danger waves-effect waves-float waves-light btn-sm" href="#"
-                                    data-id="{{ $item->id }}"
-                                    wire:click.prevent="$dispatch('deliveryDelete', {id: {{ $item->id }}})"
-                                    title="{{ __('dashboard.delete') }}">
-                                    <i class="fa-solid fa-trash"></i>
+                                <a class="btn btn-{{ $item->ban ? 'success' : 'danger' }} waves-effect waves-float waves-light btn-sm" href="#"
+                                    wire:click.prevent="toggleBan({{ $item->id }})"
+                                    title="{{ $item->ban ? __('dashboard.unban') : __('dashboard.ban') }}">
+                                    @if($item->ban)
+                                        <i class="fa-solid fa-unlock"></i>
+                                    @else
+                                        <i class="fa-solid fa-ban"></i>
+                                    @endif
                                 </a>
                             </div>
                         </td>

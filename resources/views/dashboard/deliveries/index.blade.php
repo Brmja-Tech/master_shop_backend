@@ -16,7 +16,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h3 class="fw-bolder mb-50">{{ \App\Models\DeliveryUser::count() }}</h3>
-                        <span class="text-muted">إجمالي المناديب</span>
+                        <span class="text-muted">{{ __('dashboard.total_deliveries') }}</span>
                     </div>
                     <div class="avatar bg-light-primary p-50 rounded">
                         <span class="avatar-content">
@@ -31,7 +31,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h3 class="fw-bolder mb-50 text-warning">{{ \App\Models\DeliveryUser::where('approval_status', 'pending')->count() }}</h3>
-                        <span class="text-muted">طلبات الانضمام (Pending)</span>
+                        <span class="text-muted">{{ __('dashboard.delivery_join_requests') }}</span>
                     </div>
                     <div class="avatar bg-light-warning p-50 rounded">
                         <span class="avatar-content">
@@ -46,7 +46,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h3 class="fw-bolder mb-50 text-success">{{ \App\Models\DeliveryUser::where('approval_status', 'approved')->count() }}</h3>
-                        <span class="text-muted">المقبولين (Approved)</span>
+                        <span class="text-muted">{{ __('dashboard.approved_deliveries') }}</span>
                     </div>
                     <div class="avatar bg-light-success p-50 rounded">
                         <span class="avatar-content">
@@ -61,7 +61,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h3 class="fw-bolder mb-50 text-danger">{{ \App\Models\DeliveryUser::where('ban', true)->count() }}</h3>
-                        <span class="text-muted">المحظورين (Banned)</span>
+                        <span class="text-muted">{{ __('dashboard.banned_deliveries') }}</span>
                     </div>
                     <div class="avatar bg-light-danger p-50 rounded">
                         <span class="avatar-content">

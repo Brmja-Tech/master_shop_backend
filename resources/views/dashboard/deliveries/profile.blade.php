@@ -167,6 +167,11 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Orders Table -->
+                <div class="mt-2">
+                    @livewire('dashboard.deliveries.delivery-orders', ['deliveryId' => $delivery->id])
+                </div>
             </div>
         </div>
     </section>

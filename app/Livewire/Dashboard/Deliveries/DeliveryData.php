@@ -14,6 +14,8 @@ class DeliveryData extends Component
 
     public $search = '';
     public $approval_status = '';
+    public $active_status = '';
+    public $ban_status = '';
     public $is_request_page = false;
 
     public function mount($is_request_page = false)
@@ -32,6 +34,16 @@ class DeliveryData extends Component
     }
 
     public function updatingApprovalStatus()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingActiveStatus()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingBanStatus()
     {
         $this->resetPage();
     }
@@ -61,17 +73,21 @@ class DeliveryData extends Component
     {
         $data = DeliveryUser::query()
             ->when($this->is_request_page, function ($query) {
-                if ($this->approval_status) {
+                if ($this->approval_status !== '') {
                     $query->where('approval_status', $this->approval_status);
                 } else {
                     $query->whereIn('approval_status', ['pending', 'rejected']);
                 }
             }, function ($query) {
-                if ($this->approval_status) {
+                if ($this->approval_status !== '') {
                     $query->where('approval_status', $this->approval_status);
-                } else {
-                    $query->where('approval_status', 'approved');
                 }
+            })
+            ->when($this->active_status !== '', function ($query) {
+                $query->where('active_status', $this->active_status);
+            })
+            ->when($this->ban_status !== '', function ($query) {
+                $query->where('ban', $this->ban_status);
             })
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {

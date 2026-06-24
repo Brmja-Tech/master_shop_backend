@@ -294,7 +294,7 @@ return [
     'pending' => 'قيد الانتظار',
     'approved' => 'مقبول',
     'rejected' => 'مرفوض',
-    'all_statuses' => 'كل الحالات',
+    'all_statuses' => 'الكل',
     'approve-withdraw-request' => 'موافقة على طلب السحب',
     'reject-withdraw-request' => 'رفض طلب السحب',
     'withdraw-request-approved-successfully' => 'تمت الموافقة على طلب السحب بنجاح',
@@ -398,4 +398,8 @@ return [
     'discount' => 'الخصم',
     'delivery-fee' => 'رسوم التوصيل',
     'order-summary' => 'ملخص الطلب',
+    'total_deliveries' => 'إجمالي المناديب',
+    'delivery_join_requests' => 'طلبات الانضمام',
+    'approved_deliveries' => 'المقبولين',
+    'banned_deliveries' => 'المحظورين',
 ];

@@ -294,7 +294,7 @@ return [
     'pending' => 'Pending',
     'approved' => 'Approved',
     'rejected' => 'Rejected',
-    'all_statuses' => 'All Statuses',
+    'all_statuses' => 'All',
     'approve-withdraw-request' => 'Approve Withdraw Request',
     'reject-withdraw-request' => 'Reject Withdraw Request',
     'withdraw-request-approved-successfully' => 'Withdraw request approved successfully',
@@ -398,4 +398,8 @@ return [
     'discount' => 'Discount',
     'delivery-fee' => 'Delivery Fee',
     'order-summary' => 'Order Summary',
+    'total_deliveries' => 'Total Deliveries',
+    'delivery_join_requests' => 'Join Requests',
+    'approved_deliveries' => 'Approved',
+    'banned_deliveries' => 'Banned',
 ];
