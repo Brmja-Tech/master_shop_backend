@@ -1,5 +1,6 @@
 @extends('dashboard.master', ['title' => 'Subcategories'])
 @section('subcategories-active', 'active')
+@section('subcategories-open', 'open')
 @section('content')
     <div class="row">
         <div class="col-12">

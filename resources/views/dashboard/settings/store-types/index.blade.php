@@ -1,5 +1,6 @@
 @extends('dashboard.master', ['title' => 'Store Types'])
 @section('store-types-active', 'active')
+@section('store-types-open', 'open')
 @section('content')
     <div class="row">
         <div class="col-12">

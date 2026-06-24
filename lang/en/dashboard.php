@@ -120,6 +120,7 @@ return [
     'subcategories' => 'Subcategories',
     'subcategory' => 'Subcategory',
     'store-types' => 'Store Types',
+    'categories_and_types' => 'Categories & Types',
     'faq' => 'FAQ',
     'create-faq' => 'Create FAQ',
     'create-subcategory' => 'Create Subcategory',

@@ -107,6 +107,109 @@
 
 
 
+
+
+            @canany(['store_types', 'subcategories'])
+                <li class="nav-item @yield('store-types-open') @yield('subcategories-open')">
+                    <a class="d-flex align-items-center" href="#">
+                        <i data-feather="grid"></i><span class="menu-title text-truncate">
+                            {{ __('dashboard.categories_and_types') }}</span>
+                    </a>
+                    <ul class="menu-content">
+                        @can('store_types')
+                        <li>
+                            <a class="@yield('store-types-active') d-flex align-items-center" href="{{ route('dashboard.store-types.setting') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.store-types') }}</span>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('subcategories')
+                        <li>
+                            <a class="@yield('subcategories-active') d-flex align-items-center" href="{{ route('dashboard.subcategories.setting') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.subcategories') }}</span>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcanany
+
+            @canany(['vendors', 'withdraw_requests'])
+                <li class="nav-item @yield('vendors-open') @yield('vendor-requests-open')">
+                    <a class="d-flex align-items-center" href="#">
+                         <i data-feather="users"></i><span class="menu-title text-truncate">
+                             {{ __('dashboard.vendors') }}</span>
+                         <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $vendorsCount }}</span>
+                    </a>
+                    <ul class="menu-content">
+                        @can('vendors')
+                        <li>
+                            <a class="@yield('vendor-requests-active') d-flex align-items-center" href="{{ route('dashboard.vendors.requests') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.vendor_requests') }}</span>
+                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $pendingVendorRequestsCount }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="@yield('vendors-active') d-flex align-items-center" href="{{ route('dashboard.vendors.setting') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.vendors') }}</span>
+                                <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ $approvedVendorsCount }}</span>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('withdraw_requests')
+                        <li>
+                            <a class="@yield('withdraw-requests-active') d-flex align-items-center" href="{{ route('dashboard.withdraw-requests.index') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.withdraw-requests') }}</span>
+                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $pendingVendorWithdrawRequestsCount }}</span>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcanany
+
+            @canany(['deliveries', 'withdraw_requests'])
+                <li class="nav-item @yield('deliveries-open') @yield('delivery-requests-open')">
+                    <a class="d-flex align-items-center" href="#">
+                        <i data-feather="truck"></i><span class="menu-title text-truncate">
+                            {{ __('dashboard.deliveries') }}</span>
+                        <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ App\Models\DeliveryUser::count() }}</span>
+                    </a>
+                    <ul class="menu-content">
+                        @can('deliveries')
+                        <li>
+                            <a class="@yield('delivery-requests-active') d-flex align-items-center" href="{{ route('dashboard.deliveries.requests') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.delivery_requests') }}</span>
+                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ App\Models\DeliveryUser::where('approval_status', 'pending')->count() }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="@yield('deliveries-active') d-flex align-items-center" href="{{ route('dashboard.deliveries.index') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.deliveries') }}</span>
+                                <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ App\Models\DeliveryUser::where('approval_status', 'approved')->count() }}</span>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('withdraw_requests')
+                        <li>
+                            <a class="@yield('delivery-withdraw-requests-active') d-flex align-items-center" href="{{ route('dashboard.delivery-withdraw-requests.index') }}">
+                                <i data-feather="circle"></i><span class="menu-item text-truncate">
+                                    {{ __('dashboard.delivery_withdraw_requests') }}</span>
+                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $pendingDeliveryWithdrawRequestsCount }}</span>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcanany
+
             @can('settings')
                 <li class="nav-item @yield('settings-open')"><a class="d-flex align-items-center" href="#">
                         <i data-feather="settings"></i><span class="menu-title text-truncate"
@@ -159,81 +262,6 @@
                                 href="{{ route('dashboard.faqs.setting') }}"><i data-feather="circle"></i><span
                                     class="menu-item text-truncate"
                                     data-i18n="Roles">{{ __('dashboard.faqs-settings') }}</span></a>
-                        </li>
-                    </ul>
-                </li>
-            @endcan
-
-            @can('settings')
-                <li class="nav-item @yield('store-types-active')">
-                    <a class="d-flex align-items-center" href="{{ route('dashboard.store-types.setting') }}">
-                        <i data-feather="grid"></i><span class="menu-title text-truncate">
-                            {{ __('dashboard.store-types') }}</span>
-                    </a>
-                </li>
-                <li class="nav-item @yield('subcategories-active')">
-                    <a class="d-flex align-items-center" href="{{ route('dashboard.subcategories.setting') }}">
-                        <i data-feather="layers"></i><span class="menu-title text-truncate">
-                            {{ __('dashboard.subcategories') }}</span>
-                    </a>
-                </li>
-                <li class="nav-item @yield('vendors-open') @yield('vendor-requests-open')">
-                    <a class="d-flex align-items-center" href="#">
-                         <i data-feather="users"></i><span class="menu-title text-truncate">
-                             {{ __('dashboard.vendors') }}</span>
-                         <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $vendorsCount }}</span>
-                    </a>
-                    <ul class="menu-content">
-                        <li>
-                            <a class="@yield('vendor-requests-active') d-flex align-items-center" href="{{ route('dashboard.vendors.requests') }}">
-                                <i data-feather="circle"></i><span class="menu-item text-truncate">
-                                    {{ __('dashboard.vendor_requests') }}</span>
-                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $pendingVendorRequestsCount }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="@yield('vendors-active') d-flex align-items-center" href="{{ route('dashboard.vendors.setting') }}">
-                                <i data-feather="circle"></i><span class="menu-item text-truncate">
-                                    {{ __('dashboard.vendors') }}</span>
-                                <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ $approvedVendorsCount }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="@yield('withdraw-requests-active') d-flex align-items-center" href="{{ route('dashboard.withdraw-requests.index') }}">
-                                <i data-feather="circle"></i><span class="menu-item text-truncate">
-                                    {{ __('dashboard.withdraw-requests') }}</span>
-                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $pendingVendorWithdrawRequestsCount }}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item @yield('deliveries-open') @yield('delivery-requests-open')">
-                    <a class="d-flex align-items-center" href="#">
-                        <i data-feather="truck"></i><span class="menu-title text-truncate">
-                            {{ __('dashboard.deliveries') }}</span>
-                        <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ App\Models\DeliveryUser::count() }}</span>
-                    </a>
-                    <ul class="menu-content">
-                        <li>
-                            <a class="@yield('delivery-requests-active') d-flex align-items-center" href="{{ route('dashboard.deliveries.requests') }}">
-                                <i data-feather="circle"></i><span class="menu-item text-truncate">
-                                    {{ __('dashboard.delivery_requests') }}</span>
-                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ App\Models\DeliveryUser::where('approval_status', 'pending')->count() }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="@yield('deliveries-active') d-flex align-items-center" href="{{ route('dashboard.deliveries.index') }}">
-                                <i data-feather="circle"></i><span class="menu-item text-truncate">
-                                    {{ __('dashboard.deliveries') }}</span>
-                                <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ App\Models\DeliveryUser::where('approval_status', 'approved')->count() }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="@yield('delivery-withdraw-requests-active') d-flex align-items-center" href="{{ route('dashboard.delivery-withdraw-requests.index') }}">
-                                <i data-feather="circle"></i><span class="menu-item text-truncate">
-                                    {{ __('dashboard.delivery_withdraw_requests') }}</span>
-                                <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $pendingDeliveryWithdrawRequestsCount }}</span>
-                            </a>
                         </li>
                     </ul>
                 </li>

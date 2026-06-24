@@ -120,6 +120,7 @@ return [
     'subcategories' => 'الاقسام الفرعية',
     'subcategory' => 'القسم الفرعي',
     'store-types' => 'انواع المتاجر',
+    'categories_and_types' => 'التصنيفات والأنواع',
     'faq' => 'سؤال شائع',
     'create-faq' => 'اضافة سؤال',
     'create-subcategory' => 'اضافة قسم فرعي',
