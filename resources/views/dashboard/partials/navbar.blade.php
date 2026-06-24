@@ -76,13 +76,7 @@
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                     <a class="dropdown-item @yield('profile-active')" href="{{route('dashboard.profile')}}"><i class="me-50" data-feather="user"></i> {{__('dashboard.account')}}</a>
                     <a class="dropdown-item @yield('security-active')" href="{{route('dashboard.security')}}"><i class="me-50" data-feather="lock"></i> {{__('dashboard.security')}}</a>
-                    <a class="dropdown-item" href="#"><i class="me-50" data-feather="mail"></i> Inbox</a>
-                    <a class="dropdown-item" href="#"><i class="me-50" data-feather="check-square"></i> Task</a>
-                    <a class="dropdown-item" href="#"><i class="me-50" data-feather="message-square"></i> Chats</a>
                     <div class="dropdown-divider"></div>
-                    {{-- <a class="dropdown-item @yield('settings-active')" href="{{route('dashboard.settings')}}"><i class="me-50" data-feather="settings"></i> {{__('dashboard.settings')}}</a> --}}
-                    <a class="dropdown-item" href="#"><i class="me-50" data-feather="credit-card"></i> Pricing</a>
-                    <a class="dropdown-item" href="#"><i class="me-50" data-feather="help-circle"></i> FAQ</a>
                     <form method="POST" action="{{ route('dashboard.logout') }}">
                         @csrf
                         <a class="dropdown-item" onclick="event.preventDefault(); this.closest('form').submit();"
