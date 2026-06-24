@@ -20,8 +20,20 @@ class RoleRequest extends FormRequest
      */
     public function rules(): array
     {
+        $roleId = $this->route('role');
         return [
-            'role.ar' => ['required', 'string', 'max:100'],
+            'role.ar' => [
+                'required',
+                'string',
+                'max:100',
+                $roleId ? 'unique:roles,role->ar,' . $roleId : 'unique:roles,role->ar'
+            ],
+            'role.en' => [
+                'required',
+                'string',
+                'max:100',
+                $roleId ? 'unique:roles,role->en,' . $roleId : 'unique:roles,role->en'
+            ],
             'permession'=>['required' , 'array' , 'min:1']
         ];
     }
