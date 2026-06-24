@@ -1,5 +1,6 @@
 @extends('dashboard.master', ['title' => 'Delivery Withdraw Requests'])
 @section('delivery-withdraw-requests-active', 'active')
+@section('delivery-withdraw-requests-open', 'open')
 
 @section('content')
     <div class="row">
