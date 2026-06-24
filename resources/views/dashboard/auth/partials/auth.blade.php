@@ -61,7 +61,65 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('dashboard') }}/app-assets/css/custom.css">
         <link rel="stylesheet" type="text/css" href="{{ asset('dashboard') }}/assets/css/style.css">
     @endif
-
+    <style>
+        :root {
+            --bs-primary: #2f54eb !important;
+            --bs-primary-rgb: 47, 84, 235 !important;
+            --primary: #2f54eb !important;
+            --bs-purple: #2f54eb !important;
+            --bs-purple-rgb: 47, 84, 235 !important;
+        }
+        
+        /* Text & Background overrides */
+        .text-primary, .brand-text, .navbar-brand .brand-text {
+            color: #2f54eb !important;
+        }
+        .bg-primary {
+            background-color: #2f54eb !important;
+        }
+        .bg-light-primary {
+            background-color: rgba(47, 84, 235, 0.12) !important;
+            color: #2f54eb !important;
+        }
+        
+        /* Buttons overrides */
+        .btn-primary {
+            background-color: #2f54eb !important;
+            border-color: #2f54eb !important;
+        }
+        .btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary.active {
+            background-color: #1d39c4 !important;
+            border-color: #1d39c4 !important;
+            color: #ffffff !important;
+        }
+        .btn-outline-primary {
+            border-color: #2f54eb !important;
+            color: #2f54eb !important;
+        }
+        .btn-outline-primary:hover, .btn-outline-primary:active, .btn-outline-primary:focus, .btn-outline-primary.active {
+            background-color: #2f54eb !important;
+            color: #ffffff !important;
+        }
+        
+        /* Form elements focus overrides */
+        .form-check-input:checked {
+            background-color: #2f54eb !important;
+            border-color: #2f54eb !important;
+        }
+        .form-control:focus {
+            border-color: #2f54eb !important;
+            box-shadow: 0 3px 10px 0 rgba(47, 84, 235, 0.2) !important;
+        }
+        
+        /* Badges overrides */
+        .badge.badge-light-primary {
+            background-color: rgba(47, 84, 235, 0.12) !important;
+            color: #2f54eb !important;
+        }
+        .badge-primary {
+            background-color: #2f54eb !important;
+        }
+    </style>
 </head>
 <!-- END: Head-->
 
