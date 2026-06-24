@@ -14,7 +14,7 @@
     <!-- END: Header-->
 
     <!-- BEGIN: Main Menu-->
-    @include('dashboard.partials.sidebar')
+    @livewire('dashboard.sidebar')
     <!-- END: Main Menu-->
 
     <!-- BEGIN: Content-->

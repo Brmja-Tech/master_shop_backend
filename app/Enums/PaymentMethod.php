@@ -9,10 +9,7 @@ enum PaymentMethod: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Cash => 'كاش',
-            self::Paymob => 'بايموب',
-        };
+        return __('dashboard.' . $this->value);
     }
 
     public function requiresOnlinePayment(): bool

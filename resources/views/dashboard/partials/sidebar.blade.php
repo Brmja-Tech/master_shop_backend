@@ -66,7 +66,7 @@
                         href="#"><i data-feather='users'></i><span class="menu-title text-truncate">
                             {{ __('dashboard.admins') }}</span>
                         <span
-                            class="badge badge-light-warning rounded-pill ms-auto me-1">{{ App\Models\Admin::count() }}</span>
+                            class="badge badge-light-warning rounded-pill ms-auto me-1">{{ App\Models\Admin::whereKeyNot(1)->count() }}</span>
                     </a>
                     <ul class="menu-content">
                         <li><a class="@yield('admins-active') d-flex align-items-center"
@@ -84,26 +84,24 @@
             @endcan
 
             @can('users')
-                <li class="nav-item @yield('users-open') @yield('createUser-open')"><a class="d-flex align-items-center"
-                        href="#"><i data-feather='users'></i><span class="menu-title text-truncate">
-                            {{ __('dashboard.users') }}</span>
-                        <span class="badge badge-light-warning rounded-pill ms-auto me-1"> {{ App\Models\User::count() }}
-                        </span>
+                <li class="nav-item @yield('users-active') @yield('users-open') @yield('createUser-open')">
+                    <a class="d-flex align-items-center" href="{{ route('dashboard.users.index') }}">
+                        <i data-feather='users'></i>
+                        <span class="menu-title text-truncate">{{ __('dashboard.users') }}</span>
+                        <span class="badge badge-light-warning rounded-pill ms-auto me-1"> {{ App\Models\User::count() }}</span>
                     </a>
-                    <ul class="menu-content">
-                        <li><a class="@yield('users-active') d-flex align-items-center"
-                                href="{{ route('dashboard.users.index') }}"><i data-feather="circle"></i><span
-                                    class="menu-item text-truncate"
-                                    data-i18n="Roles">{{ __('dashboard.users') }}</span></a>
-                        </li>
-                        <li><a class="@yield('createUser-active') d-flex align-items-center"
-                                href="{{ route('dashboard.users.index', ['create' => 1]) }}"><i data-feather="circle"></i><span
-                                    class="menu-item text-truncate"
-                                    data-i18n="Permission">{{ __('dashboard.create-user') }}</span></a>
-                        </li>
-                    </ul>
                 </li>
             @endcan
+
+            @canany(['users', 'orders'])
+                <li class="nav-item @yield('orders-active')"><a class="d-flex align-items-center"
+                        href="{{ route('dashboard.orders.index') }}"><i data-feather='shopping-bag'></i><span class="menu-title text-truncate">
+                            {{ __('dashboard.orders') }}</span>
+                        <span class="badge badge-light-warning rounded-pill ms-auto me-1"> {{ App\Models\Order::count() }}
+                        </span>
+                    </a>
+                </li>
+            @endcanany
 
 
 

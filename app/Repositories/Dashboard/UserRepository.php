@@ -31,7 +31,7 @@ class UserRepository
 
     public function getUser($id)
     {
-        $user = User::with(['orders.vendor', 'favoriteProducts.images'])->find($id);
+        $user = User::with(['orders.vendor', 'orders.items.product.images', 'favoriteProducts.images'])->find($id);
         if (!$user) {
             return false;
         }

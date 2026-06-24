@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Dashboard\DeliveryController;
+use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\Auth\AuthController;
 use App\Http\Controllers\Dashboard\Auth\ForgotController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -78,6 +79,8 @@ Route::group([
         Route::get('users',                  [UserController::class, 'index'])->middleware('can:users')->name('users.index');
         Route::get('user/profile/{id}',      [UserController::class, 'userProfile'])->middleware('can:users')->name('user.profile');
         Route::post('user/{id}/ban',         [UserController::class, 'toggleBan'])->middleware('can:users')->name('users.ban');
+        Route::get('orders',                 [OrderController::class, 'index'])->name('orders.index');
+        Route::get('orders/{id}',            [OrderController::class, 'show'])->name('orders.show');
         ############################### End Users Routes #########################################
 
 

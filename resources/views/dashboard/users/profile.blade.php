@@ -121,33 +121,7 @@
                 <!--/ User Pills -->
 
                 <!-- Invoice table -->
-                <div class="card">
-                    <h4 class="card-header">{{ __('dashboard.user-orders') }}</h4>
-                    <div class="table-responsive">
-                        <table class="table datatable-project">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>{{ __('dashboard.created-at') }}</th>
-                                    <th>{{ __('dashboard.phone') }}</th>
-                                    <th>{{ __('dashboard.total-price') }}</th>
-                                    <th>{{ __('dashboard.vendor') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($user->orders as $item)
-                                    <tr>
-                                        <td>#</td>
-                                        <td>{{ $item->created_at }}</td>
-                                        <td>{{ $item->customer_phone }}</td>
-                                        <td>{{ $item->total }}</td>
-                                        <td>{{ $item->vendor?->store_name ?? $item->vendor?->owner_name ?? '--' }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                @livewire('dashboard.users.user-orders', ['userId' => $user->id])
                 <!-- /Invoice table -->
 
 

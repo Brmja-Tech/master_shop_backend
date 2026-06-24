@@ -19,4 +19,5 @@ return [
     'banners'           => 'Manage Banners',
     'sliders'           => 'Manage Sliders',
     'faqs'              => 'Manage Faqs',
+    'orders'            => 'Manage Orders',
 ];
