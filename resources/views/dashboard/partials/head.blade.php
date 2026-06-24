@@ -134,9 +134,23 @@
         .main-menu.menu-light .navigation > li.sidebar-group-active > a {
             background: #f3f4f6 !important;
         }
-        .main-menu.menu-light .navigation > li .menu-content li.active > a {
-            background: rgba(47, 84, 235, 0.08) !important;
-            color: #2f54eb !important;
+        /* Active sub-menu item background & shadow overrides */
+        .main-menu .navigation > li ul .active,
+        .main-menu .navigation > li ul li.active {
+            background: linear-gradient(118deg, #2f54eb, rgba(47, 84, 235, 0.7)) !important;
+            box-shadow: 0 0 10px 1px rgba(47, 84, 235, 0.7) !important;
+            border-radius: 4px;
+            z-index: 1;
+        }
+        .main-menu .navigation > li ul .active > a,
+        .main-menu .navigation > li ul li.active > a {
+            color: #fff !important;
+            background: transparent !important;
+        }
+        .main-menu .navigation > li ul .active > a i,
+        .main-menu .navigation > li ul .active > a svg {
+            color: #fff !important;
+            stroke: #fff !important;
         }
         
         /* Form elements focus overrides */
