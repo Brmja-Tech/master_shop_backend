@@ -416,4 +416,11 @@ return [
     'no_subcategories' => 'No Subcategories',
     'main_image' => 'Main Image',
     'additional_images' => 'Additional Images (Gallery)',
+    'delivered_today' => 'Orders Delivered Today',
+    'today_revenue' => 'Today\'s Revenue',
+    'select_month' => 'Select Month',
+    'monthly_revenue' => 'Monthly Revenue & Earnings',
+    'monthly_orders' => 'Monthly Delivered Orders',
+    'system_statistics' => 'General System Statistics',
+    'today_statistics' => 'Today\'s Statistics',
 ];

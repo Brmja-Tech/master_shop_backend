@@ -2,8 +2,6 @@
 @section('dashboard-active', 'active')
 @section('content')
     <section id="dashboard-ecommerce">
-        <div class="row match-height">
-            <!-- Statistics Card removed -->
-        </div>
+        @livewire('dashboard.home-statistics')
     </section>
 @endsection

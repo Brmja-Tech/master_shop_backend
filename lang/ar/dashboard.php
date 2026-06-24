@@ -416,4 +416,11 @@ return [
     'no_subcategories' => 'لا توجد أقسام فرعية',
     'main_image' => 'الصورة الرئيسية',
     'additional_images' => 'صور إضافية (المعرض)',
+    'delivered_today' => 'طلبات وصلت اليوم',
+    'today_revenue' => 'مجموع إيرادات اليوم',
+    'select_month' => 'اختر الشهر',
+    'monthly_revenue' => 'أرباح وإيرادات الشهر',
+    'monthly_orders' => 'طلبات الشهر المسلّمة',
+    'system_statistics' => 'إحصائيات النظام العامة',
+    'today_statistics' => 'إحصائيات اليوم',
 ];
