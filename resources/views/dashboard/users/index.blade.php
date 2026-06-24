@@ -34,7 +34,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('somethingFailed', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'error',
                     title: '{{ __('validation.something-valid') }}',
                     showConfirmButton: false,
@@ -49,7 +49,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('userAddMs', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.user-add-successfully') }}',
                     showConfirmButton: false,
@@ -64,7 +64,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('userStatusUpdate', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.status-change') }}',
                     showConfirmButton: false,

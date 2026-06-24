@@ -1,4 +1,69 @@
-<div class="table-responsive">
+<div>
+    <!-- Statistics Cards -->
+    <div class="row mb-2">
+        <div class="col-lg-3 col-sm-6 col-12 mb-1">
+            <div class="card h-100 mb-0 shadow-sm border-0">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h3 class="fw-bolder mb-50">{{ \App\Models\DeliveryUser::count() }}</h3>
+                        <span class="text-muted">{{ __('dashboard.total_deliveries') }}</span>
+                    </div>
+                    <div class="avatar bg-light-primary p-50 rounded">
+                        <span class="avatar-content">
+                            <i class="fa-solid fa-truck fs-4"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12 mb-1">
+            <div class="card h-100 mb-0 shadow-sm border-0">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h3 class="fw-bolder mb-50 text-warning">{{ \App\Models\DeliveryUser::where('approval_status', 'pending')->count() }}</h3>
+                        <span class="text-muted">{{ __('dashboard.delivery_join_requests') }}</span>
+                    </div>
+                    <div class="avatar bg-light-warning p-50 rounded">
+                        <span class="avatar-content">
+                            <i class="fa-solid fa-clock fs-4"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12 mb-1">
+            <div class="card h-100 mb-0 shadow-sm border-0">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h3 class="fw-bolder mb-50 text-success">{{ \App\Models\DeliveryUser::where('approval_status', 'approved')->count() }}</h3>
+                        <span class="text-muted">{{ __('dashboard.approved_deliveries') }}</span>
+                    </div>
+                    <div class="avatar bg-light-success p-50 rounded">
+                        <span class="avatar-content">
+                            <i class="fa-solid fa-circle-check fs-4"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12 mb-1">
+            <div class="card h-100 mb-0 shadow-sm border-0">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h3 class="fw-bolder mb-50 text-danger">{{ \App\Models\DeliveryUser::where('ban', true)->count() }}</h3>
+                        <span class="text-muted">{{ __('dashboard.banned_deliveries') }}</span>
+                    </div>
+                    <div class="avatar bg-light-danger p-50 rounded">
+                        <span class="avatar-content">
+                            <i class="fa-solid fa-user-slash fs-4"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
     <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2 pb-2">
         <div class="d-flex align-items-center gap-1 flex-wrap w-100">
             <!-- Search Bar -->
@@ -127,4 +192,5 @@
     <div class="mt-2 px-2">
         {{ $data->links() }}
     </div>
+</div>
 </div>

@@ -39,7 +39,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('vendorAddMS', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.add-successfully') }}',
                     showConfirmButton: false,
@@ -55,7 +55,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('vendorUpdateMS', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.update-successfully') }}',
                     showConfirmButton: false,

@@ -26,7 +26,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('storeTypeAddMS', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.add-successfully') }}',
                     showConfirmButton: false,
@@ -42,7 +42,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('storeTypeUpdateMS', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.update-successfully') }}',
                     showConfirmButton: false,

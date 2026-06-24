@@ -23,9 +23,9 @@
             Livewire.on('withdrawRequestApproved', function() {
                 const viewModal = bootstrap.Modal.getInstance(document.getElementById('viewWithdrawRequestModal'));
                 if (viewModal) viewModal.hide();
-
+ 
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.withdraw-request-approved-successfully') }}',
                     showConfirmButton: false,
@@ -36,13 +36,13 @@
                     buttonsStyling: false
                 });
             });
-
+ 
             Livewire.on('withdrawRequestRejected', function() {
                 const viewModal = bootstrap.Modal.getInstance(document.getElementById('viewWithdrawRequestModal'));
                 if (viewModal) viewModal.hide();
-
+ 
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.withdraw-request-rejected-successfully') }}',
                     showConfirmButton: false,

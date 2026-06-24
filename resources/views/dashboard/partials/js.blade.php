@@ -316,7 +316,7 @@
             success: function(response) {
                 if (response.status ==true) {
                     Swal.fire({
-                        position: 'top-start',
+                        position: 'center',
                         icon: 'success',
                         title: '{{ __('dashboard.status-change') }}',
                         showConfirmButton: false,
@@ -339,7 +339,7 @@
                     }
                 } else {
                     Swal.fire({
-                        position: 'top-start',
+                        position: 'center',
                         icon: 'error',
                         title: '{{ __('validation.something-valid') }}',
                         showConfirmButton: false,
@@ -374,7 +374,7 @@
             success: function(response) {
                 if (response.status) {
                     Swal.fire({
-                        position: 'top-start',
+                        position: 'center',
                         icon: 'success',
                         title: '{{ __('dashboard.approved-change') }}',
                         showConfirmButton: false,

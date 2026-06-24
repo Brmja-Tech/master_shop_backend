@@ -27,7 +27,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('faqUpdateMS', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.update-successfully') }}',
                     showConfirmButton: false,
@@ -42,7 +42,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('faqAddMS', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.add-successfully') }}',
                     showConfirmButton: false,
@@ -57,7 +57,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('StatusUpdateMS', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.status-change') }}',
                     showConfirmButton: false,

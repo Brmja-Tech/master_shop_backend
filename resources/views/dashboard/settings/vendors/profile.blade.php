@@ -117,54 +117,7 @@
 
             <!-- Vendor Content -->
             <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
-                <!-- Products table -->
-                <div class="card">
-                    <h4 class="card-header">{{ __('dashboard.products') }}</h4>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>{{ __('dashboard.image') }}</th>
-                                    <th>{{ __('dashboard.name') }}</th>
-                                    <th>{{ __('dashboard.price') }}</th>
-                                    <th>{{ __('dashboard.discount-precentage') }}</th>
-                                    <th>{{ __('dashboard.qty') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($vendor->products as $product)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>
-                                            @php
-                                                $mainImage = $product->images->where('is_main', true)->first() ?? $product->images->first();
-                                            @endphp
-                                            @if ($mainImage)
-                                                <img src="{{ url($mainImage->image) }}" alt="image" width="50" class="rounded">
-                                            @else
-                                                <div class="avatar bg-light-secondary rounded">
-                                                    <div class="avatar-content">N/A</div>
-                                                </div>
-                                            @endif
-                                        </td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->price }}</td>
-                                        <td>{{ $product->discount }}%</td>
-                                        <td>{{ $product->quantity }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6">
-                                            <div class="text-danger text-center">{{ __('dashboard.no-data') }}</div>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- /Products table -->
+                @livewire('dashboard.settings.vendors.vendor-products', ['vendorId' => $vendor->id])
             </div>
             <!--/ Vendor Content -->
         </div>

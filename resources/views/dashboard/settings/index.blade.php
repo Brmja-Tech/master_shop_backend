@@ -23,7 +23,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('settingUpdateMS', function() {
                 Swal.fire({
-                    position: 'top-start',
+                    position: 'center',
                     icon: 'success',
                     title: '{{ __('dashboard.settings-update-successfully') }}',
                     showConfirmButton: false,
