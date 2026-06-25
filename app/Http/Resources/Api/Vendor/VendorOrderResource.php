@@ -20,6 +20,8 @@ class VendorOrderResource extends JsonResource
             'customer_last_name' => $this->customer_last_name,
             'customer_phone' => $this->customer_phone,
             'status' => $this->status?->value,
+            'delivery_id' => $this->delivery_id,
+            'delivery_status' => $this->delivery_status,
             'payment_method' => $this->payment_method?->value,
             'payment_status' => $this->payment_status?->value,
             'subtotal' => $this->when($isDetailed, $this->subtotal),
@@ -33,6 +35,20 @@ class VendorOrderResource extends JsonResource
             'items_count' => $this->whenCounted('items'),
             'items' => $this->whenLoaded('items', function () {
                 return VendorOrderItemResource::collection($this->items);
+            }),
+            'delivery' => $this->whenLoaded('delivery', function () {
+                if (! $this->delivery) {
+                    return null;
+                }
+
+                return [
+                    'id' => $this->delivery->id,
+                    'name' => $this->delivery->name,
+                    'phone' => $this->delivery->phone,
+                    'email' => $this->delivery->email,
+                    'lat' => $this->delivery->lat !== null ? (float) $this->delivery->lat : null,
+                    'lng' => $this->delivery->lng !== null ? (float) $this->delivery->lng : null,
+                ];
             }),
         ];
     }

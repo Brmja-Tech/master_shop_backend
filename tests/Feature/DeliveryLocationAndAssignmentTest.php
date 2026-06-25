@@ -14,6 +14,7 @@ use App\Models\StoreType;
 use App\Models\Subcategory;
 use App\Models\User;
 use App\Models\Vendor;
+use App\Services\FcmService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
@@ -245,7 +246,10 @@ class DeliveryLocationAndAssignmentTest extends TestCase
                 'status' => 'ready',
             ])
             ->assertStatus(200)
-            ->assertJsonPath('data.status', 'ready');
+            ->assertJsonPath('data.status', 'ready')
+            ->assertJsonPath('data.delivery_id', null)
+            ->assertJsonPath('data.delivery_status', 'searching')
+            ->assertJsonPath('data.delivery', null);
 
         $this->assertDatabaseHas('orders', [
             'id' => $order->id,
@@ -278,6 +282,8 @@ class DeliveryLocationAndAssignmentTest extends TestCase
 
     public function test_first_delivery_user_to_accept_gets_the_order(): void
     {
+        Queue::fake();
+
         $storeType = StoreType::create(['name' => 'Supermarket']);
 
         $vendor = Vendor::create([
@@ -291,6 +297,7 @@ class DeliveryLocationAndAssignmentTest extends TestCase
             'is_active' => true,
             'approval_status' => 'approved',
             'ban' => false,
+            'fcm_token' => 'vendor-accept-token',
         ]);
 
         $user = User::factory()->create();
@@ -331,6 +338,24 @@ class DeliveryLocationAndAssignmentTest extends TestCase
             'max_active_orders' => 1,
         ]);
 
+        $fcm = \Mockery::mock(FcmService::class);
+        $this->app->instance(FcmService::class, $fcm);
+        $fcm->shouldReceive('sendNotification')
+            ->once()
+            ->withArgs(function (string $token, string $title, string $body, array $data) use ($vendor, $order, $captain) {
+                return $token === 'vendor-accept-token'
+                    && $data['type'] === 'delivery_accepted'
+                    && $data['order_id'] === (string) $order->id
+                    && $data['vendor_id'] === (string) $vendor->id
+                    && $data['delivery_id'] === (string) $captain->id
+                    && $data['delivery_phone'] === $captain->phone
+                    && $data['status'] === 'on_the_way'
+                    && $data['delivery_status'] === 'assigned'
+                    && $title !== ''
+                    && $body !== '';
+            })
+            ->andReturn(true);
+
         $this->actingAs($captain, 'sanctum')
             ->postJson("/delivery/orders/{$order->id}/accept")
             ->assertStatus(200)
@@ -354,6 +379,85 @@ class DeliveryLocationAndAssignmentTest extends TestCase
         $this->assertSame('order_status_update', $notification->data['type']);
         $this->assertSame($order->id, $notification->data['order_id']);
         $this->assertSame('on_the_way', $notification->data['status']);
+
+        Queue::assertPushed(FirebasePushJob::class, function (FirebasePushJob $job) use ($vendor, $order, $captain) {
+            $path = (fn () => $this->path)->call($job);
+            $data = (fn () => $this->data)->call($job);
+
+            return $path === 'orders/vendor_' . $vendor->id
+                && data_get($data, 'event') === 'delivery_accepted'
+                && data_get($data, 'order_id') === $order->id
+                && data_get($data, 'delivery.id') === $captain->id
+                && data_get($data, 'delivery.phone') === $captain->phone
+                && data_get($data, 'data.delivery_id') === $captain->id
+                && data_get($data, 'data.delivery_status') === 'assigned';
+        });
+    }
+
+    public function test_vendor_can_see_which_delivery_user_accepted_and_that_order_is_coming(): void
+    {
+        $storeType = StoreType::create(['name' => 'Supermarket']);
+
+        $vendor = Vendor::create([
+            'owner_name' => 'Vendor Owner',
+            'phone' => '01021212121',
+            'password' => Hash::make('password123'),
+            'store_name' => 'Tracking Store',
+            'store_type_id' => $storeType->id,
+            'latitude' => 30.0444200,
+            'longitude' => 31.2357000,
+            'is_active' => true,
+            'approval_status' => 'approved',
+            'ban' => false,
+        ]);
+
+        $user = User::factory()->create();
+
+        $captain = DeliveryUser::create([
+            'name' => 'Tracking Captain',
+            'phone' => '01023232323',
+            'email' => 'tracking-captain@example.com',
+            'password' => Hash::make('password123'),
+            'front_ident' => 'delivaries/front7.png',
+            'back_ident' => 'delivaries/back7.png',
+            'personal_deriving_license' => 'delivaries/personal7.png',
+            'machine_license' => 'delivaries/machine7.png',
+            'approval_status' => 'approved',
+            'active_status' => true,
+            'ban' => false,
+            'lat' => 30.0450000,
+            'lng' => 31.2360000,
+            'max_active_orders' => 1,
+        ]);
+
+        $order = Order::create([
+            'user_id' => $user->id,
+            'vendor_id' => $vendor->id,
+            'delivery_id' => $captain->id,
+            'customer_first_name' => 'Track',
+            'customer_last_name' => 'Customer',
+            'customer_phone' => '01024242424',
+            'status' => OrderStatus::OnTheWay,
+            'delivery_status' => 'assigned',
+            'payment_method' => PaymentMethod::Cash,
+            'payment_status' => PaymentStatus::Pending,
+            'delivery_address' => 'Cairo',
+            'delivery_latitude' => 30.0500000,
+            'delivery_longitude' => 31.2400000,
+            'subtotal' => 100,
+            'discount_amount' => 0,
+            'delivery_fee' => 15,
+            'total' => 115,
+        ]);
+
+        $this->actingAs($vendor, 'sanctum')
+            ->getJson("/api/vendor/orders/{$order->id}")
+            ->assertStatus(200)
+            ->assertJsonPath('data.delivery_id', $captain->id)
+            ->assertJsonPath('data.delivery_status', 'assigned')
+            ->assertJsonPath('data.delivery.id', $captain->id)
+            ->assertJsonPath('data.delivery.name', 'Tracking Captain')
+            ->assertJsonPath('data.delivery.phone', '01023232323');
     }
 
     public function test_available_orders_endpoint_returns_open_ready_orders_for_delivery_user(): void

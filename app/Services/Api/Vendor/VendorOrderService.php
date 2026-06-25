@@ -130,7 +130,7 @@ class VendorOrderService
             Log::error('FCM Notification dispatch failed for user order status update #' . $order->id . ': ' . $e->getMessage());
         }
 
-        return $order->load(['vendor', 'items.product.images']);
+        return $order->load(['vendor', 'delivery', 'items.product.images']);
     }
 
     public function getTodayStats(Vendor $vendor): array

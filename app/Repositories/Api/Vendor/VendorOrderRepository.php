@@ -14,7 +14,7 @@ class VendorOrderRepository
             ->when($status, function ($query, $status) {
                 return $query->where('status', $status);
             })
-            ->with('user')
+            ->with(['user', 'delivery'])
             ->withCount('items')
             ->latest()
             ->paginate($perPage);
@@ -24,7 +24,7 @@ class VendorOrderRepository
     {
         return Order::query()
             ->where('vendor_id', $vendorId)
-            ->with(['user', 'items.product.images'])
+            ->with(['user', 'delivery', 'items.product.images'])
             ->findOrFail($id);
     }
 

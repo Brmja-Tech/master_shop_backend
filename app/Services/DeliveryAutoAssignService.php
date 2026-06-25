@@ -8,8 +8,11 @@ use App\Enums\PaymentStatus;
 use App\Models\DeliveryRefusedOrder;
 use App\Models\DeliveryUser;
 use App\Models\Order;
+use App\Http\Resources\Api\Vendor\VendorOrderResource;
+use App\Jobs\FirebasePushJob;
 use App\Notifications\DeliveryOrderOfferNotification;
 use App\Notifications\UserOrderStatusUpdatedNotification;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
@@ -105,6 +108,7 @@ class DeliveryAutoAssignService
             ]);
 
             $this->notifyUserAboutOrderStatusChange($lockedOrder);
+            $this->notifyVendorAboutDeliveryAcceptance($lockedOrder->fresh(['vendor', 'delivery', 'items.product.images']), $deliveryUser);
 
             Log::info("[DELIVERY_AUTO_ASSIGN] Order #{$order->id} accepted successfully by Driver ID {$deliveryUser->id}. Status updated to 'on_the_way' and delivery status to 'assigned'.");
             return true;
@@ -511,6 +515,63 @@ class DeliveryAutoAssignService
             }
         } catch (\Throwable $e) {
             Log::error('FCM Notification dispatch failed for user order status update #' . $order->id . ': ' . $e->getMessage());
+        }
+    }
+
+    private function notifyVendorAboutDeliveryAcceptance(Order $order, DeliveryUser $deliveryUser): void
+    {
+        try {
+            $vendor = $order->vendor;
+
+            if (! $vendor) {
+                Log::warning("No vendor model associated with order #{$order->id}. Vendor accept notification skipped.");
+                return;
+            }
+
+            $vendorFcmToken = trim((string) ($vendor->fcm_token ?? ''));
+            $locale = app()->getLocale();
+            $title = $locale === 'ar' ? 'تم قبول طلب التوصيل' : 'Delivery accepted';
+            $body = $locale === 'ar'
+                ? "الكابتن {$deliveryUser->name} قبل طلب التوصيل رقم #{$order->id} وهو في الطريق."
+                : "Driver {$deliveryUser->name} accepted delivery order #{$order->id} and is on the way.";
+
+            if ($vendorFcmToken !== '') {
+                $sent = app(FcmService::class)->sendNotification($vendorFcmToken, $title, $body, [
+                    'type' => 'delivery_accepted',
+                    'order_id' => (string) $order->id,
+                    'vendor_id' => (string) $vendor->id,
+                    'delivery_id' => (string) $deliveryUser->id,
+                    'delivery_name' => (string) $deliveryUser->name,
+                    'delivery_phone' => (string) $deliveryUser->phone,
+                    'status' => (string) $order->status->value,
+                    'delivery_status' => (string) $order->delivery_status,
+                ]);
+
+                if ($sent) {
+                    Log::info("FCM push notification sent successfully to vendor ID {$vendor->id} for accepted order #{$order->id}");
+                } else {
+                    Log::error("Failed to send FCM push notification to vendor ID {$vendor->id} for accepted order #{$order->id}");
+                }
+            } else {
+                Log::warning("Vendor ID {$vendor->id} does not have an FCM token. Delivery accept FCM skipped for order #{$order->id}.");
+            }
+
+            FirebasePushJob::dispatch(
+                'orders/vendor_' . $vendor->id,
+                [
+                    'event' => 'delivery_accepted',
+                    'order_id' => $order->id,
+                    'created_at' => now()->toISOString(),
+                    'delivery' => [
+                        'id' => $deliveryUser->id,
+                        'name' => $deliveryUser->name,
+                        'phone' => $deliveryUser->phone,
+                    ],
+                    'data' => (new VendorOrderResource($order))->toArray(new Request()),
+                ]
+            );
+        } catch (\Throwable $e) {
+            Log::error('Vendor delivery acceptance notification dispatch failed for order #' . $order->id . ': ' . $e->getMessage());
         }
     }
 }

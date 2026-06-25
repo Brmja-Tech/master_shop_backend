@@ -84,7 +84,7 @@ class OrderController extends Controller
     private function resolveAuthenticatedVendorOrder(Vendor $vendor, int $orderId): Order
     {
         return $vendor->orders()
-            ->with(['user', 'items.product.images'])
+            ->with(['user', 'delivery', 'items.product.images'])
             ->whereKey($orderId)
             ->firstOrFail();
     }
